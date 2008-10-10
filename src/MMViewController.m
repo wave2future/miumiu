@@ -91,6 +91,9 @@
 
 -(void) view:(MMView *)_ requestedBeginCallWithNumber:(NSString *)number
 {
+	if ( [number length] == 0 )
+		return;
+	
 	[iax beginCall:number];
 	
 	[speexDecoder start];
