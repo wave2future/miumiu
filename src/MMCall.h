@@ -18,7 +18,7 @@
 
 -(void) callDidBegin:(MMCall *)call;
 -(void) callDidBeginRinging:(MMCall *)call;
--(void) callDidAnswer:(MMCall *)call;
+-(void) call:(MMCall *)call didAnswerWithUseSpeex:(BOOL)useSpeex;
 -(void) callDidEnd:(MMCall *)call;
 
 @end

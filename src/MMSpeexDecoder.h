@@ -6,21 +6,16 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "MMDataProducer.h"
-#import "MMDataConsumer.h"
+#import "MMCodec.h"
+
 #include <speex/speex.h>
 
-@interface MMSpeexDecoder : MMDataProducer <MMDataConsumer>
+@interface MMSpeexDecoder : MMCodec
 {
 @private
-	BOOL running;
 	SpeexBits bits; 
 	void *dec_state; 
 	spx_int32_t frameSize;
 }
-
--(void) start;
--(void) stop;
 
 @end

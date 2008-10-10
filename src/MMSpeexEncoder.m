@@ -10,9 +10,9 @@
 
 @implementation MMSpeexEncoder
 
--(void) start
+-(id) init
 {
-	if ( !running )
+	if ( self = [super init] )
 	{
 		speex_bits_init( &bits ); 
 
@@ -28,9 +28,19 @@
 		frameSize *= sizeof(spx_int16_t);
 		
 		buffer = [[MMCircularBuffer alloc] init];
-		
-		running = YES;
 	}
+	return self;
+}
+
+-(void) dealloc
+{
+	[buffer release];
+	
+	speex_bits_destroy(&bits);
+	
+	speex_encoder_destroy(enc_state); 
+
+	[super dealloc];
 }
 
 -(void) encodeFrame:(spx_int16_t *)frame
@@ -70,20 +80,6 @@
 		spx_int16_t *frame = alloca( frameSize );
 		while ( [buffer getData:frame ofSize:frameSize] )
 			[self encodeFrame:frame];
-	}
-}
-
--(void) stop
-{
-	if ( running )
-	{
-		[buffer release];
-		
-		speex_bits_destroy(&bits);
-		
-		speex_encoder_destroy(enc_state); 
-
-		running = NO;
 	}
 }
 

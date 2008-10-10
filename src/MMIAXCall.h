@@ -17,6 +17,7 @@
 @private
 	MMIAX *iax;
 	struct iax_session *session;
+	unsigned format;
 }
 
 -(id) initWithNumber:(NSString *)number iax:(MMIAX *)_iax;

@@ -8,6 +8,10 @@
 
 #import "MMViewController.h"
 #import "MMRingtoneGenerator.h"
+#import "MMULawEncoder.h"
+#import "MMULawDecoder.h"
+#import "MMSpeexEncoder.h"
+#import "MMSpeexDecoder.h"
 
 #define TAP_FILE_NAME CFSTR("tap")
 #define TAP_FILE_TYPE CFSTR("aif")
@@ -21,9 +25,6 @@
 {
 	if ( self = [super init] )
 	{
-		speexEncoder = [[MMSpeexEncoder alloc] init];
-		speexDecoder = [[MMSpeexDecoder alloc] init];
-		
 		audioController = [[MMAudioController alloc] init];
 		
 		iax = [[MMIAX alloc] init];
@@ -37,7 +38,6 @@
 	[view release];
 	[iax release];
 	[audioController release];
-	[speexEncoder release];
 	[super dealloc];
 	AudioServicesDisposeSystemSoundID (self.soundFileObject);
 	CFRelease (soundFileURLRef);
@@ -109,19 +109,27 @@
 	[ringtoneGenerator connectToConsumer:audioController];
 }
 
--(void) callDidAnswer:(MMCall *)_
+-(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
 {
+	if ( useSpeex )
+	{
+		encoder = [[MMSpeexEncoder alloc] init];
+		decoder = [[MMSpeexDecoder alloc] init];
+	}
+	else
+	{
+		encoder = [[MMULawEncoder alloc] init];
+		decoder = [[MMULawDecoder alloc] init];
+	}
+	
 	[ringtoneGenerator disconnect];
 	[ringtoneGenerator autorelease];
 	ringtoneGenerator = nil;
 
-	[audioController connectToConsumer:speexEncoder];
-	[speexEncoder connectToConsumer:call];
-	[call connectToConsumer:speexDecoder];
-	[speexDecoder connectToConsumer:audioController];
-
-	[speexDecoder start];
-	[speexEncoder start];
+	[audioController connectToConsumer:encoder];
+	[encoder connectToConsumer:call];
+	[call connectToConsumer:decoder];
+	[decoder connectToConsumer:audioController];
 }
 
 -(void) callDidFail:(MMCall *)_
@@ -133,13 +141,15 @@
 
 -(void) callDidEnd:(MMCall *)_
 {
-	[speexEncoder stop];
-	[speexDecoder stop];
-	
-	[speexDecoder disconnect];
+	[decoder disconnect];
 	[call disconnect];
-	[speexEncoder disconnect];
+	[encoder disconnect];
 	[audioController disconnect];
+	
+	[encoder release];
+	encoder = nil;
+	[decoder release];
+	decoder = nil;
 	
 	[audioController stop];
 

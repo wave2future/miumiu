@@ -21,7 +21,7 @@
 		[iax registerIAXCall:self withSession:session];
 		
 		char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", iax.username, iax.password, iax.hostname, number] UTF8String] );
-		iax_call( session, [iax.cidNumber UTF8String], [iax.cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_SPEEX );
+		iax_call( session, [iax.cidNumber UTF8String], [iax.cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
 		free( ich );
 	}
 	return self;
@@ -39,7 +39,7 @@
 
 -(void) consumeData:(void *)data ofSize:(unsigned)size
 {
-	iax_send_voice( session, AST_FORMAT_SPEEX, data, size, size/2 );
+	iax_send_voice( session, format, data, size, size/2 );
 }
 
 -(void) sendDTMF:(NSString *)dtmf
@@ -58,13 +58,14 @@
 	switch ( event->etype )
 	{
 		case IAX_EVENT_ACCEPT:
+			format = event->ies.format;
 			[delegate callDidBegin:self];
 			break;
 		case IAX_EVENT_RINGA:
 			[delegate callDidBeginRinging:self];
 			break;
 		case IAX_EVENT_ANSWER:
-			[delegate callDidAnswer:self];
+			[delegate call:self didAnswerWithUseSpeex:(format==AST_FORMAT_SPEEX)];
 			break;
 		case IAX_EVENT_VOICE:
 			[self produceData:event->data ofSize:event->datalen];

@@ -10,9 +10,9 @@
 
 @implementation MMSpeexDecoder
 
--(void) start
+-(id) init
 {
-	if ( !running )
+	if ( self = [super init] )
 	{
 		speex_bits_init( &bits );
 		
@@ -23,9 +23,17 @@
 		
 		speex_decoder_ctl( dec_state, SPEEX_GET_FRAME_SIZE, &frameSize );
 		frameSize *= sizeof(spx_int16_t);
-		
-		running = YES;
 	}
+	return self;
+}
+
+-(void) dealloc
+{
+	speex_bits_destroy( &bits );
+	
+	speex_decoder_destroy( dec_state );
+	
+	[super dealloc];
 }
 
 -(void) consumeData:(void *)data ofSize:(unsigned)size
@@ -35,18 +43,6 @@
 	spx_int16_t *frame = alloca( frameSize );
 	while ( speex_decode_int( dec_state, &bits, frame ) == 0 )
 		[self produceData:frame ofSize:frameSize];
-}
-
--(void) stop
-{
-	if ( running )
-	{
-		speex_bits_destroy( &bits );
-		
-		speex_decoder_destroy( dec_state );
-	
-		running = NO;
-	}
 }
 
 @end

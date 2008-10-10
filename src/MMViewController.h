@@ -10,20 +10,18 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "MMView.h"
 #import "MMAudioController.h"
-#import "MMSpeexEncoder.h"
-#import "MMSpeexDecoder.h"
 #import "MMIAX.h"
 #import "MMCall.h"
 
+@class MMCodec;
 @class MMRingtoneGenerator;
 
 @interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
 {
 @private
-	MMSpeexEncoder *speexEncoder;
-	MMSpeexDecoder *speexDecoder;
-	MMAudioController *audioController;
 	MMView *view;
+	MMAudioController *audioController;
+	MMCodec *encoder, *decoder;
 	MMIAX *iax;
 	MMCall *call;
 	MMRingtoneGenerator *ringtoneGenerator;

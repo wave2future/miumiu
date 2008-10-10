@@ -16,6 +16,9 @@
 		DB778B390E9DD9F000EC2FC3 /* MMSpeexEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778AFC0E9DD1C100EC2FC3 /* MMSpeexEncoder.m */; };
 		DB7C89350E9FEB8900A91FB4 /* MMCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C89340E9FEB8900A91FB4 /* MMCall.m */; };
 		DB7C8AC80EA007E800A91FB4 /* MMRingtoneGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8AC70EA007E800A91FB4 /* MMRingtoneGenerator.m */; };
+		DB7C8B330EA010AB00A91FB4 /* MMULawEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8B320EA010AB00A91FB4 /* MMULawEncoder.m */; };
+		DB7C8B360EA010BA00A91FB4 /* MMULawDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8B350EA010BA00A91FB4 /* MMULawDecoder.m */; };
+		DB7C8B390EA0115400A91FB4 /* MMCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8B380EA0115400A91FB4 /* MMCodec.m */; };
 		DBC1ED700E9EEA3A0071E7EC /* MMIAX.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC1ED6F0E9EEA3A0071E7EC /* MMIAX.m */; };
 		DBC1EEFC0E9F056B0071E7EC /* _kiss_fft_guts.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC1EE9E0E9F056B0071E7EC /* _kiss_fft_guts.h */; };
 		DBC1EEFD0E9F056B0071E7EC /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC1EE9F0E9F056B0071E7EC /* arch.h */; };
@@ -182,6 +185,12 @@
 		DB7C89340E9FEB8900A91FB4 /* MMCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCall.m; path = src/MMCall.m; sourceTree = "<group>"; };
 		DB7C8AC60EA007E800A91FB4 /* MMRingtoneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRingtoneGenerator.h; path = src/MMRingtoneGenerator.h; sourceTree = "<group>"; };
 		DB7C8AC70EA007E800A91FB4 /* MMRingtoneGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRingtoneGenerator.m; path = src/MMRingtoneGenerator.m; sourceTree = "<group>"; };
+		DB7C8B310EA010AB00A91FB4 /* MMULawEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMULawEncoder.h; path = src/MMULawEncoder.h; sourceTree = "<group>"; };
+		DB7C8B320EA010AB00A91FB4 /* MMULawEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMULawEncoder.m; path = src/MMULawEncoder.m; sourceTree = "<group>"; };
+		DB7C8B340EA010BA00A91FB4 /* MMULawDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMULawDecoder.h; path = src/MMULawDecoder.h; sourceTree = "<group>"; };
+		DB7C8B350EA010BA00A91FB4 /* MMULawDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMULawDecoder.m; path = src/MMULawDecoder.m; sourceTree = "<group>"; };
+		DB7C8B370EA0115400A91FB4 /* MMCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCodec.h; path = src/MMCodec.h; sourceTree = "<group>"; };
+		DB7C8B380EA0115400A91FB4 /* MMCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCodec.m; path = src/MMCodec.m; sourceTree = "<group>"; };
 		DBC1ED6E0E9EEA3A0071E7EC /* MMIAX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMIAX.h; path = src/MMIAX.h; sourceTree = "<group>"; };
 		DBC1ED6F0E9EEA3A0071E7EC /* MMIAX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMIAX.m; path = src/MMIAX.m; sourceTree = "<group>"; };
 		DBC1EE980E9F050B0071E7EC /* libspeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libspeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -595,6 +604,12 @@
 				DBC1F3480E9FE03B0071E7EC /* MMIAXCall.m */,
 				DB7C8AC60EA007E800A91FB4 /* MMRingtoneGenerator.h */,
 				DB7C8AC70EA007E800A91FB4 /* MMRingtoneGenerator.m */,
+				DB7C8B310EA010AB00A91FB4 /* MMULawEncoder.h */,
+				DB7C8B320EA010AB00A91FB4 /* MMULawEncoder.m */,
+				DB7C8B340EA010BA00A91FB4 /* MMULawDecoder.h */,
+				DB7C8B350EA010BA00A91FB4 /* MMULawDecoder.m */,
+				DB7C8B370EA0115400A91FB4 /* MMCodec.h */,
+				DB7C8B380EA0115400A91FB4 /* MMCodec.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -788,6 +803,9 @@
 				DBC1F3490E9FE03B0071E7EC /* MMIAXCall.m in Sources */,
 				DB7C89350E9FEB8900A91FB4 /* MMCall.m in Sources */,
 				DB7C8AC80EA007E800A91FB4 /* MMRingtoneGenerator.m in Sources */,
+				DB7C8B330EA010AB00A91FB4 /* MMULawEncoder.m in Sources */,
+				DB7C8B360EA010BA00A91FB4 /* MMULawDecoder.m in Sources */,
+				DB7C8B390EA0115400A91FB4 /* MMCodec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
