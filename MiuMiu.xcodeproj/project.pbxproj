@@ -171,8 +171,8 @@
 		DB1878840E9E8C4E004319C4 /* speex_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_types.h; path = "ThirdParty/speex-1.2rc1/include/speex/speex_types.h"; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
-		DB1879910E9EB1D3004319C4 /* MMCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = src/MMCodec.h; sourceTree = "<group>"; };
-		DB1879920E9EB1D3004319C4 /* MMCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = src/MMCodec.m; sourceTree = "<group>"; };
+		DB1879910E9EB1D3004319C4 /* MMCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCodec.h; path = src/MMCodec.h; sourceTree = "<group>"; };
+		DB1879920E9EB1D3004319C4 /* MMCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCodec.m; path = src/MMCodec.m; sourceTree = "<group>"; };
 		DB778A1C0E9DCF0D00EC2FC3 /* liblibspeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibspeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB778A210E9DCF3700EC2FC3 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = "ThirdParty/speex-1.2rc1/libspeex/_kiss_fft_guts.h"; sourceTree = "<group>"; };
 		DB778A220E9DCF3700EC2FC3 /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arch.h; path = "ThirdParty/speex-1.2rc1/libspeex/arch.h"; sourceTree = "<group>"; };
