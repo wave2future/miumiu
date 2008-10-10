@@ -1,0 +1,122 @@
+//
+//  MMView.m
+//  MiuMiu
+//
+//  Created by Peter Zion on 08/10/08.
+//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//
+
+#import "MMView.h"
+
+static NSString *beginCallTitle = @"Call", *endCallTitle = @"End";
+
+#define NUM_DIGITS 12
+static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#" };
+
+@implementation MMView
+
+-(UIButton *) buttonWithTitle:(NSString *)title
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[button setTitle:title forState:UIControlStateNormal];
+	[button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+	[button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[self addSubview:button];
+	return button;
+}
+
+-(id) initWithNumber:(NSString *)number inProgress:(BOOL)inProgress;
+{
+	if ( self = [super init] )
+	{
+		numberTextField = [[UITextField alloc] init];
+		numberTextField.text = number;
+		numberTextField.textColor = [UIColor whiteColor];
+		numberTextField.returnKeyType = UIReturnKeyGo;
+		numberTextField.enablesReturnKeyAutomatically = YES;
+		numberTextField.keyboardType = UIKeyboardTypeEmailAddress;
+		numberTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+		numberTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		numberTextField.clearButtonMode = UITextFieldViewModeAlways;
+		numberTextField.placeholder = @"Dial number then press Call";
+		[self addSubview:numberTextField];
+	
+		beginCallButton = [[self buttonWithTitle:beginCallTitle] retain];
+		beginCallButton.enabled = !inProgress;
+		
+		endCallButton = [[self buttonWithTitle:endCallTitle] retain];
+		endCallButton.enabled = inProgress;
+	
+		digitButtons = [[NSMutableArray alloc] initWithCapacity:12];
+		for ( int i=0; i<NUM_DIGITS; ++i )
+			[digitButtons addObject:[self buttonWithTitle:digitTitles[i]]];
+	}
+	return self;
+}
+
+-(void) dealloc
+{
+	[digitButtons release];
+	[endCallButton release];
+	[beginCallButton release];
+	[numberTextField release];
+	[super dealloc];
+}
+
+-(void) layoutSubviews
+{
+	CGRect bounds = self.bounds;
+	
+	numberTextField.frame = CGRectMake( CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetWidth(bounds), 60 );
+
+	CGRect controlBounds = CGRectMake( CGRectGetMinX(bounds), CGRectGetMaxY(numberTextField.frame), CGRectGetWidth(bounds), 60 );
+	beginCallButton.frame = CGRectMake( CGRectGetMinX(controlBounds), CGRectGetMinY(controlBounds), CGRectGetWidth(controlBounds)/2, CGRectGetHeight(controlBounds) );
+	endCallButton.frame = CGRectMake( CGRectGetMaxX(beginCallButton.frame), CGRectGetMinY(controlBounds), CGRectGetMaxX(controlBounds) - CGRectGetMaxX(beginCallButton.frame), CGRectGetHeight(controlBounds) );
+	
+	CGRect digitsBounds = CGRectMake( CGRectGetMinX(bounds), CGRectGetMaxY(controlBounds), CGRectGetWidth(bounds), CGRectGetMaxY(bounds) - CGRectGetMaxY(controlBounds) );
+	for ( int i=0; i<12; ++i )
+	{
+		int row = i/3, col = i%3;
+		
+		UIButton *digitButton = [digitButtons objectAtIndex:i];
+		digitButton.frame = CGRectMake(
+			roundf( CGRectGetMinX(digitsBounds) + col * CGRectGetWidth(digitsBounds) / 3 ),
+			roundf( CGRectGetMinY(digitsBounds) + row * CGRectGetHeight(digitsBounds) / 4 ),
+			roundf( CGRectGetWidth(digitsBounds) / 3 ),
+			roundf( CGRectGetHeight(digitsBounds) / 4 ) );
+	}
+}
+
+-(void) buttonPressed:(UIButton *)button
+{
+	if ( button == beginCallButton )
+		[delegate view:self requestedBeginCallWithNumber:numberTextField.text];
+	else if ( button == endCallButton )
+		[delegate viewRequestedEndCall:self];
+	else
+	{
+		NSString *oldText = numberTextField.text;
+		NSString *newDigit = [button titleForState:UIControlStateNormal];
+		if ( oldText != nil )
+			numberTextField.text = [NSString stringWithFormat:@"%@%@", oldText, newDigit];
+		else
+			numberTextField.text = newDigit;
+	}
+}
+
+-(void) didBeginCall:(id)sender
+{
+	beginCallButton.enabled = NO;
+	endCallButton.enabled = YES;
+}
+
+-(void) didEndCall:(id)sender
+{
+	beginCallButton.enabled = YES;
+	endCallButton.enabled = NO;
+	numberTextField.text = @"";
+}
+
+@synthesize delegate;
+
+@end
