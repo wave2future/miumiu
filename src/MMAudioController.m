@@ -152,7 +152,6 @@ static void interruptionCallback(
 	const char *data = (char *)_data;
 	while ( size > 0 && numAvailableOutputBuffers > 0 )
 	{
-		//NSLog( @"MMAudioController: queue one buffer for playback" );
 		AudioQueueBufferRef queueBuffer = availableOutputBuffers[--numAvailableOutputBuffers];
 		queueBuffer->mAudioDataByteSize = size;
 		if ( queueBuffer->mAudioDataByteSize > queueBuffer->mAudioDataBytesCapacity )
@@ -201,10 +200,7 @@ static void interruptionCallback(
 		packetDescription:(const AudioStreamPacketDescription *)packetDescription
 {
 	if ( numPackets > 0 )
-	{
-		//NSLog( @"MMAudioController: recorded one buffer" );
 		[self produceData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
-	}
 
 	if ( running )
 		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
@@ -213,14 +209,11 @@ static void interruptionCallback(
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 {
-	//NSLog( @"MMAudioController: finished playback of buffer" );
-	
 	if ( running && numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - MM_AUDIO_CONTROLLER_NUM_BUFFERS_TO_PUSH )
 	{
 		buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
 		memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );
 		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
-		//NSLog( @"MMAudioController: requeued empty buffer for playback" );
 	}
 	else
 		availableOutputBuffers[numAvailableOutputBuffers++] = buffer;

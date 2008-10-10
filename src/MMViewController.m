@@ -8,9 +8,6 @@
 
 #import "MMViewController.h"
 
-//#define LOOPBACK_THROUGH_AUDIO
-//#define LOOPBACK_THROUGH_SPEEX
-
 #define TAP_FILE_NAME CFSTR("tap")
 #define TAP_FILE_TYPE CFSTR("aif")
 
@@ -30,19 +27,6 @@
 		
 		iax = [[MMIAX alloc] init];
 		iax.delegate = self;
-		
-#ifdef LOOPBACK_THROUGH_AUDIO
-		[audioController connectToConsumer:audioController];
-#else
-		[audioController connectToConsumer:speexEncoder];
-# ifdef LOOPBACK_THROUGH_SPEEX
-		[speexEncoder connectToConsumer:speexDecoder];
-# else
-		[speexEncoder connectToConsumer:iax];
-		[iax connectToConsumer:speexDecoder];
-# endif
-		[speexDecoder connectToConsumer:audioController];
-#endif
 	}
 	return self;
 }
@@ -91,23 +75,14 @@
 
 -(void) view:(MMView *)_ requestedBeginCallWithNumber:(NSString *)number
 {
-	[iax beginCall:number];
-	
-	[speexDecoder start];
-	[speexEncoder start];
-
-	[audioController start];
-
-	[view didBeginCall:self];
-	
-	inCall = YES;
+	call = [[iax beginCall:number] retain];
+	call.delegate = self;
 }
 
 -(void) view:(MMView *)view pressedDTMF:(NSString *)dtmf
 {
 	AudioServicesPlaySystemSound (self.soundFileObject);
-	if ( inCall )
-		[iax sendDTMF:dtmf];
+	[call sendDTMF:dtmf];
 }
 
 -(void) view:(MMView *)view releasedDTMF:(NSString *)dtmf
@@ -116,14 +91,47 @@
 
 -(void) viewRequestedEndCall:(MMView *)_
 {
-	inCall = NO;
-	
-	[audioController stop];
+	[call end];
+}
 
+-(void) callDidBegin:(MMCall *)call
+{
+	[view didBeginCall:self];
+}
+
+-(void) callDidBeginRinging:(MMCall *)call
+{
+}
+
+-(void) callDidEndRinging:(MMCall *)call
+{
+}
+
+-(void) callDidAnswer:(MMCall *)_
+{
+	[audioController connectToConsumer:speexEncoder];
+	[speexEncoder connectToConsumer:call];
+	[call connectToConsumer:speexDecoder];
+	[speexDecoder connectToConsumer:audioController];
+
+	[speexDecoder start];
+	[speexEncoder start];
+	[audioController start];
+}
+
+-(void) callDidEnd:(MMCall *)_
+{
+	[audioController stop];
 	[speexEncoder stop];
 	[speexDecoder stop];
 	
-	[iax endCall];
+	[speexDecoder disconnect];
+	[call disconnect];
+	[speexEncoder disconnect];
+	[audioController disconnect];
+	
+	[call release];
+	call = nil;
 	
 	[view didEndCall:self];
 }

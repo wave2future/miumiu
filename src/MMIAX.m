@@ -7,6 +7,7 @@
 //
 
 #import "MMIAX.h"
+#import "MMIAXCall.h"
 
 static void socketCallback(
 	CFSocketRef s,
@@ -41,7 +42,7 @@ static void iaxErrorCallback( const char *data )
 		password = [@"snowdog1" retain];
 		cidName = [@"Peter Zion" retain];
 		cidNumber = [@"5146515041" retain];
-		
+
 #ifdef DEBUG 
 		iax_enable_debug();
 		iax_set_output( iaxOutputCallback );
@@ -56,18 +57,17 @@ static void iaxErrorCallback( const char *data )
 		CFRunLoopSourceRef runLoopSource = CFSocketCreateRunLoopSource( NULL, socket, 0 );
 		CFRunLoopAddSource( CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes );
 
-		regSession = iax_session_new();
+		session = iax_session_new();
 		
-		iax_register( regSession, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
+		iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
+		
 	}
 	return self;
 }
 
 -(void) dealloc
 {
-	iax_destroy( regSession );
-	// [pzion 20081009] This doesn't actually appear to be present in libiax..
-	//iax_end();
+	iax_destroy( session );
 	[password release];
 	[username release];
 	[hostname release];
@@ -76,21 +76,31 @@ static void iaxErrorCallback( const char *data )
 	[super dealloc];
 }
 
--(void) beginCall:(NSString *)number
+-(void) registerIAXCall:(MMIAXCall *)iaxCall withSession:(struct iax_session *)callSession
 {
-	connected = NO;
-
-	callSession = iax_session_new();
-	
-	NSString *ich = [NSString stringWithFormat:@"%@:%@@%@/%@", username, password, hostname, number];
-	iax_call( callSession, [cidNumber UTF8String], [cidName UTF8String], (char *)[ich UTF8String], NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_SPEEX );
+	calls[numCalls].session = callSession;
+	calls[numCalls++].iaxCall = iaxCall;
 }
 
--(void) endCall
+-(void) unregisterIAXCall:(MMIAXCall *)iaxCall withSession:(struct iax_session *)callSession
 {
-	iax_hangup( callSession, "later!" );
-	
-	iax_destroy( callSession );
+	for ( unsigned i=0; i<numCalls; ++i )
+	{
+		if ( calls[i].session == callSession && calls[i].iaxCall == iaxCall )
+		{
+			memmove( &calls[i], &calls[i+1], (numCalls - i - 1)*sizeof(calls[0]) );
+			--numCalls;
+			break;
+		}
+	}
+}
+
+-(MMCall *) beginCall:(NSString *)number
+{
+	if ( numCalls >= MAX_NUM_CALLS )
+		return nil;
+		
+	return [[[MMIAXCall alloc] initWithNumber:number iax:self] autorelease];
 }
 
 -(void) socketCallbackCalled
@@ -98,32 +108,36 @@ static void iaxErrorCallback( const char *data )
 	struct iax_event *event;
 	while ( event = iax_get_event( 0 ) )
 	{
-		switch ( event->etype )
+		if ( event->etype != IAX_EVENT_NULL )
 		{
-			case IAX_EVENT_VOICE:
-				[self produceData:event->data ofSize:event->datalen];
-				break;
-			case IAX_EVENT_ANSWER:
-				connected = YES;
-				break;
+			if ( event->session == session )
+			{
+				switch ( event->etype )
+				{
+				}
+			}
+			else
+			{
+				for ( unsigned i=0; i<numCalls; ++i )
+				{
+					if ( calls[i].session == event->session )
+					{
+						[calls[i].iaxCall handleEvent:event];
+						break;
+					}
+				}
+			}
 		}
 		
 		iax_event_free( event );
 	}
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size
-{
-	if ( connected )
-		iax_send_voice( callSession, AST_FORMAT_SPEEX, data, size, size/2 );
-}
-
--(void) sendDTMF:(NSString *)dtmf
-{
-	if ( connected )
-		iax_send_dtmf( callSession, *[dtmf UTF8String] );
-}
-
 @synthesize delegate;
+@synthesize hostname;
+@synthesize username;
+@synthesize password;
+@synthesize cidName;
+@synthesize cidNumber;
 
 @end

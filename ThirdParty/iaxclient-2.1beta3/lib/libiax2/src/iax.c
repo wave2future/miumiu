@@ -123,7 +123,7 @@
 static int video_bypass_jitterbuffer = 0;
 
 /* To use or not to use the jitterbuffer */
-static int iax_use_jitterbuffer = 1;
+static int iax_use_jitterbuffer = 0;
 
 /* UDP Socket (file descriptor) */
 static int netfd = -1;

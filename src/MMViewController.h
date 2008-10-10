@@ -12,10 +12,10 @@
 #import "MMAudioController.h"
 #import "MMSpeexEncoder.h"
 #import "MMSpeexDecoder.h"
-#import "MMCircularBuffer.h"
 #import "MMIAX.h"
+#import "MMCall.h"
 
-@interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate>
+@interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
 {
 @private
 	MMSpeexEncoder *speexEncoder;
@@ -23,7 +23,7 @@
 	MMAudioController *audioController;
 	MMView *view;
 	MMIAX *iax;
-	BOOL inCall;
+	MMCall *call;
 	
 	CFURLRef		soundFileURLRef;
 	SystemSoundID	soundFileObject;
