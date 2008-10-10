@@ -43,7 +43,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		[self addSubview:numberTextField];
 	
 		beginCallButton = [[self buttonWithTitle:beginCallTitle] retain];
-		beginCallButton.enabled = !inProgress;
+		beginCallButton.enabled = !inProgress && ([numberTextField.text length] != 0);
 		
 		endCallButton = [[self buttonWithTitle:endCallTitle] retain];
 		endCallButton.hidden = !inProgress;
@@ -115,7 +115,10 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	else if ( button == endCallButton )
 		[delegate viewRequestedEndCall:self];
 	else if ( button == clearNumberButton )
+	{
 		numberTextField.text = @"";
+		beginCallButton.enabled = NO;
+	}
 	else
 	{
 		NSString *digit = [button titleForState:UIControlStateNormal];
@@ -126,6 +129,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		else
 			numberTextField.text = digit;
 		
+		beginCallButton.enabled = YES;
 		[delegate view:self releasedDTMF:digit];
 	}
 }
@@ -142,7 +146,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 
 -(void) didEndCall:(id)sender
 {
-	beginCallButton.enabled = YES;
+	beginCallButton.enabled = NO;
 	endCallButton.hidden = YES;
 	clearNumberButton.hidden = NO;
 	numberTextField.text = @"";
