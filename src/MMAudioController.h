@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MMCircularBuffer.h"
+#import "MMDataProducer.h"
+#import "MMDataConsumer.h"
 
 // [pzion 20081010] Audio is broken on the iPhone simulator;
 // work around this by detecting the target architecture and
@@ -23,20 +24,10 @@
 
 @class MMAudioController;
 
-@protocol MMAudioControllerDelegate <NSObject>
-
-@required
-
--(void) audioController:(MMAudioController *)audioController recordedToBuffer:(MMCircularBuffer *)buffer;
-
-@end
-
-@interface MMAudioController : NSObject
+@interface MMAudioController : MMDataProducer <MMDataConsumer>
 {
 @private
-	id <MMAudioControllerDelegate> delegate;
 	BOOL running;
-	MMCircularBuffer *recordBuffer;
 #ifdef SIMULATE_AUDIO
 	NSTimer *recordTimer;
 #else
@@ -51,8 +42,6 @@
 -(void) start;
 -(void) stop;
 
--(void) playbackFromBuffer:(MMCircularBuffer *)buffer;
-
 #ifndef SIMULATE_AUDIO
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
@@ -62,8 +51,5 @@
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer;
 #endif
-
-@property ( nonatomic, assign ) id <MMAudioControllerDelegate> delegate;
-@property ( nonatomic, readonly ) unsigned frameSize;
 
 @end

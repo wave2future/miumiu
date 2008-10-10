@@ -23,39 +23,24 @@
 		
 		speex_decoder_ctl( dec_state, SPEEX_GET_FRAME_SIZE, &frameSize );
 		frameSize *= sizeof(spx_int16_t);
-		frame = malloc( frameSize );
 		
 		running = YES;
 	}
 }
 
--(void) fromBuffer:(MMCircularBuffer *)src toBuffer:(MMCircularBuffer *)dst;
+-(void) consumeData:(void *)data ofSize:(unsigned)size
 {
-	int bufferSize = src.used;
-	if ( bufferSize == 0 )
-		return;
-	char *buffer = alloca( bufferSize );
-
-	//NSLog( @"MMSpeexDecoder: decoding %d bytes", bufferSize );
-
-	[src getData:buffer ofSize:bufferSize];
-
-	speex_bits_read_from( &bits, buffer, bufferSize );
-		
+	speex_bits_read_from( &bits, data, size );
+	
+	spx_int16_t *frame = alloca( frameSize );
 	while ( speex_decode_int( dec_state, &bits, frame ) == 0 )
-	{
-		//NSLog( @"MMSpeexDecoder: decoded to %u bytes", frameSize );
-		[dst putData:frame ofSize:frameSize];
-		break;
-	}
+		[self produceData:frame ofSize:frameSize];
 }
 
 -(void) stop
 {
 	if ( running )
 	{
-		free( frame );
-		
 		speex_bits_destroy( &bits );
 		
 		speex_decoder_destroy( dec_state );

@@ -8,7 +8,8 @@
 
 #import "MMViewController.h"
 
-//#define LOOPBACK
+//#define LOOPBACK_THROUGH_AUDIO
+//#define LOOPBACK_THROUGH_SPEEX
 
 @implementation MMViewController
 
@@ -20,10 +21,22 @@
 		speexDecoder = [[MMSpeexDecoder alloc] init];
 		
 		audioController = [[MMAudioController alloc] init];
-		audioController.delegate = self;
 		
 		iax = [[MMIAX alloc] init];
 		iax.delegate = self;
+		
+#ifdef LOOPBACK_THROUGH_AUDIO
+		[audioController connectToConsumer:audioController];
+#else
+		[audioController connectToConsumer:speexEncoder];
+# ifdef LOOPBACK_THROUGH_SPEEX
+		[speexEncoder connectToConsumer:speexDecoder];
+# else
+		[speexEncoder connectToConsumer:iax];
+		[iax connectToConsumer:speexDecoder];
+# endif
+		[speexDecoder connectToConsumer:audioController];
+#endif
 	}
 	return self;
 }
@@ -51,9 +64,6 @@
 	[speexDecoder start];
 	[speexEncoder start];
 
-	encodedBuffer = [[MMCircularBuffer alloc] init];
-	decodedBuffer = [[MMCircularBuffer alloc] init];
-
 	[audioController start];
 
 	[view didBeginCall:self];
@@ -63,34 +73,12 @@
 {
 	[audioController stop];
 
-	[decodedBuffer release];
-	[encodedBuffer release];
-
 	[speexEncoder stop];
 	[speexDecoder stop];
 	
 	[iax endCall];
 	
 	[view didEndCall:self];
-}
-
--(void) audioController:(MMAudioController *)_  recordedToBuffer:(MMCircularBuffer *)buffer
-{
-	[speexEncoder fromBuffer:buffer toBuffer:encodedBuffer];
-#ifdef LOOPBACK
-	[speexDecoder fromBuffer:encodedBuffer toBuffer:decodedBuffer];
-	[audioController playbackFromBuffer:decodedBuffer];
-#else
-	[iax playbackFromBuffer:encodedBuffer];
-#endif
-}
-
--(void) iax:(MMIAX *)iax recordedAudioToBufer:(MMCircularBuffer *)buffer
-{
-#ifndef LOOPBACK
-	[speexDecoder fromBuffer:buffer toBuffer:decodedBuffer];
-	[audioController playbackFromBuffer:decodedBuffer];
-#endif
 }
 
 @end

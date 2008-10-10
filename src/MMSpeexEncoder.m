@@ -26,27 +26,50 @@
 
 		speex_encoder_ctl( enc_state, SPEEX_GET_FRAME_SIZE, &frameSize );
 		frameSize *= sizeof(spx_int16_t);
-		frame = malloc( frameSize );
+		
+		buffer = [[MMCircularBuffer alloc] init];
 		
 		running = YES;
 	}
 }
 
--(void) fromBuffer:(MMCircularBuffer *)src toBuffer:(MMCircularBuffer *)dst
+-(void) encodeFrame:(spx_int16_t *)frame
 {
-	while ( [src getData:frame ofSize:frameSize] )
+	speex_bits_reset( &bits );
+	
+	speex_encode_int( enc_state, frame, &bits ); 
+
+	static const int dataSize = 256;
+	char data[dataSize];
+	int dataUsed = speex_bits_write( &bits, data, dataSize );
+	
+	[self produceData:data ofSize:dataUsed];
+}
+
+-(void) consumeData:(void *)_data ofSize:(unsigned)size
+{
+	const char *data = (char *)_data;
+
+	if ( buffer.used == 0 )
 	{
-		speex_bits_reset( &bits );
+		while ( size >= frameSize )
+		{
+			[self encodeFrame:(spx_int16_t *)data];
+			data += frameSize;
+			size -= frameSize;
+		}
+	}
+	
+	if ( size == 0 )
+		return;
 		
-		speex_encode_int( enc_state, (spx_int16_t *)frame, &bits ); 
-
-		static const int bufferSize = 256;
-		char buffer[bufferSize];
-		int bufferCount = speex_bits_write( &bits, buffer, bufferSize );
-		
-		[dst putData:buffer ofSize:bufferCount];
-
-		//NSLog( @"MMSpeexEncoder: encoded %u bytes to %d bytes", frameSize, bufferCount );
+	[buffer putData:data ofSize:size];
+	
+	if ( buffer.used > frameSize )
+	{
+		spx_int16_t *frame = alloca( frameSize );
+		while ( [buffer getData:frame ofSize:frameSize] )
+			[self encodeFrame:frame];
 	}
 }
 
@@ -54,7 +77,7 @@
 {
 	if ( running )
 	{
-		free( frame );
+		[buffer release];
 		
 		speex_bits_destroy(&bits);
 		

@@ -105,8 +105,7 @@ static void iaxErrorCallback( const char *data )
 		switch ( event->etype )
 		{
 			case IAX_EVENT_VOICE:
-				[recordedAudioBuffer putData:event->data ofSize:event->datalen];
-				[delegate iax:self recordedAudioToBufer:recordedAudioBuffer];
+				[self produceData:event->data ofSize:event->datalen];
 				break;
 			case IAX_EVENT_ANSWER:
 				connected = YES;
@@ -117,16 +116,10 @@ static void iaxErrorCallback( const char *data )
 	}
 }
 
--(void) playbackFromBuffer:(MMCircularBuffer *)buffer
+-(void) consumeData:(void *)data ofSize:(unsigned)size
 {
-	unsigned size = buffer.used;
-	if ( size > 0 )
-	{
-		unsigned char *data = alloca( size );
-		[buffer getData:data ofSize:size];
-		if ( connected )
-			iax_send_voice( callSession, AST_FORMAT_SPEEX, data, size, size/2 );
-	}
+	if ( connected )
+		iax_send_voice( callSession, AST_FORMAT_SPEEX, data, size, size/2 );
 }
 
 @synthesize delegate;

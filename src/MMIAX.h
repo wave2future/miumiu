@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MMDataProducer.h"
+#import "MMDataConsumer.h"
 #import "MMCircularBuffer.h"
 #include <iax-client.h>
 
@@ -16,12 +18,9 @@
 
 @required
 
--(void) iax:(MMIAX *)iax recordedAudioToBufer:(MMCircularBuffer *)buffer;
-
 @end
 
-
-@interface MMIAX : NSObject
+@interface MMIAX : MMDataProducer <MMDataConsumer>
 {
 @private
 	id <MMIAXDelegate> delegate;
@@ -34,8 +33,6 @@
 
 -(void) beginCall:(NSString *)number;
 -(void) endCall;
-
--(void) playbackFromBuffer:(MMCircularBuffer *)buffer;
 
 -(void) socketCallbackCalled;
 

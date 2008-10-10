@@ -29,6 +29,9 @@
 
 -(BOOL) putData:(const void *)buffer ofSize:(unsigned)count
 {
+	if ( count == 0 )
+		return YES;
+
 	unsigned newUsed = self.used + count;
 	if ( newUsed > size )
 	{
