@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#include <AudioToolbox/AudioToolbox.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "MMView.h"
 #import "MMAudioController.h"
 #import "MMSpeexEncoder.h"
 #import "MMSpeexDecoder.h"
 #import "MMIAX.h"
 #import "MMCall.h"
+
+@class MMRingtoneGenerator;
 
 @interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
 {
@@ -24,6 +26,7 @@
 	MMView *view;
 	MMIAX *iax;
 	MMCall *call;
+	MMRingtoneGenerator *ringtoneGenerator;
 	
 	CFURLRef		soundFileURLRef;
 	SystemSoundID	soundFileObject;

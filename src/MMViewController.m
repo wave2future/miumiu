@@ -7,6 +7,7 @@
 //
 
 #import "MMViewController.h"
+#import "MMRingtoneGenerator.h"
 
 #define TAP_FILE_NAME CFSTR("tap")
 #define TAP_FILE_TYPE CFSTR("aif")
@@ -96,19 +97,24 @@
 
 -(void) callDidBegin:(MMCall *)call
 {
+	[audioController start];
+
 	[view didBeginCall:self];
 }
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
-}
-
--(void) callDidEndRinging:(MMCall *)call
-{
+	if ( ringtoneGenerator == nil )
+		ringtoneGenerator = [[MMRingtoneGenerator alloc] init];
+	[ringtoneGenerator connectToConsumer:audioController];
 }
 
 -(void) callDidAnswer:(MMCall *)_
 {
+	[ringtoneGenerator disconnect];
+	[ringtoneGenerator autorelease];
+	ringtoneGenerator = nil;
+
 	[audioController connectToConsumer:speexEncoder];
 	[speexEncoder connectToConsumer:call];
 	[call connectToConsumer:speexDecoder];
@@ -116,12 +122,17 @@
 
 	[speexDecoder start];
 	[speexEncoder start];
-	[audioController start];
+}
+
+-(void) callDidFail:(MMCall *)_
+{
+	[ringtoneGenerator disconnect];
+	[ringtoneGenerator autorelease];
+	ringtoneGenerator = nil;
 }
 
 -(void) callDidEnd:(MMCall *)_
 {
-	[audioController stop];
 	[speexEncoder stop];
 	[speexDecoder stop];
 	
@@ -130,6 +141,8 @@
 	[speexEncoder disconnect];
 	[audioController disconnect];
 	
+	[audioController stop];
+
 	[call release];
 	call = nil;
 	

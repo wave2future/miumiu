@@ -15,6 +15,7 @@
 		DB778B380E9DD9DC00EC2FC3 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778B330E9DD6EC00EC2FC3 /* MMSpeexDecoder.m */; };
 		DB778B390E9DD9F000EC2FC3 /* MMSpeexEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778AFC0E9DD1C100EC2FC3 /* MMSpeexEncoder.m */; };
 		DB7C89350E9FEB8900A91FB4 /* MMCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C89340E9FEB8900A91FB4 /* MMCall.m */; };
+		DB7C8AC80EA007E800A91FB4 /* MMRingtoneGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8AC70EA007E800A91FB4 /* MMRingtoneGenerator.m */; };
 		DBC1ED700E9EEA3A0071E7EC /* MMIAX.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC1ED6F0E9EEA3A0071E7EC /* MMIAX.m */; };
 		DBC1EEFC0E9F056B0071E7EC /* _kiss_fft_guts.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC1EE9E0E9F056B0071E7EC /* _kiss_fft_guts.h */; };
 		DBC1EEFD0E9F056B0071E7EC /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC1EE9F0E9F056B0071E7EC /* arch.h */; };
@@ -179,6 +180,8 @@
 		DB778B320E9DD6EC00EC2FC3 /* MMSpeexDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSpeexDecoder.h; path = src/MMSpeexDecoder.h; sourceTree = "<group>"; };
 		DB778B330E9DD6EC00EC2FC3 /* MMSpeexDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMSpeexDecoder.m; path = src/MMSpeexDecoder.m; sourceTree = "<group>"; };
 		DB7C89340E9FEB8900A91FB4 /* MMCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCall.m; path = src/MMCall.m; sourceTree = "<group>"; };
+		DB7C8AC60EA007E800A91FB4 /* MMRingtoneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRingtoneGenerator.h; path = src/MMRingtoneGenerator.h; sourceTree = "<group>"; };
+		DB7C8AC70EA007E800A91FB4 /* MMRingtoneGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRingtoneGenerator.m; path = src/MMRingtoneGenerator.m; sourceTree = "<group>"; };
 		DBC1ED6E0E9EEA3A0071E7EC /* MMIAX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMIAX.h; path = src/MMIAX.h; sourceTree = "<group>"; };
 		DBC1ED6F0E9EEA3A0071E7EC /* MMIAX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMIAX.m; path = src/MMIAX.m; sourceTree = "<group>"; };
 		DBC1EE980E9F050B0071E7EC /* libspeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libspeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -590,6 +593,8 @@
 				DB7C89340E9FEB8900A91FB4 /* MMCall.m */,
 				DBC1F3470E9FE03B0071E7EC /* MMIAXCall.h */,
 				DBC1F3480E9FE03B0071E7EC /* MMIAXCall.m */,
+				DB7C8AC60EA007E800A91FB4 /* MMRingtoneGenerator.h */,
+				DB7C8AC70EA007E800A91FB4 /* MMRingtoneGenerator.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -782,6 +787,7 @@
 				DBC1F1D10E9FA6010071E7EC /* MMDataProducer.m in Sources */,
 				DBC1F3490E9FE03B0071E7EC /* MMIAXCall.m in Sources */,
 				DB7C89350E9FEB8900A91FB4 /* MMCall.m in Sources */,
+				DB7C8AC80EA007E800A91FB4 /* MMRingtoneGenerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

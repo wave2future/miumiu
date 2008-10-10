@@ -60,6 +60,9 @@
 		case IAX_EVENT_ACCEPT:
 			[delegate callDidBegin:self];
 			break;
+		case IAX_EVENT_RINGA:
+			[delegate callDidBeginRinging:self];
+			break;
 		case IAX_EVENT_ANSWER:
 			[delegate callDidAnswer:self];
 			break;

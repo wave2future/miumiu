@@ -18,7 +18,6 @@
 
 -(void) callDidBegin:(MMCall *)call;
 -(void) callDidBeginRinging:(MMCall *)call;
--(void) callDidEndRinging:(MMCall *)call;
 -(void) callDidAnswer:(MMCall *)call;
 -(void) callDidEnd:(MMCall *)call;
 
