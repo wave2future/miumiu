@@ -28,6 +28,7 @@
 	UITextField *numberTextField;
 	UIButton *beginCallButton;
 	UIButton *endCallButton;
+	UIButton *clearNumberButton;
 	NSMutableArray *digitButtons;
 }
 
