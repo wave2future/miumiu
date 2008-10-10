@@ -8,7 +8,7 @@
 
 #import "MMView.h"
 
-static NSString *beginCallTitle = @"Call", *endCallTitle = @"End";
+static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
 
 #define NUM_DIGITS 12
 static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#" };
@@ -46,7 +46,10 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		beginCallButton.enabled = !inProgress;
 		
 		endCallButton = [[self buttonWithTitle:endCallTitle] retain];
-		endCallButton.enabled = inProgress;
+		endCallButton.hidden = !inProgress;
+		
+		clearNumberButton = [[self buttonWithTitle:clearNumberTitle] retain];
+		clearNumberButton.hidden = inProgress;
 	
 		digitButtons = [[NSMutableArray alloc] initWithCapacity:12];
 		for ( int i=0; i<NUM_DIGITS; ++i )
@@ -60,6 +63,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[digitButtons release];
 	[endCallButton release];
 	[beginCallButton release];
+	[clearNumberButton release];
 	[numberTextField release];
 	[super dealloc];
 }
@@ -73,6 +77,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	CGRect controlBounds = CGRectMake( CGRectGetMinX(bounds), CGRectGetMaxY(numberTextField.frame), CGRectGetWidth(bounds), 60 );
 	beginCallButton.frame = CGRectMake( CGRectGetMinX(controlBounds), CGRectGetMinY(controlBounds), CGRectGetWidth(controlBounds)/2, CGRectGetHeight(controlBounds) );
 	endCallButton.frame = CGRectMake( CGRectGetMaxX(beginCallButton.frame), CGRectGetMinY(controlBounds), CGRectGetMaxX(controlBounds) - CGRectGetMaxX(beginCallButton.frame), CGRectGetHeight(controlBounds) );
+	clearNumberButton.frame = endCallButton.frame;
 	
 	CGRect digitsBounds = CGRectMake( CGRectGetMinX(bounds), CGRectGetMaxY(controlBounds), CGRectGetWidth(bounds), CGRectGetMaxY(bounds) - CGRectGetMaxY(controlBounds) );
 	for ( int i=0; i<12; ++i )
@@ -94,6 +99,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		;
 	else if ( button == endCallButton )
 		;
+	else if ( button == clearNumberButton )
+		;
 	else
 	{
 		NSString *digit = [button titleForState:UIControlStateNormal];
@@ -107,6 +114,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		[delegate view:self requestedBeginCallWithNumber:numberTextField.text];
 	else if ( button == endCallButton )
 		[delegate viewRequestedEndCall:self];
+	else if ( button == clearNumberButton )
+		numberTextField.text = @"";
 	else
 	{
 		NSString *digit = [button titleForState:UIControlStateNormal];
@@ -124,13 +133,20 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 -(void) didBeginCall:(id)sender
 {
 	beginCallButton.enabled = NO;
-	endCallButton.enabled = YES;
+	clearNumberButton.hidden = YES;
+	endCallButton.hidden = NO;
 }
 
 -(void) didEndCall:(id)sender
 {
 	beginCallButton.enabled = YES;
-	endCallButton.enabled = NO;
+	endCallButton.hidden = YES;
+	clearNumberButton.hidden = NO;
+	numberTextField.text = @"";
+}
+
+-(void) didClearNumber:(id)sender
+{
 	numberTextField.text = @"";
 }
 

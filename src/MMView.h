@@ -28,6 +28,7 @@
 	UITextField *numberTextField;
 	UIButton *beginCallButton;
 	UIButton *endCallButton;
+	UIButton *clearNumberButton;
 	NSMutableArray *digitButtons;
 }
 
@@ -35,6 +36,7 @@
 
 -(void) didBeginCall:(id)sender;
 -(void) didEndCall:(id)sender;
+-(void) didClearNumber:(id)sender;
 
 @property ( nonatomic, assign ) id <MMViewDelegate> delegate;
 
