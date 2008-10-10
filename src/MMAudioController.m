@@ -8,6 +8,7 @@
 
 #import "MMAudioController.h"
 
+#ifndef SIMULATE_AUDIO
 void playbackCallback(
     void *userdata,
     AudioQueueRef queue,
@@ -34,6 +35,7 @@ static void recordingCallback(
 		numPackets:numPackets
 		packetDescription:packetDescription];
 }
+#endif
 
 static void interruptionCallback(
    void *inClientData,
@@ -56,10 +58,6 @@ static void interruptionCallback(
             sizeof(sessionCategory),
             &sessionCategory
 			);
-            
-		outputBuffers = malloc( MM_AUDIO_CONTROLLER_NUM_BUFFERS * sizeof(AudioQueueBufferRef) );
-		availableOutputBuffers = malloc( MM_AUDIO_CONTROLLER_NUM_BUFFERS * sizeof(AudioQueueBufferRef) );
-		inputBuffers = malloc( MM_AUDIO_CONTROLLER_NUM_BUFFERS * sizeof(AudioQueueBufferRef) );
 	}
 	return self;
 }
@@ -67,9 +65,6 @@ static void interruptionCallback(
 -(void) dealloc
 {
 	[self stop];
-	free( inputBuffers );
-	free( availableOutputBuffers );
-	free( outputBuffers );
 	[super dealloc];
 }
 
@@ -81,6 +76,9 @@ static void interruptionCallback(
 		
 		recordBuffer = [[MMCircularBuffer alloc] init];
 
+#ifdef SIMULATE_AUDIO
+		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_BUFFER_SIZE/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
+#else
         audioFormat.mSampleRate = 8000.00;
         audioFormat.mFormatID = kAudioFormatLinearPCM;
         audioFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
@@ -125,6 +123,7 @@ static void interruptionCallback(
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 			AudioQueueEnqueueBuffer( inputQueue, inputBuffers[i], 0, NULL );
 		AudioQueueStart( inputQueue, NULL );
+#endif
 	}
 }
 
@@ -134,6 +133,10 @@ static void interruptionCallback(
 	{
 		running = NO;
 
+#ifdef SIMULATE_AUDIO
+		[recordTimer invalidate];
+		[recordTimer release];
+#else
 		AudioQueueStop( inputQueue, FALSE );
 		AudioQueueStop( outputQueue, FALSE );
 		
@@ -141,13 +144,19 @@ static void interruptionCallback(
 
 		AudioQueueDispose( inputQueue, TRUE );
 		AudioQueueDispose( outputQueue, TRUE );
+#endif
 		
 		[recordBuffer release];
 	}
 }
 
--(void) playbackFromBuffer:(MMCircularBuffer *)buffer;
+-(void) playbackFromBuffer:(MMCircularBuffer *)buffer
 {
+#ifdef SIMULATE_AUDIO
+	char data[MM_AUDIO_CONTROLLER_BUFFER_SIZE];
+	while ( [buffer getData:data ofSize:MM_AUDIO_CONTROLLER_BUFFER_SIZE] )
+		;
+#else
 	while ( numAvailableOutputBuffers > 0 )
 	{
 		AudioQueueBufferRef queueBuffer = availableOutputBuffers[--numAvailableOutputBuffers];
@@ -157,11 +166,46 @@ static void interruptionCallback(
 			break;
 		}
 		queueBuffer->mAudioDataByteSize = queueBuffer->mAudioDataBytesCapacity;
-		//NSLog( @"MMAudioController: playing back %d bytes", queueBuffer->mAudioDataByteSize );
 		AudioQueueEnqueueBuffer( outputQueue, queueBuffer, 0, NULL );
 	}
+#endif
 }
 
+-(void) recordData:(const void *)data ofSize:(unsigned)size
+{
+	[recordBuffer putData:data ofSize:size];
+	[delegate audioController:self recordedToBuffer:recordBuffer];
+}
+
+#ifdef SIMULATE_AUDIO
+-(void) recordTimerCallback:(id)_
+{
+	static const short sineWave[160] =
+	{
+			+0,   +643,  +1285,  +1925,  +2563,  +3196,  +3824,  +4447, 
+		 +5062,  +5670,  +6269,  +6859,  +7438,  +8005,  +8560,  +9102, 
+		 +9630, +10143, +10640, +11121, +11585, +12031, +12458, +12866, 
+		+13254, +13622, +13969, +14294, +14598, +14879, +15136, +15371, 
+		+15582, +15768, +15931, +16069, +16182, +16270, +16333, +16371, 
+		+16384, +16371, +16333, +16270, +16182, +16069, +15931, +15768, 
+		+15582, +15371, +15136, +14879, +14598, +14294, +13969, +13622, 
+		+13254, +12866, +12458, +12031, +11585, +11121, +10640, +10143, 
+		 +9630,  +9102,  +8560,  +8005,  +7438,  +6859,  +6269,  +5670, 
+		 +5062,  +4447,  +3824,  +3196,  +2563,  +1925,  +1285,   +643, 
+			+0,   -643,  -1285,  -1925,  -2563,  -3196,  -3824,  -4447, 
+		 -5062,  -5670,  -6269,  -6859,  -7438,  -8005,  -8560,  -9102, 
+		 -9630, -10143, -10640, -11121, -11585, -12031, -12458, -12866, 
+		-13254, -13622, -13969, -14294, -14598, -14879, -15136, -15371, 
+		-15582, -15768, -15931, -16069, -16182, -16270, -16333, -16371, 
+		-16384, -16371, -16333, -16270, -16182, -16069, -15931, -15768, 
+		-15582, -15371, -15136, -14879, -14598, -14294, -13969, -13622, 
+		-13254, -12866, -12458, -12031, -11585, -11121, -10640, -10143, 
+		 -9630,  -9102,  -8560,  -8005,  -7438,  -6859,  -6269,  -5670, 
+		 -5062,  -4447,  -3824,  -3196,  -2563,  -1925,  -1285,   -643
+	};
+	[self recordData:sineWave ofSize:sizeof(sineWave)];
+}
+#else
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 		startTime:(const AudioTimeStamp *)startTime
@@ -169,11 +213,8 @@ static void interruptionCallback(
 		packetDescription:(const AudioStreamPacketDescription *)packetDescription
 {
 	if ( numPackets > 0 )
-	{
-		[recordBuffer putData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
-		[delegate audioController:self recordedToBuffer:recordBuffer];
-	}
-	
+		[self recordData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
+
 	if ( running )
 		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
 }
@@ -181,8 +222,16 @@ static void interruptionCallback(
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 {
-	availableOutputBuffers[numAvailableOutputBuffers++] = buffer;
+	if ( running && numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - 1 )
+	{
+		buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
+		memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );
+		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
+	}
+	else
+		availableOutputBuffers[numAvailableOutputBuffers++] = buffer;
 }
+#endif
 
 @synthesize delegate;
 

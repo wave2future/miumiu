@@ -12,16 +12,18 @@
 #import "MMSpeexEncoder.h"
 #import "MMSpeexDecoder.h"
 #import "MMCircularBuffer.h"
+#import "MMIAX.h"
 
-@interface MMViewController : UIViewController <MMViewDelegate, MMAudioControllerDelegate>
+@interface MMViewController : UIViewController <MMViewDelegate, MMAudioControllerDelegate, MMIAXDelegate>
 {
 @private
 	MMSpeexEncoder *speexEncoder;
 	MMSpeexDecoder *speexDecoder;
 	MMAudioController *audioController;
 	MMView *view;
-	MMCircularBuffer *loopbackBuffer;
-	MMCircularBuffer *fromDecoderBuffer;
+	MMCircularBuffer *encodedBuffer;
+	MMCircularBuffer *decodedBuffer;
+	MMIAX *iax;
 }
 
 @end
