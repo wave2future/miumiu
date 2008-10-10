@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MMDataProducer.h"
 #import "MMDataConsumer.h"
-#import "MMCircularBuffer.h"
 #include <iax-client.h>
 
 @class MMIAX;
@@ -27,7 +26,6 @@
 	NSString *hostname, *username, *password, *cidName, *cidNumber;
 	struct iax_session *regSession, *callSession;
 	CFSocketContext socketContext;
-	MMCircularBuffer *recordedAudioBuffer;
 	BOOL connected;
 }
 

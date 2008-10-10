@@ -80,8 +80,6 @@ static void iaxErrorCallback( const char *data )
 {
 	connected = NO;
 
-	recordedAudioBuffer = [[MMCircularBuffer alloc] init];
-	
 	callSession = iax_session_new();
 	
 	NSString *ich = [NSString stringWithFormat:@"%@:%@@%@/%@", username, password, hostname, number];
@@ -93,8 +91,6 @@ static void iaxErrorCallback( const char *data )
 	iax_hangup( callSession, "later!" );
 	
 	iax_destroy( callSession );
-	
-	[recordedAudioBuffer release];
 }
 
 -(void) socketCallbackCalled
