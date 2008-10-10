@@ -152,11 +152,6 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	numberTextField.text = @"";
 }
 
--(void) didClearNumber:(id)sender
-{
-	numberTextField.text = @"";
-}
-
 @synthesize delegate;
 
 @end

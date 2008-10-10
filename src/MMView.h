@@ -36,7 +36,6 @@
 
 -(void) didBeginCall:(id)sender;
 -(void) didEndCall:(id)sender;
--(void) didClearNumber:(id)sender;
 
 @property ( nonatomic, assign ) id <MMViewDelegate> delegate;
 
