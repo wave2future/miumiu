@@ -122,6 +122,12 @@ static void iaxErrorCallback( const char *data )
 		iax_send_voice( callSession, AST_FORMAT_SPEEX, data, size, size/2 );
 }
 
+-(void) sendDTMF:(NSString *)dtmf
+{
+	if ( connected )
+		iax_send_dtmf( callSession, *[dtmf UTF8String] );
+}
+
 @synthesize delegate;
 
 @end

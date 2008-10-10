@@ -20,7 +20,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[button setTitle:title forState:UIControlStateNormal];
 	[button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
-	[button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
+	[button addTarget:self action:@selector(buttonReleased:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:button];
 	return button;
 }
@@ -90,17 +91,33 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 -(void) buttonPressed:(UIButton *)button
 {
 	if ( button == beginCallButton )
+		;
+	else if ( button == endCallButton )
+		;
+	else
+	{
+		NSString *digit = [button titleForState:UIControlStateNormal];
+		[delegate view:self pressedDTMF:digit];
+	}
+}
+
+-(void) buttonReleased:(UIButton *)button
+{
+	if ( button == beginCallButton )
 		[delegate view:self requestedBeginCallWithNumber:numberTextField.text];
 	else if ( button == endCallButton )
 		[delegate viewRequestedEndCall:self];
 	else
 	{
+		NSString *digit = [button titleForState:UIControlStateNormal];
+
 		NSString *oldText = numberTextField.text;
-		NSString *newDigit = [button titleForState:UIControlStateNormal];
 		if ( oldText != nil )
-			numberTextField.text = [NSString stringWithFormat:@"%@%@", oldText, newDigit];
+			numberTextField.text = [NSString stringWithFormat:@"%@%@", oldText, digit];
 		else
-			numberTextField.text = newDigit;
+			numberTextField.text = digit;
+		
+		[delegate view:self releasedDTMF:digit];
 	}
 }
 

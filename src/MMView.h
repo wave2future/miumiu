@@ -15,6 +15,8 @@
 @required
 
 -(void) view:(MMView *)view requestedBeginCallWithNumber:(NSString *)number;
+-(void) view:(MMView *)view pressedDTMF:(NSString *)dtmf;
+-(void) view:(MMView *)view releasedDTMF:(NSString *)dtmf;
 -(void) viewRequestedEndCall:(MMView *)view;
 
 @end

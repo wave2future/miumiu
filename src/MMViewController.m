@@ -67,10 +67,24 @@
 	[audioController start];
 
 	[view didBeginCall:self];
+	
+	inCall = YES;
+}
+
+-(void) view:(MMView *)view pressedDTMF:(NSString *)dtmf
+{
+	if ( inCall )
+		[iax sendDTMF:dtmf];
+}
+
+-(void) view:(MMView *)view releasedDTMF:(NSString *)dtmf
+{
 }
 
 -(void) viewRequestedEndCall:(MMView *)_
 {
+	inCall = NO;
+	
 	[audioController stop];
 
 	[speexEncoder stop];

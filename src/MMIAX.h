@@ -34,6 +34,8 @@
 -(void) beginCall:(NSString *)number;
 -(void) endCall;
 
+-(void) sendDTMF:(NSString *)dtmf;
+
 -(void) socketCallbackCalled;
 
 @property ( nonatomic, assign ) id <MMIAXDelegate> delegate;

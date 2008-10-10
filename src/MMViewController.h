@@ -22,6 +22,7 @@
 	MMAudioController *audioController;
 	MMView *view;
 	MMIAX *iax;
+	BOOL inCall;
 }
 
 @end
