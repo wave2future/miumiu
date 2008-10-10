@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#include <AudioToolbox/AudioToolbox.h>
 #import "MMView.h"
 #import "MMAudioController.h"
 #import "MMSpeexEncoder.h"
@@ -23,7 +24,13 @@
 	MMView *view;
 	MMIAX *iax;
 	BOOL inCall;
+	
+	CFURLRef		soundFileURLRef;
+	SystemSoundID	soundFileObject;
 }
+
+@property (readwrite)	CFURLRef		soundFileURLRef;
+@property (readonly)	SystemSoundID	soundFileObject;
 
 @end
 

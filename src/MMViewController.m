@@ -11,7 +11,13 @@
 //#define LOOPBACK_THROUGH_AUDIO
 //#define LOOPBACK_THROUGH_SPEEX
 
+#define TAP_FILE_NAME CFSTR("tap")
+#define TAP_FILE_TYPE CFSTR("aif")
+
 @implementation MMViewController
+
+@synthesize soundFileURLRef;
+@synthesize soundFileObject;
 
 -(id) init
 {
@@ -48,6 +54,8 @@
 	[audioController release];
 	[speexEncoder release];
 	[super dealloc];
+	AudioServicesDisposeSystemSoundID (self.soundFileObject);
+	CFRelease (soundFileURLRef);
 }
 
 -(void) loadView
@@ -55,6 +63,30 @@
 	view = [[MMView alloc] initWithNumber:@"" inProgress:NO];
 	view.delegate = self;
 	self.view = view;
+}
+
+- (void) viewDidLoad {
+	
+	[super viewDidLoad];
+	
+	// Get the main bundle for the app
+	CFBundleRef mainBundle;
+	mainBundle = CFBundleGetMainBundle ();
+	
+	// Get the URL to the sound file to play
+	soundFileURLRef  =	CFBundleCopyResourceURL (
+												 mainBundle,
+												 TAP_FILE_NAME,
+												 TAP_FILE_TYPE,
+												 NULL
+												 );
+	
+	// Create a system sound object representing the sound file
+	AudioServicesCreateSystemSoundID (
+									  soundFileURLRef,
+									  &soundFileObject
+									  );
+	
 }
 
 -(void) view:(MMView *)_ requestedBeginCallWithNumber:(NSString *)number
@@ -73,6 +105,7 @@
 
 -(void) view:(MMView *)view pressedDTMF:(NSString *)dtmf
 {
+	AudioServicesPlaySystemSound (self.soundFileObject);
 	if ( inCall )
 		[iax sendDTMF:dtmf];
 }
