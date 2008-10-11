@@ -14,6 +14,7 @@
 #import "MMULawDecoder.h"
 #import "MMSpeexEncoder.h"
 #import "MMSpeexDecoder.h"
+#import "MMAudioController.h"
 
 #define TAP_FILE_NAME CFSTR("tap")
 #define TAP_FILE_TYPE CFSTR("aif")
@@ -32,18 +33,18 @@
 		iax = [[MMIAX alloc] init];
 		iax.delegate = self;
 
-		ringtoneGenerator = [[MMRingProducer alloc] init];
-		busyGenerator = [[MMBusyProducer alloc] init];
-		fastBusyGenerator = [[MMFastBusyProducer alloc] init];
+		ringtoneProducer = [[MMRingProducer alloc] init];
+		busyProducer = [[MMBusyProducer alloc] init];
+		fastBusyProducer = [[MMFastBusyProducer alloc] init];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
-	[fastBusyGenerator release];
-	[busyGenerator release];
-	[ringtoneGenerator release];
+	[fastBusyProducer release];
+	[busyProducer release];
+	[ringtoneProducer release];
 	[view release];
 	[iax release];
 	[audioController release];
@@ -113,12 +114,12 @@
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
-	[ringtoneGenerator connectToConsumer:audioController];
+	[ringtoneProducer connectToConsumer:audioController];
 }
 
 -(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
 {
-	[ringtoneGenerator disconnect];
+	[ringtoneProducer disconnect];
 
 	if ( useSpeex )
 	{
@@ -139,19 +140,19 @@
 
 -(void) callDidReturnBusy:(MMCall *)_
 {
-	[busyGenerator connectToConsumer:audioController];
+	[busyProducer connectToConsumer:audioController];
 }
 
 -(void) callDidFail:(MMCall *)_
 {
-	[fastBusyGenerator connectToConsumer:audioController];
+	[fastBusyProducer connectToConsumer:audioController];
 }
 
 -(void) callDidEnd:(MMCall *)_
 {
-	[ringtoneGenerator disconnect];
-	[busyGenerator disconnect];
-	[fastBusyGenerator disconnect];
+	[ringtoneProducer disconnect];
+	[busyProducer disconnect];
+	[fastBusyProducer disconnect];
 	
 	[decoder disconnect];
 	[call disconnect];

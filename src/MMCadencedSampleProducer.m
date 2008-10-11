@@ -43,7 +43,9 @@
 -(void) connectToConsumer:(id <MMDataConsumer>)consumer
 {
 	[super connectToConsumer:consumer];
+	
 	timer = [[NSTimer scheduledTimerWithTimeInterval:((float)samplesPerChunk/(float)samplingFrequency) target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
+	timePosition = 0;
 }
 
 -(void) disconnect
@@ -51,6 +53,7 @@
 	[timer invalidate];
 	[timer release];
 	timer = nil;
+	
 	[super disconnect];
 }
 

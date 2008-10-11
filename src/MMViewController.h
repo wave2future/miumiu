@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MMView.h"
-#import "MMAudioController.h"
 #import "MMIAX.h"
 #import "MMCall.h"
 
@@ -17,6 +16,7 @@
 @class MMRingProducer;
 @class MMBusyProducer;
 @class MMFastBusyProducer;
+@class MMAudioController;
 
 @interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
 {
@@ -26,9 +26,9 @@
 	MMCodec *encoder, *decoder;
 	MMIAX *iax;
 	MMCall *call;
-	MMRingProducer *ringtoneGenerator;
-	MMBusyProducer *busyGenerator;
-	MMFastBusyProducer *fastBusyGenerator;
+	MMRingProducer *ringtoneProducer;
+	MMBusyProducer *busyProducer;
+	MMFastBusyProducer *fastBusyProducer;
 	
 	CFURLRef		soundFileURLRef;
 	SystemSoundID	soundFileObject;
