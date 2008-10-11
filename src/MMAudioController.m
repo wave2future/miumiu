@@ -7,6 +7,7 @@
 //
 
 #import "MMAudioController.h"
+#import "MMToneGenerator.h"
 
 #ifndef SIMULATE_AUDIO
 void playbackCallback(
@@ -75,6 +76,11 @@ static void interruptionCallback(
 		running = YES;
 		
 #ifdef SIMULATE_AUDIO
+		unsigned numTones = 1;
+		float amplitudes[] = { 16384 };
+		float frequencies[] = { 440 };
+		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
+		toneGeneratorOffset = 0;
 		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_BUFFER_SIZE/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
 #else
         audioFormat.mSampleRate = 8000.00;
@@ -134,6 +140,7 @@ static void interruptionCallback(
 #ifdef SIMULATE_AUDIO
 		[recordTimer invalidate];
 		[recordTimer release];
+		[toneGenerator release];
 #else
 		AudioQueueStop( inputQueue, FALSE );
 		AudioQueueStop( outputQueue, FALSE );
@@ -167,30 +174,10 @@ static void interruptionCallback(
 #ifdef SIMULATE_AUDIO
 -(void) recordTimerCallback:(id)_
 {
-	short sineWave[160] =
-	{
-			+0,   +643,  +1285,  +1925,  +2563,  +3196,  +3824,  +4447, 
-		 +5062,  +5670,  +6269,  +6859,  +7438,  +8005,  +8560,  +9102, 
-		 +9630, +10143, +10640, +11121, +11585, +12031, +12458, +12866, 
-		+13254, +13622, +13969, +14294, +14598, +14879, +15136, +15371, 
-		+15582, +15768, +15931, +16069, +16182, +16270, +16333, +16371, 
-		+16384, +16371, +16333, +16270, +16182, +16069, +15931, +15768, 
-		+15582, +15371, +15136, +14879, +14598, +14294, +13969, +13622, 
-		+13254, +12866, +12458, +12031, +11585, +11121, +10640, +10143, 
-		 +9630,  +9102,  +8560,  +8005,  +7438,  +6859,  +6269,  +5670, 
-		 +5062,  +4447,  +3824,  +3196,  +2563,  +1925,  +1285,   +643, 
-			+0,   -643,  -1285,  -1925,  -2563,  -3196,  -3824,  -4447, 
-		 -5062,  -5670,  -6269,  -6859,  -7438,  -8005,  -8560,  -9102, 
-		 -9630, -10143, -10640, -11121, -11585, -12031, -12458, -12866, 
-		-13254, -13622, -13969, -14294, -14598, -14879, -15136, -15371, 
-		-15582, -15768, -15931, -16069, -16182, -16270, -16333, -16371, 
-		-16384, -16371, -16333, -16270, -16182, -16069, -15931, -15768, 
-		-15582, -15371, -15136, -14879, -14598, -14294, -13969, -13622, 
-		-13254, -12866, -12458, -12031, -11585, -11121, -10640, -10143, 
-		 -9630,  -9102,  -8560,  -8005,  -7438,  -6859,  -6269,  -5670, 
-		 -5062,  -4447,  -3824,  -3196,  -2563,  -1925,  -1285,   -643
-	};
-	[self produceData:sineWave ofSize:sizeof(sineWave)];
+	short samples[160];
+	[toneGenerator generateSamples:samples count:160 offset:toneGeneratorOffset];
+	toneGeneratorOffset += 160;
+	[self produceData:samples ofSize:sizeof(samples)];
 }
 #else
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue

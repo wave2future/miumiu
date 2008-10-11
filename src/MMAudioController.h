@@ -11,6 +11,9 @@
 #import "MMDataProducer.h"
 #import "MMDataConsumer.h"
 
+@class MMAudioController;
+@class MMToneGenerator;
+
 // [pzion 20081010] Audio is broken on the iPhone simulator;
 // work around this by detecting the target architecture and
 // simulating audio instead
@@ -22,13 +25,13 @@
 #define MM_AUDIO_CONTROLLER_NUM_BUFFERS_TO_PUSH 2
 #define MM_AUDIO_CONTROLLER_BUFFER_SIZE 320
 
-@class MMAudioController;
-
 @interface MMAudioController : MMDataProducer <MMDataConsumer>
 {
 @private
 	BOOL running;
 #ifdef SIMULATE_AUDIO
+	MMToneGenerator *toneGenerator;
+	unsigned toneGeneratorOffset;
 	NSTimer *recordTimer;
 #else
 	AudioStreamBasicDescription audioFormat;
