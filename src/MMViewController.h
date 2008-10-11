@@ -14,9 +14,9 @@
 #import "MMCall.h"
 
 @class MMCodec;
-@class MMRingtoneGenerator;
-@class MMBusyGenerator;
-@class MMFastBusyGenerator;
+@class MMRingProducer;
+@class MMBusyProducer;
+@class MMFastBusyProducer;
 
 @interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
 {
@@ -26,9 +26,9 @@
 	MMCodec *encoder, *decoder;
 	MMIAX *iax;
 	MMCall *call;
-	MMRingtoneGenerator *ringtoneGenerator;
-	MMBusyGenerator *busyGenerator;
-	MMFastBusyGenerator *fastBusyGenerator;
+	MMRingProducer *ringtoneGenerator;
+	MMBusyProducer *busyGenerator;
+	MMFastBusyProducer *fastBusyGenerator;
 	
 	CFURLRef		soundFileURLRef;
 	SystemSoundID	soundFileObject;

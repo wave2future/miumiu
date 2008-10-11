@@ -1,14 +1,14 @@
 //
-//  MMRingtoneGenerator.m
+//  MMRingProducer.m
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMToneGenerator.h"
+#import "MMCadencedSampleProducer.h"
 
-@implementation MMToneGenerator
+@implementation MMCadencedSampleProducer
 
 -(id) initWithFrequency:(unsigned)_frequency samplesPerChunk:(unsigned)_samplesPerChunk sampleLoop:(const short *)_sampleLoop ofLength:(unsigned)_sampleLoopLen onSeconds:(float)onSeconds offSeconds:(float)offSeconds;
 {

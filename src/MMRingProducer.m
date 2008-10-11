@@ -1,16 +1,16 @@
 //
-//  MMRingtoneGenerator.m
+//  MMRingProducer.m
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMRingtoneGenerator.h"
+#import "MMRingProducer.h"
 
 #include <ringtone.h> // [pzion 20081011] From libiax2
 
-@implementation MMRingtoneGenerator
+@implementation MMRingProducer
 
 -(id) init
 {

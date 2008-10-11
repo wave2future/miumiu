@@ -7,9 +7,9 @@
 //
 
 #import "MMViewController.h"
-#import "MMRingtoneGenerator.h"
-#import "MMBusyGenerator.h"
-#import "MMFastBusyGenerator.h"
+#import "MMRingProducer.h"
+#import "MMBusyProducer.h"
+#import "MMFastBusyProducer.h"
 #import "MMULawEncoder.h"
 #import "MMULawDecoder.h"
 #import "MMSpeexEncoder.h"
@@ -32,9 +32,9 @@
 		iax = [[MMIAX alloc] init];
 		iax.delegate = self;
 
-		ringtoneGenerator = [[MMRingtoneGenerator alloc] init];
-		busyGenerator = [[MMBusyGenerator alloc] init];
-		fastBusyGenerator = [[MMFastBusyGenerator alloc] init];
+		ringtoneGenerator = [[MMRingProducer alloc] init];
+		busyGenerator = [[MMBusyProducer alloc] init];
+		fastBusyGenerator = [[MMFastBusyProducer alloc] init];
 	}
 	return self;
 }

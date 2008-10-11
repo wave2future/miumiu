@@ -1,5 +1,5 @@
 //
-//  MMRingtoneGenerator.h
+//  MMRingProducer.h
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
@@ -8,7 +8,7 @@
 
 #import "MMDataProducer.h"
 
-@interface MMToneGenerator : MMDataProducer
+@interface MMCadencedSampleProducer : MMDataProducer
 {
 @private
 	unsigned frequency;
