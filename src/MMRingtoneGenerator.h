@@ -6,13 +6,10 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProducer.h"
+#import "MMToneGenerator.h"
 
-@interface MMRingtoneGenerator : MMDataProducer
+@interface MMRingtoneGenerator : MMToneGenerator
 {
-@private
-	NSTimer	*timer;
-	unsigned timePosition;
 }
 
 @end
