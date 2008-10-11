@@ -12,6 +12,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MMViewController.m */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
+		DB44FAD70EA1674F00B927E9 /* MMNullProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FAD60EA1674F00B927E9 /* MMNullProducer.m */; };
 		DB4C137E0EA11CD6000AAB0A /* MMCadencedSampleProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C137D0EA11CD6000AAB0A /* MMCadencedSampleProducer.m */; };
 		DB4C13960EA11D46000AAB0A /* MMRingProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C13950EA11D46000AAB0A /* MMRingProducer.m */; };
 		DB4C139E0EA11D88000AAB0A /* MMBusyProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C139D0EA11D88000AAB0A /* MMBusyProducer.m */; };
@@ -183,6 +184,8 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
+		DB44FAD50EA1674F00B927E9 /* MMNullProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNullProducer.h; sourceTree = "<group>"; };
+		DB44FAD60EA1674F00B927E9 /* MMNullProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNullProducer.m; sourceTree = "<group>"; };
 		DB4C137C0EA11CD6000AAB0A /* MMCadencedSampleProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCadencedSampleProducer.h; path = src/MMCadencedSampleProducer.h; sourceTree = "<group>"; };
 		DB4C137D0EA11CD6000AAB0A /* MMCadencedSampleProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCadencedSampleProducer.m; path = src/MMCadencedSampleProducer.m; sourceTree = "<group>"; };
 		DB4C13940EA11D46000AAB0A /* MMRingProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRingProducer.h; path = src/MMRingProducer.h; sourceTree = "<group>"; };
@@ -643,6 +646,8 @@
 				DB7C8B370EA0115400A91FB4 /* MMCodec.h */,
 				DB7C8B380EA0115400A91FB4 /* MMCodec.m */,
 				DB4C137F0EA11CDF000AAB0A /* Tone Generation */,
+				DB44FAD50EA1674F00B927E9 /* MMNullProducer.h */,
+				DB44FAD60EA1674F00B927E9 /* MMNullProducer.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -844,6 +849,7 @@
 				DB4C13A70EA11DB8000AAB0A /* MMFastBusyProducer.m in Sources */,
 				DB4C13B20EA11DF1000AAB0A /* MMToneGenerator.m in Sources */,
 				DBF3D0AF0EA15AF5009AA8A2 /* MMDTMFInjector.m in Sources */,
+				DB44FAD70EA1674F00B927E9 /* MMNullProducer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

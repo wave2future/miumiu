@@ -6,23 +6,20 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProducer.h"
+#import "MMCodec.h"
 
 @class MMToneGenerator;
 
-@interface MMCadencedSampleProducer : MMDataProducer
+@interface MMCadencedSampleProducer : MMCodec
 {
 @private
 	unsigned samplingFrequency;
-	unsigned samplesPerChunk;
 	MMToneGenerator *toneGenerator;
 	unsigned onSamples, offSamples, totalSamples;
-	NSTimer	*timer;
 	unsigned timePosition;
 }
 
 -(id) initWithSamplingFrequency:(unsigned)_samplingFrequency
-	samplesPerChunk:(unsigned)_samplesPerChunk
 	numTones:(unsigned)numTones
 	amplitudes:(const float *)amplitudes
 	frequencies:(const float *)frequencies

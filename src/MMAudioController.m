@@ -59,30 +59,7 @@ static void interruptionCallback(
             sizeof(sessionCategory),
             &sessionCategory
 			);
-	}
-	return self;
-}
 
--(void) dealloc
-{
-	[self stop];
-	[super dealloc];
-}
-
--(void) start
-{
-	if ( !running )
-	{
-		running = YES;
-		
-#ifdef SIMULATE_AUDIO
-		unsigned numTones = 1;
-		float amplitudes[] = { 2048 };
-		float frequencies[] = { 440 };
-		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
-		toneGeneratorOffset = 0;
-		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
-#else
         audioFormat.mSampleRate = 8000.00;
         audioFormat.mFormatID = kAudioFormatLinearPCM;
         audioFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
@@ -92,6 +69,8 @@ static void interruptionCallback(
         audioFormat.mBytesPerPacket = 2;
         audioFormat.mBytesPerFrame = 2;
 
+		AudioSessionSetActive( TRUE );
+		
 		AudioQueueNewOutput(
 			&audioFormat,
 			playbackCallback, self,
@@ -102,6 +81,44 @@ static void interruptionCallback(
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 			AudioQueueAllocateBuffer( outputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &outputBuffers[i] );
 
+		for ( numAvailableOutputBuffers=0; numAvailableOutputBuffers<MM_AUDIO_CONTROLLER_NUM_BUFFERS-MM_AUDIO_CONTROLLER_NUM_BUFFERS_TO_PUSH; ++numAvailableOutputBuffers )
+			availableOutputBuffers[numAvailableOutputBuffers] = outputBuffers[numAvailableOutputBuffers];
+		AudioQueueStart( outputQueue, NULL );
+		for ( int i=numAvailableOutputBuffers; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
+		{
+			outputBuffers[i]->mAudioDataByteSize = outputBuffers[i]->mAudioDataBytesCapacity;
+			memset( outputBuffers[i]->mAudioData, 0, outputBuffers[i]->mAudioDataByteSize );
+			AudioQueueEnqueueBuffer( outputQueue, outputBuffers[i], 0, NULL );
+		}
+	}
+	return self;
+}
+
+-(void) dealloc
+{
+	[self stopRecording];
+	
+	AudioQueueStop( outputQueue, FALSE );
+	AudioQueueDispose( outputQueue, TRUE );
+	AudioSessionSetActive( FALSE );
+	
+	[super dealloc];
+}
+
+-(void) startRecording
+{
+	if ( !recording )
+	{
+		recording = YES;
+		
+#ifdef SIMULATE_AUDIO
+		unsigned numTones = 1;
+		float amplitudes[] = { 2048 };
+		float frequencies[] = { 440 };
+		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
+		toneGeneratorOffset = 0;
+		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
+#else
 		AudioQueueNewInput(
 			&audioFormat,
 			recordingCallback, self,
@@ -112,18 +129,6 @@ static void interruptionCallback(
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &inputBuffers[i] );
 
-		AudioSessionSetActive( TRUE );
-		
-		for ( numAvailableOutputBuffers=0; numAvailableOutputBuffers<MM_AUDIO_CONTROLLER_NUM_BUFFERS-MM_AUDIO_CONTROLLER_NUM_BUFFERS_TO_PUSH; ++numAvailableOutputBuffers )
-			availableOutputBuffers[numAvailableOutputBuffers] = outputBuffers[numAvailableOutputBuffers];
-		AudioQueueStart( outputQueue, NULL );
-		for ( int i=numAvailableOutputBuffers; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
-		{
-			outputBuffers[i]->mAudioDataByteSize = outputBuffers[i]->mAudioDataBytesCapacity;
-			memset( outputBuffers[i]->mAudioData, 0, outputBuffers[i]->mAudioDataByteSize );
-			AudioQueueEnqueueBuffer( outputQueue, outputBuffers[i], 0, NULL );
-		}
-
 		AudioQueueStart( inputQueue, NULL );
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 			AudioQueueEnqueueBuffer( inputQueue, inputBuffers[i], 0, NULL );
@@ -131,11 +136,11 @@ static void interruptionCallback(
 	}
 }
 
--(void) stop
+-(void) stopRecording
 {
-	if ( running )
+	if ( recording )
 	{
-		running = NO;
+		recording = NO;
 
 #ifdef SIMULATE_AUDIO
 		[recordTimer invalidate];
@@ -143,12 +148,7 @@ static void interruptionCallback(
 		[toneGenerator release];
 #else
 		AudioQueueStop( inputQueue, FALSE );
-		AudioQueueStop( outputQueue, FALSE );
-		
-		AudioSessionSetActive( FALSE );
-
 		AudioQueueDispose( inputQueue, TRUE );
-		AudioQueueDispose( outputQueue, TRUE );
 #endif
 	}
 }
@@ -189,14 +189,14 @@ static void interruptionCallback(
 	if ( numPackets > 0 )
 		[self produceData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
 
-	if ( running )
+	if ( recording )
 		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
 }
 
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 {
-	if ( running && numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - MM_AUDIO_CONTROLLER_NUM_BUFFERS_TO_PUSH )
+	if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - MM_AUDIO_CONTROLLER_NUM_BUFFERS_TO_PUSH )
 	{
 		buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
 		memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );

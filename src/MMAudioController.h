@@ -29,7 +29,7 @@
 @interface MMAudioController : MMDataProducer <MMDataConsumer>
 {
 @private
-	BOOL running;
+	BOOL recording;
 #ifdef SIMULATE_AUDIO
 	MMToneGenerator *toneGenerator;
 	unsigned toneGeneratorOffset;
@@ -43,8 +43,8 @@
 #endif
 }
 
--(void) start;
--(void) stop;
+-(void) startRecording;
+-(void) stopRecording;
 
 #ifndef SIMULATE_AUDIO
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue

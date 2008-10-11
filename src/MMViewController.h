@@ -17,6 +17,7 @@
 @class MMFastBusyProducer;
 @class MMAudioController;
 @class MMDTMFInjector;
+@class MMNullProducer;
 
 @interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
 {
@@ -26,10 +27,11 @@
 	MMCodec *encoder, *decoder;
 	MMIAX *iax;
 	MMCall *call;
-	MMRingProducer *ringtoneProducer;
-	MMBusyProducer *busyProducer;
-	MMFastBusyProducer *fastBusyProducer;
+	MMRingProducer *ringtoneInjector;
+	MMBusyProducer *busyInjector;
+	MMFastBusyProducer *fastBusyInjector;
 	MMDTMFInjector *dtmfInjector;
+	MMNullProducer *nullProducer;
 }
 
 @end

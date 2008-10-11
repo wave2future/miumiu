@@ -16,6 +16,7 @@
 #import "MMSpeexDecoder.h"
 #import "MMAudioController.h"
 #import "MMDTMFInjector.h"
+#import "MMNullProducer.h"
 
 @implementation MMViewController
 
@@ -28,22 +29,25 @@
 		iax = [[MMIAX alloc] init];
 		iax.delegate = self;
 
-		ringtoneProducer = [[MMRingProducer alloc] init];
-		busyProducer = [[MMBusyProducer alloc] init];
-		fastBusyProducer = [[MMFastBusyProducer alloc] init];
+		ringtoneInjector = [[MMRingProducer alloc] init];
+		busyInjector = [[MMBusyProducer alloc] init];
+		fastBusyInjector = [[MMFastBusyProducer alloc] init];
 		dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
+		nullProducer = [[MMNullProducer alloc] initWithSamplesPerPacket:160 samplingFrequency:8000];
 		
 		[dtmfInjector connectToConsumer:audioController];
+		[nullProducer connectToConsumer:dtmfInjector];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
+	[nullProducer release];
 	[dtmfInjector release];
-	[fastBusyProducer release];
-	[busyProducer release];
-	[ringtoneProducer release];
+	[fastBusyInjector release];
+	[busyInjector release];
+	[ringtoneInjector release];
 	[view release];
 	[iax release];
 	[audioController release];
@@ -81,19 +85,19 @@
 
 -(void) callDidBegin:(MMCall *)call
 {
-	[audioController start];
-
 	[view didBeginCall:self];
 }
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
-	[ringtoneProducer connectToConsumer:dtmfInjector];
+	[ringtoneInjector connectToConsumer:dtmfInjector];
+	[nullProducer connectToConsumer:ringtoneInjector];
 }
 
 -(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
 {
-	[ringtoneProducer disconnect];
+	[nullProducer disconnect];
+	[ringtoneInjector disconnect];
 
 	if ( useSpeex )
 	{
@@ -110,23 +114,29 @@
 	[encoder connectToConsumer:call];
 	[call connectToConsumer:decoder];
 	[decoder connectToConsumer:dtmfInjector];
+
+	[audioController startRecording];
 }
 
 -(void) callDidReturnBusy:(MMCall *)_
 {
-	[busyProducer connectToConsumer:dtmfInjector];
+	[busyInjector connectToConsumer:dtmfInjector];
+	[nullProducer connectToConsumer:busyInjector];
 }
 
 -(void) callDidFail:(MMCall *)_
 {
-	[fastBusyProducer connectToConsumer:dtmfInjector];
+	[fastBusyInjector connectToConsumer:dtmfInjector];
+	[nullProducer connectToConsumer:fastBusyInjector];
 }
 
 -(void) callDidEnd:(MMCall *)_
 {
-	[ringtoneProducer disconnect];
-	[busyProducer disconnect];
-	[fastBusyProducer disconnect];
+	[audioController stopRecording];
+
+	[ringtoneInjector disconnect];
+	[busyInjector disconnect];
+	[fastBusyInjector disconnect];
 	
 	[decoder disconnect];
 	[call disconnect];
@@ -138,10 +148,10 @@
 	[decoder release];
 	decoder = nil;
 	
-	[audioController stop];
-
 	[call release];
 	call = nil;
+	
+	[nullProducer connectToConsumer:dtmfInjector];
 	
 	[view didEndCall:self];
 }

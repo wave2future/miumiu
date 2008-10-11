@@ -13,10 +13,9 @@
 -(id) init
 {
 	static const unsigned numTones = 2;
-	static const float amplitudes[] = { 16384, 16384 };
+	static const float amplitudes[] = { 8192, 8192 };
 	static const float frequencies[] = { 440, 480 };
 	return [super initWithSamplingFrequency:8000
-		samplesPerChunk:160
 		numTones:numTones
 		amplitudes:amplitudes
 		frequencies:frequencies

@@ -12,7 +12,6 @@
 @implementation MMCadencedSampleProducer
 
 -(id) initWithSamplingFrequency:(unsigned)_samplingFrequency
-	samplesPerChunk:(unsigned)_samplesPerChunk
 	numTones:(unsigned)numTones
 	amplitudes:(const float *)amplitudes
 	frequencies:(const float *)frequencies
@@ -22,7 +21,6 @@
 	if ( self = [super init] )
 	{
 		samplingFrequency = _samplingFrequency;
-		samplesPerChunk = _samplesPerChunk;
 		onSamples = roundf( onSeconds * samplingFrequency );
 		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones
 			amplitudes:amplitudes
@@ -44,31 +42,16 @@
 {
 	[super connectToConsumer:consumer];
 	
-	timer = [[NSTimer scheduledTimerWithTimeInterval:((float)samplesPerChunk/(float)samplingFrequency) target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
 	timePosition = 0;
 }
 
--(void) disconnect
+-(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
 {
-	[timer invalidate];
-	[timer release];
-	timer = nil;
-	
-	[super disconnect];
-}
-
--(void) timerCallback:(id)_
-{
-	unsigned dataSize = samplesPerChunk * sizeof(short);
-	short *samples = alloca( dataSize );
-
 	if ( timePosition % totalSamples < onSamples )
-		[toneGenerator generateSamples:samples count:samplesPerChunk offset:timePosition];
-	else
-		memset( samples, 0, dataSize );
-	timePosition += samplesPerChunk;
+		[toneGenerator generateSamples:data count:numSamples offset:timePosition];
+	timePosition += numSamples;
 
-	[self produceData:samples ofSize:dataSize numSamples:samplesPerChunk];
+	[self produceData:data ofSize:size numSamples:numSamples];
 }
 
 @end
