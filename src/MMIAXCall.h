@@ -19,6 +19,7 @@
 	struct iax_session *session;
 	BOOL sessionValid;
 	unsigned format;
+	BOOL sentBegin;
 }
 
 -(id) initWithNumber:(NSString *)number iax:(MMIAX *)_iax;

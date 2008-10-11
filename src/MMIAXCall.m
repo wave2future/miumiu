@@ -61,11 +61,16 @@
 
 -(void) handleEvent:(struct iax_event *)event
 {
+	if ( !sentBegin )
+	{
+		[delegate callDidBegin:self];
+		sentBegin = YES;
+	}
+	
 	switch ( event->etype )
 	{
 		case IAX_EVENT_ACCEPT:
 			format = event->ies.format;
-			[delegate callDidBegin:self];
 			break;
 		case IAX_EVENT_RINGA:
 			[delegate callDidBeginRinging:self];
@@ -78,8 +83,10 @@
 			break;
 		case IAX_EVENT_REJECT:
 			sessionValid = NO;
-			[delegate callDidBegin:self];
 			[delegate callDidFail:self];
+			break;
+		case IAX_EVENT_BUSY:
+			[delegate callDidReturnBusy:self];
 			break;
 		case IAX_EVENT_HANGUP:
 			[delegate callDidEnd:self];

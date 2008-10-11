@@ -15,6 +15,7 @@
 
 @class MMCodec;
 @class MMRingtoneGenerator;
+@class MMBusyGenerator;
 @class MMFastBusyGenerator;
 
 @interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
@@ -26,6 +27,7 @@
 	MMIAX *iax;
 	MMCall *call;
 	MMRingtoneGenerator *ringtoneGenerator;
+	MMBusyGenerator *busyGenerator;
 	MMFastBusyGenerator *fastBusyGenerator;
 	
 	CFURLRef		soundFileURLRef;

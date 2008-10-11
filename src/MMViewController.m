@@ -8,6 +8,7 @@
 
 #import "MMViewController.h"
 #import "MMRingtoneGenerator.h"
+#import "MMBusyGenerator.h"
 #import "MMFastBusyGenerator.h"
 #import "MMULawEncoder.h"
 #import "MMULawDecoder.h"
@@ -32,6 +33,7 @@
 		iax.delegate = self;
 
 		ringtoneGenerator = [[MMRingtoneGenerator alloc] init];
+		busyGenerator = [[MMBusyGenerator alloc] init];
 		fastBusyGenerator = [[MMFastBusyGenerator alloc] init];
 	}
 	return self;
@@ -40,6 +42,7 @@
 -(void) dealloc
 {
 	[fastBusyGenerator release];
+	[busyGenerator release];
 	[ringtoneGenerator release];
 	[view release];
 	[iax release];
@@ -134,15 +137,20 @@
 	[decoder connectToConsumer:audioController];
 }
 
+-(void) callDidReturnBusy:(MMCall *)_
+{
+	[busyGenerator connectToConsumer:audioController];
+}
+
 -(void) callDidFail:(MMCall *)_
 {
-	[ringtoneGenerator disconnect];
-	[fastBusyGenerator connectToConsumer:audioController];
+	[busyGenerator connectToConsumer:audioController];
 }
 
 -(void) callDidEnd:(MMCall *)_
 {
 	[ringtoneGenerator disconnect];
+	[busyGenerator disconnect];
 	[fastBusyGenerator disconnect];
 	
 	[decoder disconnect];
