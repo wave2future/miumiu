@@ -8,13 +8,20 @@
 
 #import "MMRingProducer.h"
 
-#include <ringtone.h> // [pzion 20081011] From libiax2
-
 @implementation MMRingProducer
 
 -(id) init
 {
-	return [super initWithFrequency:8000 samplesPerChunk:160 sampleLoop:ringtone ofLength:sizeof(ringtone)/sizeof(ringtone[0]) onSeconds:2 offSeconds:4];
+	static const unsigned count = 2;
+	static const short amplitudes[] = { 16384, 16384 };
+	static const unsigned frequencies[] = { 440, 480 };
+	return [super initWithFrequency:8000
+		samplesPerChunk:160
+		amplitudes:amplitudes
+		frequencies:frequencies
+		count:count
+		onSeconds:2
+		offSeconds:4];
 }
 
 @end

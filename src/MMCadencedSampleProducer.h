@@ -13,13 +13,18 @@
 @private
 	unsigned frequency;
 	unsigned samplesPerChunk;
-	const short *sampleLoop;
-	unsigned sampleLoopLen;
+	NSData *loop;
 	unsigned onSamples, offSamples, totalSamples;
 	NSTimer	*timer;
 	unsigned timePosition;
 }
 
--(id) initWithFrequency:(unsigned)_frequency samplesPerChunk:(unsigned)_samplesPerChunk sampleLoop:(const short *)_sampleLoop ofLength:(unsigned)_sampleLoopLen onSeconds:(float)onSeconds offSeconds:(float)offSeconds;
+-(id) initWithFrequency:(unsigned)_frequency
+	samplesPerChunk:(unsigned)_samplesPerChunk
+	amplitudes:(const short *)amplitudes
+	frequencies:(const unsigned *)frequencies
+	count:(unsigned)count
+	onSeconds:(float)onSeconds
+	offSeconds:(float)offSeconds;
 
 @end

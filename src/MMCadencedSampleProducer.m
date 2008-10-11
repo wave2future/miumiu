@@ -7,22 +7,38 @@
 //
 
 #import "MMCadencedSampleProducer.h"
+#import "MMToneGenerator.h"
 
 @implementation MMCadencedSampleProducer
 
--(id) initWithFrequency:(unsigned)_frequency samplesPerChunk:(unsigned)_samplesPerChunk sampleLoop:(const short *)_sampleLoop ofLength:(unsigned)_sampleLoopLen onSeconds:(float)onSeconds offSeconds:(float)offSeconds;
+-(id) initWithFrequency:(unsigned)_frequency
+	samplesPerChunk:(unsigned)_samplesPerChunk
+	amplitudes:(const short *)amplitudes
+	frequencies:(const unsigned *)frequencies
+	count:(unsigned)count
+	onSeconds:(float)onSeconds
+	offSeconds:(float)offSeconds
 {
 	if ( self = [super init] )
 	{
 		frequency = _frequency;
 		samplesPerChunk = _samplesPerChunk;
-		sampleLoop = _sampleLoop;
-		sampleLoopLen = _sampleLoopLen;
 		onSamples = roundf( onSeconds * frequency );
+		loop = [[MMToneGenerator generateSampleForAmplitudes:amplitudes
+			frequencies:frequencies
+			count:count
+			numSamples:onSamples
+			samplingFrequency:frequency] retain];
 		offSamples = roundf( offSeconds * frequency );
 		totalSamples = onSamples + offSamples;
 	}
 	return self;
+}
+
+-(void) dealloc
+{
+	[loop release];
+	[super dealloc];
 }
 
 -(void) connectToConsumer:(id <MMDataConsumer>)consumer
@@ -41,12 +57,15 @@
 
 -(void) timerCallback:(id)_
 {
+	const short *sampleLoop = [loop bytes];
+	
 	unsigned dataSize = samplesPerChunk * sizeof(short);
 	short *samples = alloca( dataSize );
 	for ( unsigned i=0; i<samplesPerChunk; ++i )
 	{
-		if ( timePosition % totalSamples < onSamples )
-			samples[i] = sampleLoop[timePosition%sampleLoopLen];
+		unsigned loopTimePosition = timePosition % totalSamples;
+		if ( loopTimePosition < onSamples )
+			samples[i] = sampleLoop[loopTimePosition];
 		else
 			samples[i] = 0;
 		++timePosition;

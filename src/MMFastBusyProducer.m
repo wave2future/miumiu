@@ -7,14 +7,22 @@
 //
 
 #import "MMFastBusyProducer.h"
-
-#include <busy.h> // [pzion 20081011] From libiax2
+#import "MMToneGenerator.h"
 
 @implementation MMFastBusyProducer
 
 -(id) init
 {
-	return [super initWithFrequency:8000 samplesPerChunk:160 sampleLoop:busy ofLength:sizeof(busy)/sizeof(busy[0]) onSeconds:0.25 offSeconds:0.25];
+	static const unsigned count = 2;
+	static const short amplitudes[] = { 16384, 16384 };
+	static const unsigned frequencies[] = { 480, 620 };
+	return [super initWithFrequency:8000
+		samplesPerChunk:160
+		amplitudes:amplitudes
+		frequencies:frequencies
+		count:count
+		onSeconds:0.25
+		offSeconds:0.25];
 }
 
 @end

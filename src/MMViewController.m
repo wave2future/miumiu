@@ -144,7 +144,7 @@
 
 -(void) callDidFail:(MMCall *)_
 {
-	[busyGenerator connectToConsumer:audioController];
+	[fastBusyGenerator connectToConsumer:audioController];
 }
 
 -(void) callDidEnd:(MMCall *)_
