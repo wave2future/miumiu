@@ -109,6 +109,26 @@ static void interruptionCallback(
 			&inputQueue
 			);
 
+		AudioStreamBasicDescription actualInputFormat;
+		UInt32 actualInputFormatSize = sizeof(actualInputFormat);
+		AudioQueueGetProperty(
+			inputQueue,
+			kAudioQueueProperty_StreamDescription,
+			&actualInputFormat,
+			&actualInputFormatSize
+			);
+		FILE *fp = fopen( "/tmp/foo", "w" );
+		fprintf( fp, "inputQueue actualInputFormat:\n" );
+		fprintf( fp, "mSampleRate: %g\n", actualInputFormat.mSampleRate );
+		fprintf( fp, "mFormatID: %u\n", actualInputFormat.mFormatID );
+		fprintf( fp, "mFormatFlags: %u\n", actualInputFormat.mFormatFlags );
+		fprintf( fp, "mBytesPerPacket: %u\n", actualInputFormat.mBytesPerPacket );
+		fprintf( fp, "mBytesPerFrame: %u\n", actualInputFormat.mBytesPerFrame );
+		fprintf( fp, "mChannelsPerFrame: %u\n", actualInputFormat.mChannelsPerFrame );
+		fprintf( fp, "mBitsPerChannel: %u\n", actualInputFormat.mBitsPerChannel );
+		fprintf( fp, "mFormatID: %u\n", actualInputFormat.mFormatID );
+		fclose( fp );
+		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &inputBuffers[i] );
 
