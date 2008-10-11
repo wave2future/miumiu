@@ -40,15 +40,21 @@
 	[super dealloc];
 }
 
--(void) generateSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset
+-(void) injectSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset
 {
 	for ( unsigned i=0; i<count; ++i )
 	{
 		float sample = 0;
 		for ( unsigned j=0; j<numTones; ++j )
 			sample += amplitudes[j] * sin( (offset + i) * multipliers[j] );
-		samples[i] = roundf( sample );
+		samples[i] += roundf( sample );
 	}
+}
+
+-(void) generateSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset
+{
+	memset( samples, 0, count*sizeof(short) );
+	[self injectSamples:samples count:count offset:offset];
 }
 
 @end

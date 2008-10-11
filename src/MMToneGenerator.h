@@ -20,5 +20,6 @@
 	samplingFrequency:(float)_samplingFrequency;
 
 -(void) generateSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset;
+-(void) injectSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset;
 
 @end

@@ -15,14 +15,9 @@
 #import "MMSpeexEncoder.h"
 #import "MMSpeexDecoder.h"
 #import "MMAudioController.h"
-
-#define TAP_FILE_NAME CFSTR("tap")
-#define TAP_FILE_TYPE CFSTR("aif")
+#import "MMDTMFInjector.h"
 
 @implementation MMViewController
-
-@synthesize soundFileURLRef;
-@synthesize soundFileObject;
 
 -(id) init
 {
@@ -36,12 +31,16 @@
 		ringtoneProducer = [[MMRingProducer alloc] init];
 		busyProducer = [[MMBusyProducer alloc] init];
 		fastBusyProducer = [[MMFastBusyProducer alloc] init];
+		dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
+		
+		[dtmfInjector connectToConsumer:audioController];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
+	[dtmfInjector release];
 	[fastBusyProducer release];
 	[busyProducer release];
 	[ringtoneProducer release];
@@ -49,8 +48,6 @@
 	[iax release];
 	[audioController release];
 	[super dealloc];
-	AudioServicesDisposeSystemSoundID (self.soundFileObject);
-	CFRelease (soundFileURLRef);
 }
 
 -(void) loadView
@@ -58,30 +55,6 @@
 	view = [[MMView alloc] initWithNumber:@"" inProgress:NO];
 	view.delegate = self;
 	self.view = view;
-}
-
-- (void) viewDidLoad {
-	
-	[super viewDidLoad];
-	
-	// Get the main bundle for the app
-	CFBundleRef mainBundle;
-	mainBundle = CFBundleGetMainBundle ();
-	
-	// Get the URL to the sound file to play
-	soundFileURLRef  =	CFBundleCopyResourceURL (
-												 mainBundle,
-												 TAP_FILE_NAME,
-												 TAP_FILE_TYPE,
-												 NULL
-												 );
-	
-	// Create a system sound object representing the sound file
-	AudioServicesCreateSystemSoundID (
-									  soundFileURLRef,
-									  &soundFileObject
-									  );
-	
 }
 
 -(void) view:(MMView *)_ requestedBeginCallWithNumber:(NSString *)number
@@ -92,12 +65,13 @@
 
 -(void) view:(MMView *)view pressedDTMF:(NSString *)dtmf
 {
-	AudioServicesPlaySystemSound (self.soundFileObject);
 	[call sendDTMF:dtmf];
+	[dtmfInjector digitPressed:dtmf];
 }
 
 -(void) view:(MMView *)view releasedDTMF:(NSString *)dtmf
 {
+	[dtmfInjector digitReleased:dtmf];
 }
 
 -(void) viewRequestedEndCall:(MMView *)_
@@ -114,7 +88,7 @@
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
-	[ringtoneProducer connectToConsumer:audioController];
+	[ringtoneProducer connectToConsumer:dtmfInjector];
 }
 
 -(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
@@ -135,17 +109,17 @@
 	[audioController connectToConsumer:encoder];
 	[encoder connectToConsumer:call];
 	[call connectToConsumer:decoder];
-	[decoder connectToConsumer:audioController];
+	[decoder connectToConsumer:dtmfInjector];
 }
 
 -(void) callDidReturnBusy:(MMCall *)_
 {
-	[busyProducer connectToConsumer:audioController];
+	[busyProducer connectToConsumer:dtmfInjector];
 }
 
 -(void) callDidFail:(MMCall *)_
 {
-	[fastBusyProducer connectToConsumer:audioController];
+	[fastBusyProducer connectToConsumer:dtmfInjector];
 }
 
 -(void) callDidEnd:(MMCall *)_
