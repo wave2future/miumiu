@@ -8,6 +8,7 @@
 
 #import "MMViewController.h"
 #import "MMRingtoneGenerator.h"
+#import "MMFastBusyGenerator.h"
 #import "MMULawEncoder.h"
 #import "MMULawDecoder.h"
 #import "MMSpeexEncoder.h"
@@ -29,12 +30,17 @@
 		
 		iax = [[MMIAX alloc] init];
 		iax.delegate = self;
+
+		ringtoneGenerator = [[MMRingtoneGenerator alloc] init];
+		fastBusyGenerator = [[MMFastBusyGenerator alloc] init];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
+	[fastBusyGenerator release];
+	[ringtoneGenerator release];
 	[view release];
 	[iax release];
 	[audioController release];
@@ -104,13 +110,13 @@
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
-	if ( ringtoneGenerator == nil )
-		ringtoneGenerator = [[MMRingtoneGenerator alloc] init];
 	[ringtoneGenerator connectToConsumer:audioController];
 }
 
 -(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
 {
+	[ringtoneGenerator disconnect];
+
 	if ( useSpeex )
 	{
 		encoder = [[MMSpeexEncoder alloc] init];
@@ -122,10 +128,6 @@
 		decoder = [[MMULawDecoder alloc] init];
 	}
 	
-	[ringtoneGenerator disconnect];
-	[ringtoneGenerator autorelease];
-	ringtoneGenerator = nil;
-
 	[audioController connectToConsumer:encoder];
 	[encoder connectToConsumer:call];
 	[call connectToConsumer:decoder];
@@ -135,12 +137,14 @@
 -(void) callDidFail:(MMCall *)_
 {
 	[ringtoneGenerator disconnect];
-	[ringtoneGenerator autorelease];
-	ringtoneGenerator = nil;
+	[fastBusyGenerator connectToConsumer:audioController];
 }
 
 -(void) callDidEnd:(MMCall *)_
 {
+	[ringtoneGenerator disconnect];
+	[fastBusyGenerator disconnect];
+	
 	[decoder disconnect];
 	[call disconnect];
 	[encoder disconnect];

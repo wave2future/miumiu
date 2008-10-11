@@ -23,6 +23,8 @@
 		char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", iax.username, iax.password, iax.hostname, number] UTF8String] );
 		iax_call( session, [iax.cidNumber UTF8String], [iax.cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
 		free( ich );
+		
+		sessionValid = YES;
 	}
 	return self;
 }
@@ -30,7 +32,8 @@
 -(void) dealloc
 {
 	[iax unregisterIAXCall:self withSession:session];
-	iax_destroy( session );
+	if ( sessionValid )
+		iax_destroy( session );
 	
 	[iax release];
 	
@@ -39,17 +42,20 @@
 
 -(void) consumeData:(void *)data ofSize:(unsigned)size
 {
-	iax_send_voice( session, format, data, size, size/2 );
+	if ( sessionValid )
+		iax_send_voice( session, format, data, size, size/2 );
 }
 
 -(void) sendDTMF:(NSString *)dtmf
 {
-	iax_send_dtmf( session, *[dtmf UTF8String] );
+	if ( sessionValid )
+		iax_send_dtmf( session, *[dtmf UTF8String] );
 }
 
 -(void) end
 {
-	iax_hangup( session, "later!" );	
+	if ( sessionValid )
+		iax_hangup( session, "later!" );	
 	[delegate callDidEnd:self];
 }
 
@@ -69,6 +75,11 @@
 			break;
 		case IAX_EVENT_VOICE:
 			[self produceData:event->data ofSize:event->datalen];
+			break;
+		case IAX_EVENT_REJECT:
+			sessionValid = NO;
+			[delegate callDidBegin:self];
+			[delegate callDidFail:self];
 			break;
 		case IAX_EVENT_HANGUP:
 			[delegate callDidEnd:self];

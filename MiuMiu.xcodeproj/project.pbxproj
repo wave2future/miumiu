@@ -13,6 +13,7 @@
 		28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MMViewController.m */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
 		DB4C12440EA10C26000AAB0A /* MMToneGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C12430EA10C26000AAB0A /* MMToneGenerator.m */; };
+		DB4C12B50EA1156D000AAB0A /* MMFastBusyGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C12B40EA1156D000AAB0A /* MMFastBusyGenerator.m */; };
 		DB778B380E9DD9DC00EC2FC3 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778B330E9DD6EC00EC2FC3 /* MMSpeexDecoder.m */; };
 		DB778B390E9DD9F000EC2FC3 /* MMSpeexEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778AFC0E9DD1C100EC2FC3 /* MMSpeexEncoder.m */; };
 		DB7C89350E9FEB8900A91FB4 /* MMCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C89340E9FEB8900A91FB4 /* MMCall.m */; };
@@ -181,6 +182,8 @@
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
 		DB4C12420EA10C26000AAB0A /* MMToneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMToneGenerator.h; path = src/MMToneGenerator.h; sourceTree = "<group>"; };
 		DB4C12430EA10C26000AAB0A /* MMToneGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMToneGenerator.m; path = src/MMToneGenerator.m; sourceTree = "<group>"; };
+		DB4C12B30EA1156D000AAB0A /* MMFastBusyGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMFastBusyGenerator.h; path = src/MMFastBusyGenerator.h; sourceTree = "<group>"; };
+		DB4C12B40EA1156D000AAB0A /* MMFastBusyGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMFastBusyGenerator.m; path = src/MMFastBusyGenerator.m; sourceTree = "<group>"; };
 		DB778AFB0E9DD1C100EC2FC3 /* MMSpeexEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSpeexEncoder.h; path = src/MMSpeexEncoder.h; sourceTree = "<group>"; };
 		DB778AFC0E9DD1C100EC2FC3 /* MMSpeexEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMSpeexEncoder.m; path = src/MMSpeexEncoder.m; sourceTree = "<group>"; };
 		DB778B320E9DD6EC00EC2FC3 /* MMSpeexDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSpeexDecoder.h; path = src/MMSpeexDecoder.h; sourceTree = "<group>"; };
@@ -609,6 +612,8 @@
 				DB4C12430EA10C26000AAB0A /* MMToneGenerator.m */,
 				DB7C8AC60EA007E800A91FB4 /* MMRingtoneGenerator.h */,
 				DB7C8AC70EA007E800A91FB4 /* MMRingtoneGenerator.m */,
+				DB4C12B30EA1156D000AAB0A /* MMFastBusyGenerator.h */,
+				DB4C12B40EA1156D000AAB0A /* MMFastBusyGenerator.m */,
 				DB7C8B310EA010AB00A91FB4 /* MMULawEncoder.h */,
 				DB7C8B320EA010AB00A91FB4 /* MMULawEncoder.m */,
 				DB7C8B340EA010BA00A91FB4 /* MMULawDecoder.h */,
@@ -812,6 +817,7 @@
 				DB7C8B360EA010BA00A91FB4 /* MMULawDecoder.m in Sources */,
 				DB7C8B390EA0115400A91FB4 /* MMCodec.m in Sources */,
 				DB4C12440EA10C26000AAB0A /* MMToneGenerator.m in Sources */,
+				DB4C12B50EA1156D000AAB0A /* MMFastBusyGenerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

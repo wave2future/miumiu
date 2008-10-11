@@ -12,7 +12,7 @@
 
 -(void) dealloc
 {
-	[connectedConsumer release];
+	[self disconnect];
 	[super dealloc];
 }
 

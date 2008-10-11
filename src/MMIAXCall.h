@@ -17,6 +17,7 @@
 @private
 	MMIAX *iax;
 	struct iax_session *session;
+	BOOL sessionValid;
 	unsigned format;
 }
 

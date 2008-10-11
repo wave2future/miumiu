@@ -14,7 +14,7 @@
 
 -(id) init
 {
-	return [super initWithFrequency:8000 samplesPerChunk:160 sampleLoop:ringtone ofLength:200 onSeconds:2 offSeconds:4];
+	return [super initWithFrequency:8000 samplesPerChunk:160 sampleLoop:ringtone ofLength:sizeof(ringtone)/sizeof(ringtone[0]) onSeconds:2 offSeconds:4];
 }
 
 @end

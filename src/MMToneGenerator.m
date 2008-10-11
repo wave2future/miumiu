@@ -21,16 +21,22 @@
 		onSamples = roundf( onSeconds * frequency );
 		offSamples = roundf( offSeconds * frequency );
 		totalSamples = onSamples + offSamples;
-		timer = [[NSTimer scheduledTimerWithTimeInterval:((float)samplesPerChunk/(float)frequency) target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
 	}
 	return self;
 }
 
--(void) dealloc
+-(void) connectToConsumer:(id <MMDataConsumer>)consumer
+{
+	[super connectToConsumer:consumer];
+	timer = [[NSTimer scheduledTimerWithTimeInterval:((float)samplesPerChunk/(float)frequency) target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
+}
+
+-(void) disconnect
 {
 	[timer invalidate];
 	[timer release];
-	[super dealloc];
+	timer = nil;
+	[super disconnect];
 }
 
 -(void) timerCallback:(id)_
