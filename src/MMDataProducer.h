@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "MMDataConsumer.h"
 
+#include <limits.h>
+
+#define MM_DATA_NUM_SAMPLES_UNKNOWN UINT_MAX
+
 @interface MMDataProducer : NSObject
 {
 @private
@@ -17,7 +21,7 @@
 
 // [pzion 20081010] Note that the data here is explicitly not
 // const: the consumer is allow to modify it in place if it likes
--(void) produceData:(void *)data ofSize:(unsigned)size;
+-(void) produceData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
 
 -(void) connectToConsumer:(id <MMDataConsumer>)consumer;
 -(void) disconnect;

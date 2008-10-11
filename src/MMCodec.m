@@ -10,9 +10,9 @@
 
 @implementation MMCodec
 
--(void) consumeData:(void *)data ofSize:(unsigned)size
+-(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
-	[self produceData:data ofSize:size];
+	[self produceData:data ofSize:size numSamples:numSamples];
 }
 
 @end

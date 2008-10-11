@@ -24,8 +24,7 @@
 		spx_int32_t quality = 8;
 		speex_encoder_ctl( enc_state, SPEEX_SET_QUALITY, &quality );
 
-		speex_encoder_ctl( enc_state, SPEEX_GET_FRAME_SIZE, &frameSize );
-		frameSize *= sizeof(spx_int16_t);
+		speex_encoder_ctl( enc_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrame );
 		
 		buffer = [[MMCircularBuffer alloc] init];
 	}
@@ -43,7 +42,7 @@
 	[super dealloc];
 }
 
--(void) encodeFrame:(spx_int16_t *)frame
+-(void) encodeFrame:(short *)frame
 {
 	speex_bits_reset( &bits );
 	
@@ -53,18 +52,19 @@
 	char data[dataSize];
 	int dataUsed = speex_bits_write( &bits, data, dataSize );
 	
-	[self produceData:data ofSize:dataUsed];
+	[self produceData:data ofSize:dataUsed numSamples:samplesPerFrame];
 }
 
--(void) consumeData:(void *)_data ofSize:(unsigned)size
+-(void) consumeData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	const char *data = (char *)_data;
-
+	unsigned frameSize = samplesPerFrame * sizeof(short);
+	
 	if ( buffer.used == 0 )
 	{
 		while ( size >= frameSize )
 		{
-			[self encodeFrame:(spx_int16_t *)data];
+			[self encodeFrame:(short *)data];
 			data += frameSize;
 			size -= frameSize;
 		}

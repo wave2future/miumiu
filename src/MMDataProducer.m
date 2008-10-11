@@ -16,10 +16,10 @@
 	[super dealloc];
 }
 
--(void) produceData:(void *)data ofSize:(unsigned)size
+-(void) produceData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	if ( size > 0 )
-		[connectedConsumer consumeData:data ofSize:size];
+		[connectedConsumer consumeData:data ofSize:size numSamples:numSamples];
 }
 
 -(void) connectToConsumer:(id <MMDataConsumer>)consumer

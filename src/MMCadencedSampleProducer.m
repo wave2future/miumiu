@@ -65,7 +65,7 @@
 		memset( samples, 0, dataSize );
 	timePosition += samplesPerChunk;
 
-	[self produceData:samples ofSize:dataSize];
+	[self produceData:samples ofSize:dataSize numSamples:samplesPerChunk];
 }
 
 @end

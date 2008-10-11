@@ -21,8 +21,7 @@
 		spx_int32_t samplingRate = 8000;
 		speex_decoder_ctl( dec_state, SPEEX_SET_SAMPLING_RATE, &samplingRate );
 		
-		speex_decoder_ctl( dec_state, SPEEX_GET_FRAME_SIZE, &frameSize );
-		frameSize *= sizeof(spx_int16_t);
+		speex_decoder_ctl( dec_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrame );
 	}
 	return self;
 }
@@ -36,13 +35,14 @@
 	[super dealloc];
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size
+-(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	speex_bits_read_from( &bits, data, size );
 	
-	spx_int16_t *frame = alloca( frameSize );
+	unsigned frameSize = samplesPerFrame * sizeof(short);
+	short *frame = alloca( frameSize );
 	while ( speex_decode_int( dec_state, &bits, frame ) == 0 )
-		[self produceData:frame ofSize:frameSize];
+		[self produceData:frame ofSize:frameSize numSamples:samplesPerFrame];
 }
 
 @end

@@ -16,7 +16,7 @@
 @private
 	SpeexBits bits; 
 	void *enc_state;
-	spx_int32_t frameSize;
+	unsigned samplesPerFrame;
 	MMCircularBuffer *buffer;
 }
 

@@ -34,15 +34,16 @@
 	return self;
 }
 
--(void) consumeData:(void *)_data ofSize:(unsigned)size
+-(void) consumeData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
-	unsigned numSamples = size;
+	if ( numSamples == MM_DATA_NUM_SAMPLES_UNKNOWN )
+		numSamples = size;
 	const unsigned char *samples = _data;
 	unsigned newSize = numSamples * sizeof(short);
 	short *newSamples = alloca( newSize );
 	for ( unsigned i=0; i<numSamples; ++i )
 		newSamples[i] = uLawToLinear[samples[i]];
-	[self produceData:newSamples ofSize:newSize];
+	[self produceData:newSamples ofSize:newSize numSamples:numSamples];
 }
 
 @end

@@ -77,11 +77,11 @@ static void interruptionCallback(
 		
 #ifdef SIMULATE_AUDIO
 		unsigned numTones = 1;
-		float amplitudes[] = { 16384 };
+		float amplitudes[] = { 2048 };
 		float frequencies[] = { 440 };
 		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
 		toneGeneratorOffset = 0;
-		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_BUFFER_SIZE/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
+		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
 #else
         audioFormat.mSampleRate = 8000.00;
         audioFormat.mFormatID = kAudioFormatLinearPCM;
@@ -153,7 +153,7 @@ static void interruptionCallback(
 	}
 }
 
--(void) consumeData:(void *)_data ofSize:(unsigned)size
+-(void) consumeData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 #ifndef SIMULATE_AUDIO
 	const char *data = (char *)_data;
@@ -174,10 +174,10 @@ static void interruptionCallback(
 #ifdef SIMULATE_AUDIO
 -(void) recordTimerCallback:(id)_
 {
-	short samples[160];
-	[toneGenerator generateSamples:samples count:160 offset:toneGeneratorOffset];
-	toneGeneratorOffset += 160;
-	[self produceData:samples ofSize:sizeof(samples)];
+	short samples[MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
+	[toneGenerator generateSamples:samples count:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER offset:toneGeneratorOffset];
+	toneGeneratorOffset += MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER;
+	[self produceData:samples ofSize:sizeof(samples) numSamples:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
 }
 #else
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
@@ -187,7 +187,7 @@ static void interruptionCallback(
 		packetDescription:(const AudioStreamPacketDescription *)packetDescription
 {
 	if ( numPackets > 0 )
-		[self produceData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
+		[self produceData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
 
 	if ( running )
 		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );

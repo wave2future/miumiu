@@ -14,6 +14,6 @@
 
 // [pzion 20081010] Note that the data here is explicitly not
 // const: the consumer is allow to modify it in place if it likes
--(void) consumeData:(void *)data ofSize:(unsigned)size;
+-(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
 
 @end

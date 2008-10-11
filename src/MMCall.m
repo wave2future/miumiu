@@ -10,7 +10,7 @@
 
 @implementation MMCall
 
--(void) consumeData:(void *)data ofSize:(unsigned)size
+-(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 }
 

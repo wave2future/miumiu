@@ -14,8 +14,8 @@
 {
 @private
 	SpeexBits bits; 
-	void *dec_state; 
-	spx_int32_t frameSize;
+	void *dec_state;
+	unsigned samplesPerFrame;
 }
 
 @end
