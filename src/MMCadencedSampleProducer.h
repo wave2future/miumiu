@@ -8,22 +8,24 @@
 
 #import "MMDataProducer.h"
 
+@class MMToneGenerator;
+
 @interface MMCadencedSampleProducer : MMDataProducer
 {
 @private
-	unsigned frequency;
+	unsigned samplingFrequency;
 	unsigned samplesPerChunk;
-	NSData *loop;
+	MMToneGenerator *toneGenerator;
 	unsigned onSamples, offSamples, totalSamples;
 	NSTimer	*timer;
 	unsigned timePosition;
 }
 
--(id) initWithFrequency:(unsigned)_frequency
+-(id) initWithSamplingFrequency:(unsigned)_samplingFrequency
 	samplesPerChunk:(unsigned)_samplesPerChunk
-	amplitudes:(const short *)amplitudes
-	frequencies:(const unsigned *)frequencies
-	count:(unsigned)count
+	numTones:(unsigned)numTones
+	amplitudes:(const float *)amplitudes
+	frequencies:(const float *)frequencies
 	onSeconds:(float)onSeconds
 	offSeconds:(float)offSeconds;
 

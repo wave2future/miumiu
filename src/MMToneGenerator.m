@@ -10,40 +10,45 @@
 
 #include <limits.h>
 
-static unsigned gcd( unsigned a, unsigned b )
-{
-	if ( a == 0 )
-		return b;
-	else
-		return gcd( b % a, a ); 
-}
-
-static unsigned lcm( unsigned a, unsigned b )
-{
-	return a * b / gcd( a, b );
-}
-
 @implementation MMToneGenerator
 
-+ (NSData *)generateSampleForAmplitudes:(const short *)amplitudes
-	frequencies:(const unsigned *)frequencies
-	count:(unsigned)count
-	numSamples:(unsigned)numSamples
-	samplingFrequency:(unsigned)samplingFrequency
+-(id) initWithNumTones:(unsigned)_numTones
+	amplitudes:(const float *)_amplitudes
+	frequencies:(const float *)_frequencies
+	samplingFrequency:(float)_samplingFrequency
 {
-	float *multipliers = alloca( count * sizeof(float) );
-	for ( unsigned i=0; i<count; ++i )
-		multipliers[i] = (float)frequencies[i] * 2 * M_PI / (float)samplingFrequency;
-	
-	NSMutableData *samples = [NSMutableData dataWithCapacity:numSamples*sizeof(short)];
-	for ( unsigned i=0; i<numSamples; ++i )
+	if ( self = [super init] )
 	{
-		short sample = 0;
-		for ( unsigned j=0; j<count; ++j )
-			sample += roundf( amplitudes[j] * sin( i * multipliers[j] ) );
-		[samples appendBytes:&sample length:sizeof(sample)];
+		numTones = _numTones;
+
+		unsigned amplitudesSize = numTones * sizeof(float);
+		amplitudes = malloc( amplitudesSize );
+		memcpy( amplitudes, _amplitudes, amplitudesSize );
+		
+		unsigned multipliersSize = numTones * sizeof(float);
+		multipliers = malloc( multipliersSize );
+		for ( unsigned i=0; i<numTones; ++i )
+			multipliers[i] = (float)_frequencies[i] * 2 * M_PI / (float)_samplingFrequency;
 	}
-	return samples;
+	return self;
+}
+
+-(void) dealloc
+{
+	free( multipliers );
+	free( amplitudes );
+	[super dealloc];
+}
+
+-(void) generateSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset
+{
+	for ( unsigned i=0; i<count; ++i )
+	{
+		float sample = 0;
+		for ( unsigned j=0; j<numTones; ++j )
+			sample += amplitudes[j] * sin( (offset + i) * multipliers[j] );
+		samples[i] = roundf( sample );
+	}
 }
 
 @end

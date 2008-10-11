@@ -12,14 +12,14 @@
 
 -(id) init
 {
-	static const unsigned count = 2;
-	static const short amplitudes[] = { 16384, 16384 };
-	static const unsigned frequencies[] = { 440, 480 };
-	return [super initWithFrequency:8000
+	static const unsigned numTones = 2;
+	static const float amplitudes[] = { 16384, 16384 };
+	static const float frequencies[] = { 440, 480 };
+	return [super initWithSamplingFrequency:8000
 		samplesPerChunk:160
+		numTones:numTones
 		amplitudes:amplitudes
 		frequencies:frequencies
-		count:count
 		onSeconds:2
 		offSeconds:4];
 }

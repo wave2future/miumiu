@@ -11,25 +11,24 @@
 
 @implementation MMCadencedSampleProducer
 
--(id) initWithFrequency:(unsigned)_frequency
+-(id) initWithSamplingFrequency:(unsigned)_samplingFrequency
 	samplesPerChunk:(unsigned)_samplesPerChunk
-	amplitudes:(const short *)amplitudes
-	frequencies:(const unsigned *)frequencies
-	count:(unsigned)count
+	numTones:(unsigned)numTones
+	amplitudes:(const float *)amplitudes
+	frequencies:(const float *)frequencies
 	onSeconds:(float)onSeconds
 	offSeconds:(float)offSeconds
 {
 	if ( self = [super init] )
 	{
-		frequency = _frequency;
+		samplingFrequency = _samplingFrequency;
 		samplesPerChunk = _samplesPerChunk;
-		onSamples = roundf( onSeconds * frequency );
-		loop = [[MMToneGenerator generateSampleForAmplitudes:amplitudes
+		onSamples = roundf( onSeconds * samplingFrequency );
+		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones
+			amplitudes:amplitudes
 			frequencies:frequencies
-			count:count
-			numSamples:onSamples
-			samplingFrequency:frequency] retain];
-		offSamples = roundf( offSeconds * frequency );
+			samplingFrequency:samplingFrequency];
+		offSamples = roundf( offSeconds * samplingFrequency );
 		totalSamples = onSamples + offSamples;
 	}
 	return self;
@@ -37,14 +36,14 @@
 
 -(void) dealloc
 {
-	[loop release];
+	[toneGenerator release];
 	[super dealloc];
 }
 
 -(void) connectToConsumer:(id <MMDataConsumer>)consumer
 {
 	[super connectToConsumer:consumer];
-	timer = [[NSTimer scheduledTimerWithTimeInterval:((float)samplesPerChunk/(float)frequency) target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
+	timer = [[NSTimer scheduledTimerWithTimeInterval:((float)samplesPerChunk/(float)samplingFrequency) target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
 }
 
 -(void) disconnect
@@ -57,19 +56,15 @@
 
 -(void) timerCallback:(id)_
 {
-	const short *sampleLoop = [loop bytes];
-	
 	unsigned dataSize = samplesPerChunk * sizeof(short);
 	short *samples = alloca( dataSize );
-	for ( unsigned i=0; i<samplesPerChunk; ++i )
-	{
-		unsigned loopTimePosition = timePosition % totalSamples;
-		if ( loopTimePosition < onSamples )
-			samples[i] = sampleLoop[loopTimePosition];
-		else
-			samples[i] = 0;
-		++timePosition;
-	}
+
+	if ( timePosition % totalSamples < onSamples )
+		[toneGenerator generateSamples:samples count:samplesPerChunk offset:timePosition];
+	else
+		memset( samples, 0, dataSize );
+	timePosition += samplesPerChunk;
+
 	[self produceData:samples ofSize:dataSize];
 }
 
