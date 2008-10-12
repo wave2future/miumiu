@@ -208,7 +208,7 @@ static void interruptionCallback(
 		AudioQueueEnqueueBuffer( outputQueue, queueBuffer, 0, NULL );
 		LOG( @"Enqueued output buffer" );
 
-		if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - 2 )
+		if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - 4 )
 		{
 			AudioQueueStart( outputQueue, NULL );
 			LOG( @"Started output queue" );
