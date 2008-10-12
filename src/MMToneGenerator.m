@@ -46,7 +46,7 @@
 	{
 		float sample = 0;
 		for ( unsigned j=0; j<numTones; ++j )
-			sample += amplitudes[j] * sin( (offset + i) * multipliers[j] );
+			sample += amplitudes[j] * sinf( (offset + i) * multipliers[j] );
 		samples[i] += roundf( sample );
 	}
 }
