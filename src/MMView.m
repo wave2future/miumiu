@@ -12,14 +12,22 @@ static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberT
 
 #define NUM_DIGITS 12
 static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#" };
+static NSString *buttonImageFile = @"button.png";
 
 @implementation MMView
 
 -(UIButton *) buttonWithTitle:(NSString *)title
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	button.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+	button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	UIImage *backgroundImage = [[UIImage imageNamed:buttonImageFile] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+	[button setBackgroundImage:backgroundImage forState:0];
+	button.font = [UIFont boldSystemFontOfSize:24.0];
 	[button setTitle:title forState:UIControlStateNormal];
-	[button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+	[button setTitleColor:[UIColor blackColor] forState:UIControlEventTouchDown];
+	[button setTitleColor:[UIColor blackColor] forState:UIControlStateDisabled];	
 	[button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
 	[button addTarget:self action:@selector(buttonReleased:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:button];
@@ -46,12 +54,12 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 		[notificationCenter addObserver:self 
-							   selector:@selector(shrinkKeypad:) 
+							   selector:@selector(keyboardAppearing:) 
 							   name:@"UIKeyboardWillShowNotification" 
 							   object:nil];
 		
 		[notificationCenter addObserver:self 
-							   selector:@selector(growKeypad:) 
+							   selector:@selector(keyboardDisappearing:) 
 							   name:@"UIKeyboardWillHideNotification" 
 							   object:nil];
 		
@@ -145,7 +153,10 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		else
 			numberTextField.text = digit;
 		
-		beginCallButton.enabled = YES;
+		if (endCallButton.hidden == YES)
+		{
+			beginCallButton.enabled = YES;
+		}
 		[delegate view:self releasedDTMF:digit];
 	}
 }
@@ -174,12 +185,16 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	return YES;
 }
 
--(void) shrinkKeypad:(NSNotification *)note
+-(void) keyboardDisappearing:(NSNotification *)note
 {
 	NSLog(@"Received notification: %@", note);
+	if ([numberTextField.text length] != 0)
+	{
+		beginCallButton.enabled = YES;
+	}
 }
 
--(void) growKeypad:(NSNotification *)note
+-(void) keyboardAppearing:(NSNotification *)note
 {
 	NSLog(@"Received notification: %@", note);
 }
