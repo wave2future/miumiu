@@ -118,6 +118,12 @@ static void interruptionCallback(
 			);
 		LOG( @"Created input queue" );
 		
+		AudioQueueSetParameter(
+			inputQueue,
+			kAudioQueueParam_Volume,
+			0.8
+			);
+		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 		{
 			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &inputBuffers[i] );
