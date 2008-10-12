@@ -121,7 +121,7 @@ static NSString *buttonImageFile = @"button.png";
 {
 	beginCallButton.enabled = !inCall && [numberTextField.text length] > 0;
 	clearNumberButton.hidden = inCall;
-	endCallButton.hidden = !!inCall;
+	endCallButton.hidden = !inCall;
 }
 
 -(void) buttonPressed:(UIButton *)button
