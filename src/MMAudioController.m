@@ -9,6 +9,18 @@
 #import "MMAudioController.h"
 #import "MMToneGenerator.h"
 
+#ifdef MM_AUDIO_CONTROLLER_LOG
+
+#define LOG( format, ... ) \
+	[self logWithFormatAndArgs:format, ## __VA_ARGS__]
+
+#else
+
+#define DebugLog( format, ... )
+
+#endif
+
+
 #ifndef SIMULATE_AUDIO
 void playbackCallback(
     void *userdata,
@@ -51,6 +63,11 @@ static void interruptionCallback(
 {
 	if ( self = [super init] )
 	{
+#ifdef MM_AUDIO_CONTROLLER_LOG
+		logStream = [[NSOutputStream outputStreamToFileAtPath:@"/tmp/MiuMiu.log" append:NO] retain];
+		[logStream open];
+#endif
+
 #ifdef SIMULATE_AUDIO
 		unsigned numTones = 1;
 		float amplitudes[] = { 2048 };
@@ -84,6 +101,7 @@ static void interruptionCallback(
 			NULL, 0, 0,
 			&outputQueue
 			);
+		LOG( @"Created output queue" );
 			
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 		{
@@ -98,7 +116,7 @@ static void interruptionCallback(
 			NULL, 0, 0,
 			&inputQueue
 			);
-		NSLog( @"Created input queue" );
+		LOG( @"Created input queue" );
 		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_BUFFERS; ++i )
 		{
@@ -114,12 +132,17 @@ static void interruptionCallback(
 -(void) dealloc
 {
 	[self stopRecording];
+
 #ifndef SIMULATE_AUDIO
 	AudioQueueDispose( inputQueue, TRUE );
 	
 	AudioQueueStop( outputQueue, FALSE );
 	AudioQueueDispose( outputQueue, TRUE );
 	AudioSessionSetActive( FALSE );
+#endif
+	
+#ifdef MM_AUDIO_CONTROLLER_LOG
+	[logStream release];
 #endif
 	
 	[super dealloc];
@@ -137,11 +160,11 @@ static void interruptionCallback(
 		while ( numAvailableInputBuffers > 0 )
 		{
 			AudioQueueEnqueueBuffer( inputQueue, inputBuffers[--numAvailableInputBuffers], 0, NULL );
-			//NSLog( @"Initially queued input buffer" );
+			LOG( @"Initially queued input buffer" );
 		}
 		
 		AudioQueueStart( inputQueue, NULL );
-		//NSLog( @"Started input queue" );
+		LOG( @"Started input queue" );
 #endif
 	}
 }
@@ -158,7 +181,7 @@ static void interruptionCallback(
 		recordTimer = nil;
 #else
 		AudioQueueStop( inputQueue, FALSE );
-		//NSLog( @"Stopped input queue" );
+		LOG( @"Stopped input queue" );
 #endif
 	}
 }
@@ -177,9 +200,13 @@ static void interruptionCallback(
 		data += queueBuffer->mAudioDataByteSize;
 		size -= queueBuffer->mAudioDataByteSize;
 		AudioQueueEnqueueBuffer( outputQueue, queueBuffer, 0, NULL );
+		LOG( @"Enqueued output buffer" );
 
 		if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - 2 )
+		{
 			AudioQueueStart( outputQueue, NULL );
+			LOG( @"Started output queue" );
+		}
 	}
 #endif
 }
@@ -205,12 +232,12 @@ static void interruptionCallback(
 	if ( recording )
 	{
 		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
-		//NSLog( @"Requeued input buffer" );
+		LOG( @"Requeued input buffer" );
 	}
 	else
 	{
 		availableInputBuffers[numAvailableInputBuffers++] = buffer;
-		//NSLog( @"Marked input buffer as available" );
+		LOG( @"Marked input buffer as available" );
 	}
 }
 
@@ -218,8 +245,27 @@ static void interruptionCallback(
 		buffer:(AudioQueueBufferRef)buffer
 {
 	availableOutputBuffers[numAvailableOutputBuffers++] = buffer;
+	LOG( @"Marked output buffer as available" );
+	
 	if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS )
+	{
 		AudioQueuePause( outputQueue );
+		LOG( @"Paused output queue due to underrun" );
+	}
+}
+#endif
+
+#ifdef MM_AUDIO_CONTROLLER_LOG
+-(void) logWithFormatAndArgs:format, ...
+{
+	va_list argList;
+	va_start( argList, format );
+	NSString *formattedString = [[[NSString alloc] initWithFormat:format arguments:argList] autorelease];
+	va_end( argList );
+	
+	const void *utf8FormattedString = [formattedString UTF8String];
+	[logStream write:utf8FormattedString maxLength:strlen(utf8FormattedString)];
+	[logStream write:(const void *)"\n" maxLength:1];
 }
 #endif
 
