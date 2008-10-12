@@ -34,8 +34,8 @@
 
 -(id) initWithNumber:(NSString *)number inProgress:(BOOL)inProgress;
 
--(void) didBeginCall:(id)sender;
--(void) didEndCall:(id)sender;
+-(void) didBeginCall;
+-(void) didEndCall;
 
 @property ( nonatomic, assign ) id <MMViewDelegate> delegate;
 

@@ -11,6 +11,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MMViewController.m */; };
+		DB079F190EA202A300179412 /* MMPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB079F180EA202A300179412 /* MMPhoneController.m */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
 		DB44FC450EA17D1F00B927E9 /* MMNullProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC440EA17D1F00B927E9 /* MMNullProducer.m */; };
 		DB44FC560EA17D7800B927E9 /* MMCadencedToneInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */; };
@@ -184,6 +185,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MiuMiu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiuMiu_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB079F170EA202A300179412 /* MMPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneController.h; path = src/MMPhoneController.h; sourceTree = "<group>"; };
+		DB079F180EA202A300179412 /* MMPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneController.m; path = src/MMPhoneController.m; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
 		DB44FC430EA17D1F00B927E9 /* MMNullProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMNullProducer.h; path = src/MMNullProducer.h; sourceTree = "<group>"; };
@@ -657,6 +660,8 @@
 				DB44FD060EA1A77900B927E9 /* MMInjector.m */,
 				DB44FD020EA1A74C00B927E9 /* MMComfortNoiseInjector.h */,
 				DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */,
+				DB079F170EA202A300179412 /* MMPhoneController.h */,
+				DB079F180EA202A300179412 /* MMPhoneController.m */,
 				DB4C137F0EA11CDF000AAB0A /* Tone Generation */,
 			);
 			name = Sources;
@@ -862,6 +867,7 @@
 				DB44FC640EA17DCF00B927E9 /* MMRingInjector.m in Sources */,
 				DB44FD040EA1A74C00B927E9 /* MMComfortNoiseInjector.m in Sources */,
 				DB44FD070EA1A77900B927E9 /* MMInjector.m in Sources */,
+				DB079F190EA202A300179412 /* MMPhoneController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

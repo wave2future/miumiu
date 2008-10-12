@@ -134,7 +134,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	}
 }
 
--(void) didBeginCall:(id)sender
+-(void) didBeginCall
 {
 	if ( numberTextField.text != @"" )
 	{
@@ -144,7 +144,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	}
 }
 
--(void) didEndCall:(id)sender
+-(void) didEndCall
 {
 	beginCallButton.enabled = NO;
 	endCallButton.hidden = YES;

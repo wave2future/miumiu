@@ -98,7 +98,7 @@ static void interruptionCallback(
 		AudioQueueNewOutput(
 			&audioFormat,
 			playbackCallback, self,
-			NULL, 0, 0,
+			CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0,
 			&outputQueue
 			);
 		LOG( @"Created output queue" );
@@ -113,7 +113,7 @@ static void interruptionCallback(
 		AudioQueueNewInput(
 			&audioFormat,
 			recordingCallback, self,
-			NULL, 0, 0,
+			CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0,
 			&inputQueue
 			);
 		LOG( @"Created input queue" );

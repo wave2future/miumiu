@@ -8,32 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "MMView.h"
-#import "MMIAX.h"
-#import "MMCall.h"
+#import "MMPhoneController.h"
 
-@class MMCodec;
-@class MMRingInjector;
-@class MMBusyInjector;
-@class MMFastBusyInjector;
-@class MMAudioController;
-@class MMDTMFInjector;
-@class MMNullProducer;
-@class MMComfortNoiseInjector;
-
-@interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
+@interface MMViewController : UIViewController <MMViewDelegate, MMPhoneControllerDelegate>
 {
 @private
 	MMView *view;
-	MMAudioController *audioController;
-	MMCodec *encoder, *decoder;
-	MMIAX *iax;
-	MMCall *call;
-	MMRingInjector *ringtoneInjector;
-	MMBusyInjector *busyInjector;
-	MMFastBusyInjector *fastBusyInjector;
-	MMDTMFInjector *dtmfInjector;
-	MMNullProducer *nullProducer;
-	MMComfortNoiseInjector *comfortNoiseInjector;
+	MMPhoneController *phoneController;
 }
 
 @end
