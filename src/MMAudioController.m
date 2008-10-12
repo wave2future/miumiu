@@ -74,7 +74,7 @@ static void interruptionCallback(
 		AudioQueueNewOutput(
 			&audioFormat,
 			playbackCallback, self,
-			CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0,
+			NULL, 0, 0,
 			&outputQueue
 			);
 			
@@ -95,7 +95,7 @@ static void interruptionCallback(
 		AudioQueueNewInput(
 			&audioFormat,
 			recordingCallback, self,
-			CFRunLoopGetCurrent(), kCFRunLoopCommonModes,	0,
+			NULL, 0, 0,
 			&inputQueue
 			);
 		NSLog( @"Created input queue" );
