@@ -176,6 +176,7 @@ static NSString *buttonImageFile = @"button.png";
 -(void) didEndCall
 {
 	inCall = NO;
+	numberTextField.text = @"";
 	[self updateButtonStates];
 }
 
