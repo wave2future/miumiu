@@ -36,7 +36,6 @@ static void recordingCallback(
 		numPackets:numPackets
 		packetDescription:packetDescription];
 }
-#endif
 
 static void interruptionCallback(
    void *inClientData,
@@ -44,6 +43,7 @@ static void interruptionCallback(
    )
 {
 }
+#endif
 
 @implementation MMAudioController
 
@@ -51,6 +51,13 @@ static void interruptionCallback(
 {
 	if ( self = [super init] )
 	{
+#ifdef SIMULATE_AUDIO
+		unsigned numTones = 1;
+		float amplitudes[] = { 2048 };
+		float frequencies[] = { 440 };
+		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
+		toneGeneratorOffset = 0;
+#else
 		AudioSessionInitialize( NULL, NULL, interruptionCallback, self );
 
 		UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
@@ -85,13 +92,6 @@ static void interruptionCallback(
 		}
 		numAvailableOutputBuffers = MM_AUDIO_CONTROLLER_NUM_BUFFERS;
 
-#ifdef SIMULATE_AUDIO
-		unsigned numTones = 1;
-		float amplitudes[] = { 2048 };
-		float frequencies[] = { 440 };
-		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
-		toneGeneratorOffset = 0;
-#else
 		AudioQueueNewInput(
 			&audioFormat,
 			recordingCallback, self,
@@ -114,11 +114,13 @@ static void interruptionCallback(
 -(void) dealloc
 {
 	[self stopRecording];
+#ifndef SIMULATE_AUDIO
 	AudioQueueDispose( inputQueue, TRUE );
 	
 	AudioQueueStop( outputQueue, FALSE );
 	AudioQueueDispose( outputQueue, TRUE );
 	AudioSessionSetActive( FALSE );
+#endif
 	
 	[super dealloc];
 }
@@ -186,7 +188,8 @@ static void interruptionCallback(
 -(void) recordTimerCallback:(id)_
 {
 	short samples[MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
-	[toneGenerator generateSamples:samples count:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER offset:toneGeneratorOffset];
+	memset( samples, 0, sizeof(samples) );
+	[toneGenerator injectSamples:samples count:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER offset:toneGeneratorOffset];
 	toneGeneratorOffset += MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER;
 	[self produceData:samples ofSize:sizeof(samples) numSamples:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
 }
