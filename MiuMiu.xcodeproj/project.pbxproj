@@ -12,6 +12,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MMViewController.m */; };
 		DB079F190EA202A300179412 /* MMPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB079F180EA202A300179412 /* MMPhoneController.m */; };
+		DB079FF80EA2124200179412 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = DB079FF70EA2124200179412 /* button.png */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
 		DB44FC450EA17D1F00B927E9 /* MMNullProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC440EA17D1F00B927E9 /* MMNullProducer.m */; };
 		DB44FC560EA17D7800B927E9 /* MMCadencedToneInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */; };
@@ -187,6 +188,7 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB079F170EA202A300179412 /* MMPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneController.h; path = src/MMPhoneController.h; sourceTree = "<group>"; };
 		DB079F180EA202A300179412 /* MMPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneController.m; path = src/MMPhoneController.m; sourceTree = "<group>"; };
+		DB079FF70EA2124200179412 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = src/button.png; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
 		DB44FC430EA17D1F00B927E9 /* MMNullProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMNullProducer.h; path = src/MMNullProducer.h; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DB079FF70EA2124200179412 /* button.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 			);
 			name = Resources;
@@ -833,6 +836,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB079FF80EA2124200179412 /* button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
