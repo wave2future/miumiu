@@ -30,6 +30,7 @@
 	UIButton *endCallButton;
 	UIButton *clearNumberButton;
 	NSMutableArray *digitButtons;
+	BOOL inCall;
 }
 
 -(id) initWithNumber:(NSString *)number inProgress:(BOOL)inProgress;

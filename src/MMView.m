@@ -42,11 +42,11 @@ static NSString *buttonImageFile = @"button.png";
 		numberTextField.text = number;
 		numberTextField.textColor = [UIColor whiteColor];
 		numberTextField.returnKeyType = UIReturnKeyDone;
-		numberTextField.enablesReturnKeyAutomatically = YES;
+		numberTextField.enablesReturnKeyAutomatically = NO;
 		numberTextField.keyboardType = UIKeyboardTypeEmailAddress;
 		numberTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 		numberTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-		numberTextField.clearButtonMode = UITextFieldViewModeAlways;
+		numberTextField.clearButtonMode = UITextFieldViewModeNever;
 		numberTextField.placeholder = @"Dial number then press Call";
 		numberTextField.delegate = self;
 		
@@ -117,6 +117,13 @@ static NSString *buttonImageFile = @"button.png";
 	}
 }
 
+-(void) updateButtonStates
+{
+	beginCallButton.enabled = !inCall && [numberTextField.text length] > 0;
+	clearNumberButton.hidden = inCall;
+	endCallButton.hidden = !!inCall;
+}
+
 -(void) buttonPressed:(UIButton *)button
 {
 	if ( button == beginCallButton )
@@ -128,6 +135,15 @@ static NSString *buttonImageFile = @"button.png";
 	else
 	{
 		NSString *digit = [button titleForState:UIControlStateNormal];
+
+		NSString *oldText = numberTextField.text;
+		if ( oldText != nil )
+			numberTextField.text = [NSString stringWithFormat:@"%@%@", oldText, digit];
+		else
+			numberTextField.text = digit;
+		
+		[self updateButtonStates];
+
 		[delegate view:self pressedDTMF:digit];
 	}
 }
@@ -147,51 +163,41 @@ static NSString *buttonImageFile = @"button.png";
 	{
 		NSString *digit = [button titleForState:UIControlStateNormal];
 
-		NSString *oldText = numberTextField.text;
-		if ( oldText != nil )
-			numberTextField.text = [NSString stringWithFormat:@"%@%@", oldText, digit];
-		else
-			numberTextField.text = digit;
-		
-		if (endCallButton.hidden == YES)
-		{
-			beginCallButton.enabled = YES;
-		}
 		[delegate view:self releasedDTMF:digit];
 	}
 }
 
 -(void) didBeginCall
 {
-	if ( numberTextField.text != @"" )
-	{
-		beginCallButton.enabled = NO;
-		clearNumberButton.hidden = YES;
-		endCallButton.hidden = NO;
-	}
+	inCall = YES;
+	[self updateButtonStates];
 }
 
 -(void) didEndCall
 {
-	beginCallButton.enabled = NO;
-	endCallButton.hidden = YES;
-	clearNumberButton.hidden = NO;
-	numberTextField.text = @"";
+	inCall = NO;
+	[self updateButtonStates];
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+-(BOOL) textFieldShouldReturn:(UITextField *)textField
 {
 	[textField resignFirstResponder];
+	return NO;
+}
+
+-(BOOL) textField:(UITextField *)textField
+	shouldChangeCharactersInRange:(NSRange)range
+	replacementString:(NSString *)string
+{
+	// [pzion 20081012] This is a pretty big hack: we want the button states to
+	// update *after* the text is changed.
+	[self performSelector:@selector(updateButtonStates) withObject:nil afterDelay:0.0];
 	return YES;
 }
 
 -(void) keyboardDisappearing:(NSNotification *)note
 {
 	NSLog(@"Received notification: %@", note);
-	if ([numberTextField.text length] != 0)
-	{
-		beginCallButton.enabled = YES;
-	}
 }
 
 -(void) keyboardAppearing:(NSNotification *)note
