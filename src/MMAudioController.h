@@ -21,23 +21,28 @@
 #define SIMULATE_AUDIO
 #endif
 
-#define MM_AUDIO_CONTROLLER_NUM_BUFFERS 16
-#define MM_AUDIO_CONTROLLER_NUM_BUFFERS_TO_PUSH 2
+#define MM_AUDIO_CONTROLLER_NUM_BUFFERS 6
 #define MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER 160
 #define MM_AUDIO_CONTROLLER_BUFFER_SIZE (MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))
 
 @interface MMAudioController : MMDataProducer <MMDataConsumer>
 {
 @private
-	BOOL recording;
+	BOOL recording, playing;
 #ifdef SIMULATE_AUDIO
 	MMToneGenerator *toneGenerator;
 	unsigned toneGeneratorOffset;
 	NSTimer *recordTimer;
 #else
 	AudioStreamBasicDescription audioFormat;
-	AudioQueueRef inputQueue, outputQueue;
-	AudioQueueBufferRef inputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS], outputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
+
+	AudioQueueRef inputQueue;
+	AudioQueueBufferRef inputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
+	unsigned numAvailableInputBuffers;
+	AudioQueueBufferRef availableInputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
+	
+	AudioQueueRef outputQueue;
+	AudioQueueBufferRef outputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
 	unsigned numAvailableOutputBuffers;
 	AudioQueueBufferRef availableOutputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
 #endif

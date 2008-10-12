@@ -7,9 +7,9 @@
 //
 
 #import "MMViewController.h"
-#import "MMRingProducer.h"
-#import "MMBusyProducer.h"
-#import "MMFastBusyProducer.h"
+#import "MMRingInjector.h"
+#import "MMBusyInjector.h"
+#import "MMFastBusyInjector.h"
 #import "MMULawEncoder.h"
 #import "MMULawDecoder.h"
 #import "MMSpeexEncoder.h"
@@ -29,9 +29,9 @@
 		iax = [[MMIAX alloc] init];
 		iax.delegate = self;
 
-		ringtoneInjector = [[MMRingProducer alloc] init];
-		busyInjector = [[MMBusyProducer alloc] init];
-		fastBusyInjector = [[MMFastBusyProducer alloc] init];
+		ringtoneInjector = [[MMRingInjector alloc] init];
+		busyInjector = [[MMBusyInjector alloc] init];
+		fastBusyInjector = [[MMFastBusyInjector alloc] init];
 		dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
 		nullProducer = [[MMNullProducer alloc] initWithSamplesPerPacket:160 samplingFrequency:8000];
 		

@@ -1,15 +1,15 @@
 //
-//  MMRingProducer.m
+//  MMRingInjector.m
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCadencedSampleProducer.h"
+#import "MMCadencedToneInjector.h"
 #import "MMToneGenerator.h"
 
-@implementation MMCadencedSampleProducer
+@implementation MMCadencedToneInjector
 
 -(id) initWithSamplingFrequency:(unsigned)_samplingFrequency
 	numTones:(unsigned)numTones
@@ -48,7 +48,7 @@
 -(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
 {
 	if ( timePosition % totalSamples < onSamples )
-		[toneGenerator generateSamples:data count:numSamples offset:timePosition];
+		[toneGenerator injectSamples:data count:numSamples offset:timePosition];
 	timePosition += numSamples;
 
 	[self produceData:data ofSize:size numSamples:numSamples];

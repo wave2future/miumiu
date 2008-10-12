@@ -1,15 +1,15 @@
 //
-//  MMRingProducer.m
+//  MMFastBusyInjector.m
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMBusyProducer.h"
+#import "MMFastBusyInjector.h"
 #import "MMToneGenerator.h"
 
-@implementation MMBusyProducer
+@implementation MMFastBusyInjector
 
 -(id) init
 {
@@ -20,8 +20,8 @@
 		numTones:numTones
 		amplitudes:amplitudes
 		frequencies:frequencies
-		onSeconds:0.5
-		offSeconds:0.5];
+		onSeconds:0.25
+		offSeconds:0.25];
 }
 
 @end

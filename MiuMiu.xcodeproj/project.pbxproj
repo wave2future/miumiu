@@ -12,11 +12,11 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MMViewController.m */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
-		DB44FAD70EA1674F00B927E9 /* MMNullProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FAD60EA1674F00B927E9 /* MMNullProducer.m */; };
-		DB4C137E0EA11CD6000AAB0A /* MMCadencedSampleProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C137D0EA11CD6000AAB0A /* MMCadencedSampleProducer.m */; };
-		DB4C13960EA11D46000AAB0A /* MMRingProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C13950EA11D46000AAB0A /* MMRingProducer.m */; };
-		DB4C139E0EA11D88000AAB0A /* MMBusyProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C139D0EA11D88000AAB0A /* MMBusyProducer.m */; };
-		DB4C13A70EA11DB8000AAB0A /* MMFastBusyProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C13A60EA11DB8000AAB0A /* MMFastBusyProducer.m */; };
+		DB44FC450EA17D1F00B927E9 /* MMNullProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC440EA17D1F00B927E9 /* MMNullProducer.m */; };
+		DB44FC560EA17D7800B927E9 /* MMCadencedToneInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */; };
+		DB44FC620EA17DCF00B927E9 /* MMBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5D0EA17DCF00B927E9 /* MMBusyInjector.m */; };
+		DB44FC630EA17DCF00B927E9 /* MMFastBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */; };
+		DB44FC640EA17DCF00B927E9 /* MMRingInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC610EA17DCF00B927E9 /* MMRingInjector.m */; };
 		DB4C13B20EA11DF1000AAB0A /* MMToneGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */; };
 		DB778B380E9DD9DC00EC2FC3 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778B330E9DD6EC00EC2FC3 /* MMSpeexDecoder.m */; };
 		DB778B390E9DD9F000EC2FC3 /* MMSpeexEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778AFC0E9DD1C100EC2FC3 /* MMSpeexEncoder.m */; };
@@ -184,16 +184,16 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
-		DB44FAD50EA1674F00B927E9 /* MMNullProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNullProducer.h; sourceTree = "<group>"; };
-		DB44FAD60EA1674F00B927E9 /* MMNullProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNullProducer.m; sourceTree = "<group>"; };
-		DB4C137C0EA11CD6000AAB0A /* MMCadencedSampleProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCadencedSampleProducer.h; path = src/MMCadencedSampleProducer.h; sourceTree = "<group>"; };
-		DB4C137D0EA11CD6000AAB0A /* MMCadencedSampleProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCadencedSampleProducer.m; path = src/MMCadencedSampleProducer.m; sourceTree = "<group>"; };
-		DB4C13940EA11D46000AAB0A /* MMRingProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRingProducer.h; path = src/MMRingProducer.h; sourceTree = "<group>"; };
-		DB4C13950EA11D46000AAB0A /* MMRingProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRingProducer.m; path = src/MMRingProducer.m; sourceTree = "<group>"; };
-		DB4C139C0EA11D88000AAB0A /* MMBusyProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMBusyProducer.h; path = src/MMBusyProducer.h; sourceTree = "<group>"; };
-		DB4C139D0EA11D88000AAB0A /* MMBusyProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMBusyProducer.m; path = src/MMBusyProducer.m; sourceTree = "<group>"; };
-		DB4C13A50EA11DB8000AAB0A /* MMFastBusyProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMFastBusyProducer.h; path = src/MMFastBusyProducer.h; sourceTree = "<group>"; };
-		DB4C13A60EA11DB8000AAB0A /* MMFastBusyProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMFastBusyProducer.m; path = src/MMFastBusyProducer.m; sourceTree = "<group>"; };
+		DB44FC430EA17D1F00B927E9 /* MMNullProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMNullProducer.h; path = src/MMNullProducer.h; sourceTree = "<group>"; };
+		DB44FC440EA17D1F00B927E9 /* MMNullProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMNullProducer.m; path = src/MMNullProducer.m; sourceTree = "<group>"; };
+		DB44FC540EA17D7800B927E9 /* MMCadencedToneInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCadencedToneInjector.h; path = src/MMCadencedToneInjector.h; sourceTree = "<group>"; };
+		DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCadencedToneInjector.m; path = src/MMCadencedToneInjector.m; sourceTree = "<group>"; };
+		DB44FC5C0EA17DCF00B927E9 /* MMBusyInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMBusyInjector.h; path = src/MMBusyInjector.h; sourceTree = "<group>"; };
+		DB44FC5D0EA17DCF00B927E9 /* MMBusyInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMBusyInjector.m; path = src/MMBusyInjector.m; sourceTree = "<group>"; };
+		DB44FC5E0EA17DCF00B927E9 /* MMFastBusyInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMFastBusyInjector.h; path = src/MMFastBusyInjector.h; sourceTree = "<group>"; };
+		DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMFastBusyInjector.m; path = src/MMFastBusyInjector.m; sourceTree = "<group>"; };
+		DB44FC600EA17DCF00B927E9 /* MMRingInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRingInjector.h; path = src/MMRingInjector.h; sourceTree = "<group>"; };
+		DB44FC610EA17DCF00B927E9 /* MMRingInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRingInjector.m; path = src/MMRingInjector.m; sourceTree = "<group>"; };
 		DB4C13B00EA11DF1000AAB0A /* MMToneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMToneGenerator.h; path = src/MMToneGenerator.h; sourceTree = "<group>"; };
 		DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMToneGenerator.m; path = src/MMToneGenerator.m; sourceTree = "<group>"; };
 		DB778AFB0E9DD1C100EC2FC3 /* MMSpeexEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSpeexEncoder.h; path = src/MMSpeexEncoder.h; sourceTree = "<group>"; };
@@ -555,14 +555,14 @@
 			children = (
 				DB4C13B00EA11DF1000AAB0A /* MMToneGenerator.h */,
 				DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */,
-				DB4C137C0EA11CD6000AAB0A /* MMCadencedSampleProducer.h */,
-				DB4C137D0EA11CD6000AAB0A /* MMCadencedSampleProducer.m */,
-				DB4C13940EA11D46000AAB0A /* MMRingProducer.h */,
-				DB4C13950EA11D46000AAB0A /* MMRingProducer.m */,
-				DB4C139C0EA11D88000AAB0A /* MMBusyProducer.h */,
-				DB4C139D0EA11D88000AAB0A /* MMBusyProducer.m */,
-				DB4C13A50EA11DB8000AAB0A /* MMFastBusyProducer.h */,
-				DB4C13A60EA11DB8000AAB0A /* MMFastBusyProducer.m */,
+				DB44FC540EA17D7800B927E9 /* MMCadencedToneInjector.h */,
+				DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */,
+				DB44FC600EA17DCF00B927E9 /* MMRingInjector.h */,
+				DB44FC610EA17DCF00B927E9 /* MMRingInjector.m */,
+				DB44FC5C0EA17DCF00B927E9 /* MMBusyInjector.h */,
+				DB44FC5D0EA17DCF00B927E9 /* MMBusyInjector.m */,
+				DB44FC5E0EA17DCF00B927E9 /* MMFastBusyInjector.h */,
+				DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */,
 				DBF3D0AD0EA15AF5009AA8A2 /* MMDTMFInjector.h */,
 				DBF3D0AE0EA15AF5009AA8A2 /* MMDTMFInjector.m */,
 			);
@@ -635,6 +635,8 @@
 				DBC1F1CA0E9FA5D70071E7EC /* MMDataProducer.h */,
 				DBC1F1CB0E9FA5D70071E7EC /* MMDataProducer.m */,
 				DBC1F1CE0E9FA5F00071E7EC /* MMDataConsumer.h */,
+				DB44FC430EA17D1F00B927E9 /* MMNullProducer.h */,
+				DB44FC440EA17D1F00B927E9 /* MMNullProducer.m */,
 				DBC1F3220E9FDD990071E7EC /* MMCall.h */,
 				DB7C89340E9FEB8900A91FB4 /* MMCall.m */,
 				DBC1F3470E9FE03B0071E7EC /* MMIAXCall.h */,
@@ -646,8 +648,6 @@
 				DB7C8B370EA0115400A91FB4 /* MMCodec.h */,
 				DB7C8B380EA0115400A91FB4 /* MMCodec.m */,
 				DB4C137F0EA11CDF000AAB0A /* Tone Generation */,
-				DB44FAD50EA1674F00B927E9 /* MMNullProducer.h */,
-				DB44FAD60EA1674F00B927E9 /* MMNullProducer.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -843,13 +843,13 @@
 				DB7C8B330EA010AB00A91FB4 /* MMULawEncoder.m in Sources */,
 				DB7C8B360EA010BA00A91FB4 /* MMULawDecoder.m in Sources */,
 				DB7C8B390EA0115400A91FB4 /* MMCodec.m in Sources */,
-				DB4C137E0EA11CD6000AAB0A /* MMCadencedSampleProducer.m in Sources */,
-				DB4C13960EA11D46000AAB0A /* MMRingProducer.m in Sources */,
-				DB4C139E0EA11D88000AAB0A /* MMBusyProducer.m in Sources */,
-				DB4C13A70EA11DB8000AAB0A /* MMFastBusyProducer.m in Sources */,
 				DB4C13B20EA11DF1000AAB0A /* MMToneGenerator.m in Sources */,
 				DBF3D0AF0EA15AF5009AA8A2 /* MMDTMFInjector.m in Sources */,
-				DB44FAD70EA1674F00B927E9 /* MMNullProducer.m in Sources */,
+				DB44FC450EA17D1F00B927E9 /* MMNullProducer.m in Sources */,
+				DB44FC560EA17D7800B927E9 /* MMCadencedToneInjector.m in Sources */,
+				DB44FC620EA17DCF00B927E9 /* MMBusyInjector.m in Sources */,
+				DB44FC630EA17DCF00B927E9 /* MMFastBusyInjector.m in Sources */,
+				DB44FC640EA17DCF00B927E9 /* MMRingInjector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

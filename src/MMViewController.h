@@ -12,9 +12,9 @@
 #import "MMCall.h"
 
 @class MMCodec;
-@class MMRingProducer;
-@class MMBusyProducer;
-@class MMFastBusyProducer;
+@class MMRingInjector;
+@class MMBusyInjector;
+@class MMFastBusyInjector;
 @class MMAudioController;
 @class MMDTMFInjector;
 @class MMNullProducer;
@@ -27,9 +27,9 @@
 	MMCodec *encoder, *decoder;
 	MMIAX *iax;
 	MMCall *call;
-	MMRingProducer *ringtoneInjector;
-	MMBusyProducer *busyInjector;
-	MMFastBusyProducer *fastBusyInjector;
+	MMRingInjector *ringtoneInjector;
+	MMBusyInjector *busyInjector;
+	MMFastBusyInjector *fastBusyInjector;
 	MMDTMFInjector *dtmfInjector;
 	MMNullProducer *nullProducer;
 }

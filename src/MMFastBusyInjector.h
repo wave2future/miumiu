@@ -1,14 +1,14 @@
 //
-//  MMRingProducer.h
+//  MMFastBusyInjector.h
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCadencedSampleProducer.h"
+#import "MMCadencedToneInjector.h"
 
-@interface MMFastBusyProducer : MMCadencedSampleProducer
+@interface MMFastBusyInjector : MMCadencedToneInjector
 {
 }
 

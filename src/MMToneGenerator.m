@@ -51,10 +51,4 @@
 	}
 }
 
--(void) generateSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset
-{
-	memset( samples, 0, count*sizeof(short) );
-	[self injectSamples:samples count:count offset:offset];
-}
-
 @end

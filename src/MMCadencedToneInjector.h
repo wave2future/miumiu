@@ -1,5 +1,5 @@
 //
-//  MMRingProducer.h
+//  MMRingInjector.h
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
@@ -10,7 +10,7 @@
 
 @class MMToneGenerator;
 
-@interface MMCadencedSampleProducer : MMCodec
+@interface MMCadencedToneInjector : MMCodec
 {
 @private
 	unsigned samplingFrequency;

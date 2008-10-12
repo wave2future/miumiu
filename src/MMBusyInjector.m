@@ -1,26 +1,27 @@
 //
-//  MMRingProducer.m
+//  MMBusyInjector.m
 //  MiuMiu
 //
 //  Created by Peter Zion on 10/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMRingProducer.h"
+#import "MMBusyInjector.h"
+#import "MMToneGenerator.h"
 
-@implementation MMRingProducer
+@implementation MMBusyInjector
 
 -(id) init
 {
 	static const unsigned numTones = 2;
 	static const float amplitudes[] = { 8192, 8192 };
-	static const float frequencies[] = { 440, 480 };
+	static const float frequencies[] = { 480, 620 };
 	return [super initWithSamplingFrequency:8000
 		numTones:numTones
 		amplitudes:amplitudes
 		frequencies:frequencies
-		onSeconds:2
-		offSeconds:4];
+		onSeconds:0.5
+		offSeconds:0.5];
 }
 
 @end
