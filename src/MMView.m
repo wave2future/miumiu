@@ -12,14 +12,22 @@ static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberT
 
 #define NUM_DIGITS 12
 static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#" };
+static NSString *buttonImageFile = @"button.png";
 
 @implementation MMView
 
 -(UIButton *) buttonWithTitle:(NSString *)title
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	button.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+	button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+	button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+	UIImage *backgroundImage = [[UIImage imageNamed:buttonImageFile] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
+	[button setBackgroundImage:backgroundImage forState:0];
+	button.font = [UIFont boldSystemFontOfSize:24.0];
 	[button setTitle:title forState:UIControlStateNormal];
-	[button setTitleColor:[UIColor grayColor] forState:UIControlStateDisabled];
+	[button setTitleColor:[UIColor blackColor] forState:UIControlEventTouchDown];
+	[button setTitleColor:[UIColor blackColor] forState:UIControlStateDisabled];	
 	[button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
 	[button addTarget:self action:@selector(buttonReleased:) forControlEvents:UIControlEventTouchUpInside];
 	[self addSubview:button];
@@ -33,15 +41,28 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		numberTextField = [[UITextField alloc] init];
 		numberTextField.text = number;
 		numberTextField.textColor = [UIColor whiteColor];
-		numberTextField.returnKeyType = UIReturnKeyGo;
+		numberTextField.returnKeyType = UIReturnKeyDone;
 		numberTextField.enablesReturnKeyAutomatically = YES;
 		numberTextField.keyboardType = UIKeyboardTypeEmailAddress;
 		numberTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 		numberTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		numberTextField.clearButtonMode = UITextFieldViewModeAlways;
 		numberTextField.placeholder = @"Dial number then press Call";
+		numberTextField.delegate = self;
+		
 		[self addSubview:numberTextField];
 	
+		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+		[notificationCenter addObserver:self 
+							   selector:@selector(keyboardAppearing:) 
+							   name:@"UIKeyboardWillShowNotification" 
+							   object:nil];
+		
+		[notificationCenter addObserver:self 
+							   selector:@selector(keyboardDisappearing:) 
+							   name:@"UIKeyboardWillHideNotification" 
+							   object:nil];
+		
 		beginCallButton = [[self buttonWithTitle:beginCallTitle] retain];
 		beginCallButton.enabled = !inProgress && ([numberTextField.text length] != 0);
 		
@@ -60,6 +81,9 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 
 -(void) dealloc
 {
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter removeObserver:self];
+	
 	[digitButtons release];
 	[endCallButton release];
 	[beginCallButton release];
@@ -129,7 +153,10 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		else
 			numberTextField.text = digit;
 		
-		beginCallButton.enabled = YES;
+		if (endCallButton.hidden == YES)
+		{
+			beginCallButton.enabled = YES;
+		}
 		[delegate view:self releasedDTMF:digit];
 	}
 }
@@ -150,6 +177,26 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	endCallButton.hidden = YES;
 	clearNumberButton.hidden = NO;
 	numberTextField.text = @"";
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+	[textField resignFirstResponder];
+	return YES;
+}
+
+-(void) keyboardDisappearing:(NSNotification *)note
+{
+	NSLog(@"Received notification: %@", note);
+	if ([numberTextField.text length] != 0)
+	{
+		beginCallButton.enabled = YES;
+	}
+}
+
+-(void) keyboardAppearing:(NSNotification *)note
+{
+	NSLog(@"Received notification: %@", note);
 }
 
 @synthesize delegate;
