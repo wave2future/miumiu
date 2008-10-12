@@ -17,6 +17,8 @@
 		DB44FC620EA17DCF00B927E9 /* MMBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5D0EA17DCF00B927E9 /* MMBusyInjector.m */; };
 		DB44FC630EA17DCF00B927E9 /* MMFastBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */; };
 		DB44FC640EA17DCF00B927E9 /* MMRingInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC610EA17DCF00B927E9 /* MMRingInjector.m */; };
+		DB44FD040EA1A74C00B927E9 /* MMComfortNoiseInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */; };
+		DB44FD070EA1A77900B927E9 /* MMInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FD060EA1A77900B927E9 /* MMInjector.m */; };
 		DB4C13B20EA11DF1000AAB0A /* MMToneGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */; };
 		DB778B380E9DD9DC00EC2FC3 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778B330E9DD6EC00EC2FC3 /* MMSpeexDecoder.m */; };
 		DB778B390E9DD9F000EC2FC3 /* MMSpeexEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778AFC0E9DD1C100EC2FC3 /* MMSpeexEncoder.m */; };
@@ -194,6 +196,10 @@
 		DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMFastBusyInjector.m; path = src/MMFastBusyInjector.m; sourceTree = "<group>"; };
 		DB44FC600EA17DCF00B927E9 /* MMRingInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRingInjector.h; path = src/MMRingInjector.h; sourceTree = "<group>"; };
 		DB44FC610EA17DCF00B927E9 /* MMRingInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRingInjector.m; path = src/MMRingInjector.m; sourceTree = "<group>"; };
+		DB44FD020EA1A74C00B927E9 /* MMComfortNoiseInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMComfortNoiseInjector.h; path = src/MMComfortNoiseInjector.h; sourceTree = "<group>"; };
+		DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMComfortNoiseInjector.m; path = src/MMComfortNoiseInjector.m; sourceTree = "<group>"; };
+		DB44FD050EA1A77900B927E9 /* MMInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMInjector.h; path = src/MMInjector.h; sourceTree = "<group>"; };
+		DB44FD060EA1A77900B927E9 /* MMInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMInjector.m; path = src/MMInjector.m; sourceTree = "<group>"; };
 		DB4C13B00EA11DF1000AAB0A /* MMToneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMToneGenerator.h; path = src/MMToneGenerator.h; sourceTree = "<group>"; };
 		DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMToneGenerator.m; path = src/MMToneGenerator.m; sourceTree = "<group>"; };
 		DB778AFB0E9DD1C100EC2FC3 /* MMSpeexEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSpeexEncoder.h; path = src/MMSpeexEncoder.h; sourceTree = "<group>"; };
@@ -647,6 +653,10 @@
 				DB7C8B350EA010BA00A91FB4 /* MMULawDecoder.m */,
 				DB7C8B370EA0115400A91FB4 /* MMCodec.h */,
 				DB7C8B380EA0115400A91FB4 /* MMCodec.m */,
+				DB44FD050EA1A77900B927E9 /* MMInjector.h */,
+				DB44FD060EA1A77900B927E9 /* MMInjector.m */,
+				DB44FD020EA1A74C00B927E9 /* MMComfortNoiseInjector.h */,
+				DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */,
 				DB4C137F0EA11CDF000AAB0A /* Tone Generation */,
 			);
 			name = Sources;
@@ -850,6 +860,8 @@
 				DB44FC620EA17DCF00B927E9 /* MMBusyInjector.m in Sources */,
 				DB44FC630EA17DCF00B927E9 /* MMFastBusyInjector.m in Sources */,
 				DB44FC640EA17DCF00B927E9 /* MMRingInjector.m in Sources */,
+				DB44FD040EA1A74C00B927E9 /* MMComfortNoiseInjector.m in Sources */,
+				DB44FD070EA1A77900B927E9 /* MMInjector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

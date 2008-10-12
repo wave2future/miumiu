@@ -17,6 +17,7 @@
 #import "MMAudioController.h"
 #import "MMDTMFInjector.h"
 #import "MMNullProducer.h"
+#import "MMComfortNoiseInjector.h"
 
 @implementation MMViewController
 
@@ -34,6 +35,7 @@
 		fastBusyInjector = [[MMFastBusyInjector alloc] init];
 		dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
 		nullProducer = [[MMNullProducer alloc] initWithSamplesPerPacket:160 samplingFrequency:8000];
+		comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
 		
 		[dtmfInjector connectToConsumer:audioController];
 		[nullProducer connectToConsumer:dtmfInjector];
@@ -43,6 +45,7 @@
 
 -(void) dealloc
 {
+	[comfortNoiseInjector release];
 	[nullProducer release];
 	[dtmfInjector release];
 	[fastBusyInjector release];
@@ -85,12 +88,15 @@
 
 -(void) callDidBegin:(MMCall *)call
 {
+	[comfortNoiseInjector connectToConsumer:dtmfInjector];
+	[nullProducer connectToConsumer:comfortNoiseInjector];
+	
 	[view didBeginCall:self];
 }
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
-	[ringtoneInjector connectToConsumer:dtmfInjector];
+	[ringtoneInjector connectToConsumer:comfortNoiseInjector];
 	[nullProducer connectToConsumer:ringtoneInjector];
 }
 
@@ -113,26 +119,28 @@
 	[audioController connectToConsumer:encoder];
 	[encoder connectToConsumer:call];
 	[call connectToConsumer:decoder];
-	[decoder connectToConsumer:dtmfInjector];
+	[decoder connectToConsumer:comfortNoiseInjector];
 
 	[audioController startRecording];
 }
 
 -(void) callDidReturnBusy:(MMCall *)_
 {
-	[busyInjector connectToConsumer:dtmfInjector];
+	[busyInjector connectToConsumer:comfortNoiseInjector];
 	[nullProducer connectToConsumer:busyInjector];
 }
 
 -(void) callDidFail:(MMCall *)_
 {
-	[fastBusyInjector connectToConsumer:dtmfInjector];
+	[fastBusyInjector connectToConsumer:comfortNoiseInjector];
 	[nullProducer connectToConsumer:fastBusyInjector];
 }
 
 -(void) callDidEnd:(MMCall *)_
 {
 	[audioController stopRecording];
+	
+	[comfortNoiseInjector disconnect];
 
 	[ringtoneInjector disconnect];
 	[busyInjector disconnect];

@@ -18,6 +18,7 @@
 @class MMAudioController;
 @class MMDTMFInjector;
 @class MMNullProducer;
+@class MMComfortNoiseInjector;
 
 @interface MMViewController : UIViewController <MMViewDelegate, MMIAXDelegate, MMCallDelegate>
 {
@@ -32,6 +33,7 @@
 	MMFastBusyInjector *fastBusyInjector;
 	MMDTMFInjector *dtmfInjector;
 	MMNullProducer *nullProducer;
+	MMComfortNoiseInjector *comfortNoiseInjector;
 }
 
 @end

@@ -16,7 +16,7 @@
 
 #else
 
-#define DebugLog( format, ... )
+#define LOG( format, ... )
 
 #endif
 
