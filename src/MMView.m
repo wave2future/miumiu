@@ -33,15 +33,28 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		numberTextField = [[UITextField alloc] init];
 		numberTextField.text = number;
 		numberTextField.textColor = [UIColor whiteColor];
-		numberTextField.returnKeyType = UIReturnKeyGo;
+		numberTextField.returnKeyType = UIReturnKeyDone;
 		numberTextField.enablesReturnKeyAutomatically = YES;
 		numberTextField.keyboardType = UIKeyboardTypeEmailAddress;
 		numberTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 		numberTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		numberTextField.clearButtonMode = UITextFieldViewModeAlways;
 		numberTextField.placeholder = @"Dial number then press Call";
+		numberTextField.delegate = self;
+		
 		[self addSubview:numberTextField];
 	
+		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+		[notificationCenter addObserver:self 
+							   selector:@selector(shrinkKeypad:) 
+							   name:@"UIKeyboardWillShowNotification" 
+							   object:nil];
+		
+		[notificationCenter addObserver:self 
+							   selector:@selector(growKeypad:) 
+							   name:@"UIKeyboardWillHideNotification" 
+							   object:nil];
+		
 		beginCallButton = [[self buttonWithTitle:beginCallTitle] retain];
 		beginCallButton.enabled = !inProgress && ([numberTextField.text length] != 0);
 		
@@ -60,6 +73,9 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 
 -(void) dealloc
 {
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter removeObserver:self];
+	
 	[digitButtons release];
 	[endCallButton release];
 	[beginCallButton release];
@@ -150,6 +166,22 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	endCallButton.hidden = YES;
 	clearNumberButton.hidden = NO;
 	numberTextField.text = @"";
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+	[textField resignFirstResponder];
+	return YES;
+}
+
+-(void) shrinkKeypad:(NSNotification *)note
+{
+	NSLog(@"Received notification: %@", note);
+}
+
+-(void) growKeypad:(NSNotification *)note
+{
+	NSLog(@"Received notification: %@", note);
 }
 
 @synthesize delegate;

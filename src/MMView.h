@@ -21,7 +21,7 @@
 
 @end
 
-@interface MMView : UIView
+@interface MMView : UIView <UITextFieldDelegate>
 {
 @private
 	id <MMViewDelegate> delegate;
