@@ -19,6 +19,8 @@
 #import "MMNullProducer.h"
 #import "MMComfortNoiseInjector.h"
 
+//#define LOOPBACK_THROUGH_CODECS
+
 @implementation MMViewController
 
 -(id) init
@@ -117,8 +119,12 @@
 	}
 	
 	[audioController connectToConsumer:encoder];
+#ifdef LOOPBACK_THROUGH_CODECS
+	[encoder connectToConsumer:decoder];
+#else
 	[encoder connectToConsumer:call];
 	[call connectToConsumer:decoder];
+#endif
 	[decoder connectToConsumer:comfortNoiseInjector];
 
 	[audioController startRecording];
