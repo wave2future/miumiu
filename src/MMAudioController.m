@@ -167,9 +167,6 @@ static void interruptionCallback(
 	const char *data = (char *)_data;
 	while ( size > 0 && numAvailableOutputBuffers > 0 )
 	{
-		if ( !playing && numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - 2 )
-			AudioQueueStart( outputQueue, NULL );
-
 		AudioQueueBufferRef queueBuffer = availableOutputBuffers[--numAvailableOutputBuffers];
 		queueBuffer->mAudioDataByteSize = size;
 		if ( queueBuffer->mAudioDataByteSize > queueBuffer->mAudioDataBytesCapacity )
@@ -178,6 +175,9 @@ static void interruptionCallback(
 		data += queueBuffer->mAudioDataByteSize;
 		size -= queueBuffer->mAudioDataByteSize;
 		AudioQueueEnqueueBuffer( outputQueue, queueBuffer, 0, NULL );
+
+		if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - 2 )
+			AudioQueueStart( outputQueue, NULL );
 	}
 #endif
 }

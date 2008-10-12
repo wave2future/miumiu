@@ -28,7 +28,7 @@
 @interface MMAudioController : MMDataProducer <MMDataConsumer>
 {
 @private
-	BOOL recording, playing;
+	BOOL recording;
 #ifdef SIMULATE_AUDIO
 	MMToneGenerator *toneGenerator;
 	unsigned toneGeneratorOffset;
