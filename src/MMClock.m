@@ -18,14 +18,12 @@
 	{
 		samplesPerTick = _samplesPerTick;
 		timerInterval = samplesPerTick / samplingFrequency;
-		buffer = [[MMCircularBuffer alloc] initWithCapacity:(4*samplesPerTick*sizeof(short))];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
-	[buffer release];
 	[super dealloc];
 }
 
@@ -35,7 +33,6 @@
 	
 	timer = [[NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
 	samplesSent = samplesNeeded = 0;
-	[buffer zap];
 }
 
 -(void) disconnect
@@ -54,11 +51,10 @@
 	{
 		unsigned size = samplesPerTick * sizeof(short);
 		short *data = alloca( size );
+		memset( data, 0, size );
 
 		while ( samplesSent < samplesNeeded )
 		{
-			if ( ![buffer getData:data ofSize:size] )
-				memset( data, 0, size );
 			[self produceData:data ofSize:size numSamples:samplesPerTick];
 			samplesSent += samplesPerTick;
 		}
@@ -67,12 +63,7 @@
 
 -(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
-	if ( samplesSent + numSamples <= samplesNeeded )
-	{
-		[self produceData:data ofSize:size numSamples:numSamples];
-		samplesSent += numSamples;
-	}
-	else
-		[buffer putData:data ofSize:size];
+	[self produceData:data ofSize:size numSamples:numSamples];
+	samplesSent += numSamples;
 }
 @end

@@ -8,15 +8,12 @@
 
 #import "MMDataProducer.h"
 
-@class MMCircularBuffer;
-
 @interface MMClock : MMDataProducer <MMDataConsumer>
 {
 @private
 	unsigned samplesPerTick;
 	float timerInterval;
 	NSTimer	*timer;
-	MMCircularBuffer *buffer;
 	unsigned samplesSent, samplesNeeded;
 }
 
