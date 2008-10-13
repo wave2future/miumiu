@@ -124,7 +124,11 @@ static void interruptionCallback(
 			);
 		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS; ++i )
-			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &availableInputBuffers[numAvailableInputBuffers++] );
+		{
+			AudioQueueBufferRef buffer;
+			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
+			AudioQueueEnqueueBuffer( inputQueue, buffer, 0, NULL );
+		}
 #endif
 	}
 	return self;
@@ -135,10 +139,9 @@ static void interruptionCallback(
 	[self stopRecording];
 
 #ifndef SIMULATE_AUDIO
-	AudioQueueDispose( inputQueue, TRUE );
+	AudioQueueDispose( inputQueue, FALSE );
 	
-	AudioQueueStop( outputQueue, FALSE );
-	AudioQueueDispose( outputQueue, TRUE );
+	AudioQueueDispose( outputQueue, FALSE );
 	[outputDataBuffer release];
 	AudioSessionSetActive( FALSE );
 #endif
@@ -152,40 +155,24 @@ static void interruptionCallback(
 
 -(void) startRecording
 {
-	if ( !recording )
-	{
-		recording = YES;
-		
 #ifdef SIMULATE_AUDIO
-		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
+	recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
 #else
-		while ( numAvailableInputBuffers > 0 )
-		{
-			AudioQueueEnqueueBuffer( inputQueue, availableInputBuffers[--numAvailableInputBuffers], 0, NULL );
-			LOG( @"Initially queued input buffer" );
-		}
-		
-		AudioQueueStart( inputQueue, NULL );
-		LOG( @"Started input queue" );
+	AudioQueueStart( inputQueue, NULL );
+	LOG( @"Started input queue" );
 #endif
-	}
 }
 
 -(void) stopRecording
 {
-	if ( recording )
-	{
-		recording = NO;
-
 #ifdef SIMULATE_AUDIO
-		[recordTimer invalidate];
-		[recordTimer release];
-		recordTimer = nil;
+	[recordTimer invalidate];
+	[recordTimer release];
+	recordTimer = nil;
 #else
-		AudioQueueStop( inputQueue, FALSE );
-		LOG( @"Stopped input queue" );
+	AudioQueuePause( inputQueue );
+	LOG( @"Stopped input queue" );
 #endif
-	}
 }
 
 -(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
@@ -224,16 +211,8 @@ static void interruptionCallback(
 {
 	[self produceData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
 
-	if ( recording )
-	{
-		AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
-		LOG( @"Requeued input buffer" );
-	}
-	else
-	{
-		availableInputBuffers[numAvailableInputBuffers++] = buffer;
-		LOG( @"Marked input buffer as available" );
-	}
+	AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
+	LOG( @"Requeued input buffer" );
 }
 
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue

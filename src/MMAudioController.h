@@ -33,7 +33,7 @@
 
 //#define MM_AUDIO_CONTROLLER_LOG
 
-#define MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS 6
+#define MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS 50
 #define MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS 6
 #define MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER 160
 #define MM_AUDIO_CONTROLLER_BUFFER_SIZE (MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))
@@ -46,7 +46,6 @@
 	NSOutputStream *logStream;
 #endif
 
-	BOOL recording;
 #ifdef SIMULATE_AUDIO
 	MMToneGenerator *toneGenerator;
 	unsigned toneGeneratorOffset;
@@ -55,8 +54,6 @@
 	AudioStreamBasicDescription audioFormat;
 
 	AudioQueueRef inputQueue;
-	unsigned numAvailableInputBuffers;
-	AudioQueueBufferRef availableInputBuffers[MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS];
 	
 	MMCircularBuffer *outputDataBuffer;
 	AudioQueueRef outputQueue;
