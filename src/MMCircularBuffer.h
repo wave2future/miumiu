@@ -7,19 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <speex/speex_buffer.h>
 
 @interface MMCircularBuffer : NSObject
 {
 @private
-	SpeexBuffer *speexBuffer;
-	unsigned size, maxSize;
+	unsigned capacity;
+	char *buffer;
+	unsigned head, used;
 }
 
 -(BOOL) putData:(const void *)buffer ofSize:(unsigned)size;
 -(BOOL) getData:(void *)buffer ofSize:(unsigned)size;
 
-@property ( nonatomic, readonly ) unsigned size;
+@property ( nonatomic, readonly ) unsigned capacity;
 @property ( nonatomic, readonly ) unsigned used;
 
 @end

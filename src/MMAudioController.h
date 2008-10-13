@@ -13,6 +13,7 @@
 
 @class MMAudioController;
 @class MMToneGenerator;
+@class MMCircularBuffer;
 
 @protocol MMAudioControllerDelegate <NSObject>
 
@@ -32,7 +33,8 @@
 
 //#define MM_AUDIO_CONTROLLER_LOG
 
-#define MM_AUDIO_CONTROLLER_NUM_BUFFERS 16
+#define MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS 6
+#define MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS 6
 #define MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER 160
 #define MM_AUDIO_CONTROLLER_BUFFER_SIZE (MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))
 
@@ -53,16 +55,13 @@
 	AudioStreamBasicDescription audioFormat;
 
 	AudioQueueRef inputQueue;
-	AudioQueueBufferRef inputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
 	unsigned numAvailableInputBuffers;
-	AudioQueueBufferRef availableInputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
+	AudioQueueBufferRef availableInputBuffers[MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS];
 	
+	MMCircularBuffer *outputDataBuffer;
 	AudioQueueRef outputQueue;
-	AudioQueueBufferRef outputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
 	unsigned numAvailableOutputBuffers;
-	AudioQueueBufferRef availableOutputBuffers[MM_AUDIO_CONTROLLER_NUM_BUFFERS];
-	BOOL outputPaused;
-	unsigned outputDelay, minOutputDelay, maxOutputDelay;
+	AudioQueueBufferRef availableOutputBuffers[MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS];
 #endif
 }
 

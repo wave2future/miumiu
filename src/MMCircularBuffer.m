@@ -14,50 +14,72 @@
 {
 	if ( self = [super init] )
 	{
-		size = 1024;
-		maxSize = 65536;
-		speexBuffer = speex_buffer_init( size );
+		capacity = 4096;
+		buffer = malloc( capacity );
+		head = 0;
+		used = 0;
 	}
 	return self;
 }
 
 -(void) dealloc
 {
-	speex_buffer_destroy( speexBuffer );
+	free( buffer );
 	[super dealloc];
 }
 
--(BOOL) putData:(const void *)buffer ofSize:(unsigned)count
+-(BOOL) putData:(const void *)_data ofSize:(unsigned)size
 {
-	if ( count == 0 )
-		return YES;
+	if ( used + size > capacity )
+		return NO;
 
-	unsigned newUsed = self.used + count;
-	if ( newUsed > size )
+	const char *data = _data;
+	while ( size > 0 )
 	{
-		if ( newUsed > maxSize )
-			return NO;
-
-		speex_buffer_resize( speexBuffer, size = newUsed );
+		unsigned tail = head + used;
+		if ( tail >= capacity )
+			tail -= capacity;
+			
+		unsigned chunk = size;
+		if ( tail + chunk >= capacity )
+			chunk = capacity - tail;
+			
+		memcpy( &buffer[tail], data, chunk );
+		data += chunk;
+		size -= chunk;
+		
+		used += chunk;
 	}
-
-	return speex_buffer_write( speexBuffer, (void *)buffer, count ) == count;
+	
+	return YES;
 }
 
--(BOOL) getData:(void *)buffer ofSize:(unsigned)count
+-(BOOL) getData:(void *)_data ofSize:(unsigned)size
 {
-	if ( self.used < count )
+	if ( used < size )
 		return NO;
 	
-	return speex_buffer_read( speexBuffer, buffer, count ) == count;
+	char *data = _data;
+	while ( size > 0 )
+	{
+		unsigned chunk = size;
+		if ( head + chunk >= capacity )
+			chunk = capacity - head;
+			
+		memcpy( data, &buffer[head], chunk );
+		data += chunk;
+		size -= chunk;
+		
+		head += chunk;
+		if ( head == capacity )
+			head = 0;
+		used -= chunk;
+	}
+	
+	return YES;
 }
 
-@synthesize size;
-
-@dynamic used;
--(unsigned) used
-{
-	return speex_buffer_get_available( speexBuffer );
-}
+@synthesize capacity;
+@synthesize used;
 
 @end
