@@ -29,7 +29,7 @@
 @class MMBusyInjector;
 @class MMFastBusyInjector;
 @class MMDTMFInjector;
-@class MMNullProducer;
+@class MMClock;
 @class MMComfortNoiseInjector;
 
 @interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate, MMAudioControllerDelegate>
@@ -44,7 +44,7 @@
 	MMBusyInjector *busyInjector;
 	MMFastBusyInjector *fastBusyInjector;
 	MMDTMFInjector *dtmfInjector;
-	MMNullProducer *nullProducer;
+	MMClock *clock;
 	MMComfortNoiseInjector *comfortNoiseInjector;
 	float outputDelayToPassToMainThread;
 }

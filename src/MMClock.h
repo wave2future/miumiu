@@ -1,5 +1,5 @@
 //
-//  MMNullProducer.h
+//  MMClock.h
 //  MiuMiu
 //
 //  Created by Peter Zion on 11/10/08.
@@ -8,15 +8,19 @@
 
 #import "MMDataProducer.h"
 
-@interface MMNullProducer : MMDataProducer
+@class MMCircularBuffer;
+
+@interface MMClock : MMDataProducer <MMDataConsumer>
 {
 @private
-	unsigned samplesPerPacket;
+	unsigned samplesPerTick;
 	float timerInterval;
 	NSTimer	*timer;
+	MMCircularBuffer *buffer;
+	unsigned samplesSent, samplesNeeded;
 }
 
--(id) initWithSamplesPerPacket:(unsigned)_samplesPerPacket
+-(id) initWithSamplesPerTick:(unsigned)_samplesPerTick
 	samplingFrequency:(float)samplingFrequency;
 
 @end

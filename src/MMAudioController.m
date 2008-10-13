@@ -104,7 +104,7 @@ static void interruptionCallback(
 			);
 		LOG( @"Created output queue" );
 		
-		outputDataBuffer = [[MMCircularBuffer alloc] init];
+		outputDataBuffer = [[MMCircularBuffer alloc] initWithCapacity:(MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS*MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))];
 		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
 			AudioQueueAllocateBuffer( outputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &availableOutputBuffers[numAvailableOutputBuffers++] );

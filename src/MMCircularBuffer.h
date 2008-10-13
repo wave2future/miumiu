@@ -16,8 +16,11 @@
 	unsigned head, used;
 }
 
+-(id) initWithCapacity:(unsigned)capacity;
+
 -(BOOL) putData:(const void *)buffer ofSize:(unsigned)size;
 -(BOOL) getData:(void *)buffer ofSize:(unsigned)size;
+-(void) zap;
 
 @property ( nonatomic, readonly ) unsigned capacity;
 @property ( nonatomic, readonly ) unsigned used;

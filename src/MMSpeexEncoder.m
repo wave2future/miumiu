@@ -26,7 +26,7 @@
 
 		speex_encoder_ctl( enc_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrame );
 		
-		buffer = [[MMCircularBuffer alloc] init];
+		buffer = [[MMCircularBuffer alloc] initWithCapacity:(2*160*sizeof(short))];
 	}
 	return self;
 }

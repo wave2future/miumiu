@@ -10,11 +10,11 @@
 
 @implementation MMCircularBuffer
 
--(id) init
+-(id) initWithCapacity:(unsigned)_capacity
 {
 	if ( self = [super init] )
 	{
-		capacity = 4096;
+		capacity = _capacity;
 		buffer = malloc( capacity );
 		head = 0;
 		used = 0;
@@ -77,6 +77,11 @@
 	}
 	
 	return YES;
+}
+
+-(void) zap
+{
+	used = 0;
 }
 
 @synthesize capacity;

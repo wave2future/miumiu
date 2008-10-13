@@ -55,7 +55,10 @@
 -(void) end
 {
 	if ( sessionValid )
-		iax_hangup( session, "later!" );	
+	{
+		iax_hangup( session, "later!" );
+		sessionValid = NO;
+	}
 	[delegate callDidEnd:self];
 }
 
