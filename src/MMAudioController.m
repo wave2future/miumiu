@@ -95,6 +95,10 @@ static void interruptionCallback(
 
 		AudioSessionSetActive( TRUE );
 		
+		minOutputDelay = 2;
+		maxOutputDelay = 6;
+		[self resetOutputDelay];
+		
 		AudioQueueNewOutput(
 			&audioFormat,
 			playbackCallback, self,
@@ -109,6 +113,8 @@ static void interruptionCallback(
 			availableOutputBuffers[i] = outputBuffers[i];
 		}
 		numAvailableOutputBuffers = MM_AUDIO_CONTROLLER_NUM_BUFFERS;
+
+		outputPaused = YES;
 
 		AudioQueueNewInput(
 			&audioFormat,
@@ -208,10 +214,12 @@ static void interruptionCallback(
 		AudioQueueEnqueueBuffer( outputQueue, queueBuffer, 0, NULL );
 		LOG( @"Enqueued output buffer" );
 
-		if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - 4 )
+		if ( outputPaused && numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_BUFFERS - outputDelay )
 		{
 			AudioQueueStart( outputQueue, NULL );
 			LOG( @"Started output queue" );
+			[delegate audioController:self outputDelayIsNow:(outputDelay*MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.0)];
+			outputPaused = NO;
 		}
 	}
 #endif
@@ -257,6 +265,9 @@ static void interruptionCallback(
 	{
 		AudioQueuePause( outputQueue );
 		LOG( @"Paused output queue due to underrun" );
+		if ( outputDelay < maxOutputDelay )
+			++outputDelay;
+		outputPaused = YES;
 	}
 }
 #endif
@@ -274,5 +285,12 @@ static void interruptionCallback(
 	[logStream write:(const void *)"\n" maxLength:1];
 }
 #endif
+
+-(void) resetOutputDelay
+{
+	outputDelay = minOutputDelay;
+}
+
+@synthesize delegate;
 
 @end

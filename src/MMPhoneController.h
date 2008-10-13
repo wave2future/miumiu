@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MMIAX.h"
 #import "MMCall.h"
+#import "MMAudioController.h"
 
 @class MMPhoneController;
 
@@ -19,18 +20,19 @@
 -(void) phoneControllerDidBeginCall:(MMPhoneController *)phoneController;
 -(void) phoneControllerDidEndCall:(MMPhoneController *)phoneController;
 
+-(void) phoneController:(MMPhoneController *)phoneController outputDelayIsNow:(float)outputDelay;
+
 @end
 
 @class MMCodec;
 @class MMRingInjector;
 @class MMBusyInjector;
 @class MMFastBusyInjector;
-@class MMAudioController;
 @class MMDTMFInjector;
 @class MMNullProducer;
 @class MMComfortNoiseInjector;
 
-@interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate>
+@interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate, MMAudioControllerDelegate>
 {
 @private
 	id <MMPhoneControllerDelegate> delegate;
@@ -44,6 +46,7 @@
 	MMDTMFInjector *dtmfInjector;
 	MMNullProducer *nullProducer;
 	MMComfortNoiseInjector *comfortNoiseInjector;
+	float outputDelayToPassToMainThread;
 }
 
 -(void) beginCallWithNumber:(NSString *)number;

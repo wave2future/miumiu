@@ -67,4 +67,9 @@
 	[phoneController endCall];
 }
 
+-(void) phoneController:(MMPhoneController *)phoneController outputDelayIsNow:(float)outputDelay
+{
+	[view outputDelayIsNow:outputDelay];
+}
+
 @end

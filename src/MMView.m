@@ -49,8 +49,13 @@ static NSString *buttonImageFile = @"button.png";
 		numberTextField.clearButtonMode = UITextFieldViewModeNever;
 		numberTextField.placeholder = @"Dial number then press Call";
 		numberTextField.delegate = self;
-		
 		[self addSubview:numberTextField];
+
+		outputDelayLabel = [[UILabel alloc] init];
+		outputDelayLabel.backgroundColor = [UIColor clearColor];
+		outputDelayLabel.textColor = [UIColor redColor];
+		outputDelayLabel.textAlignment = UITextAlignmentRight;
+		[self addSubview:outputDelayLabel];
 	
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 		[notificationCenter addObserver:self 
@@ -96,7 +101,8 @@ static NSString *buttonImageFile = @"button.png";
 {
 	CGRect bounds = self.bounds;
 	
-	numberTextField.frame = CGRectMake( CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetWidth(bounds), 60 );
+	numberTextField.frame = CGRectMake( CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetWidth(bounds) - 60, 60 );
+	outputDelayLabel.frame = CGRectMake( CGRectGetMaxX(numberTextField.frame), CGRectGetMinY(bounds), 60, 60 );
 
 	CGRect controlBounds = CGRectMake( CGRectGetMinX(bounds), CGRectGetMaxY(numberTextField.frame), CGRectGetWidth(bounds), 60 );
 	beginCallButton.frame = CGRectMake( CGRectGetMinX(controlBounds), CGRectGetMinY(controlBounds), CGRectGetWidth(controlBounds)/2, CGRectGetHeight(controlBounds) );
@@ -204,6 +210,11 @@ static NSString *buttonImageFile = @"button.png";
 -(void) keyboardAppearing:(NSNotification *)note
 {
 	NSLog(@"Received notification: %@", note);
+}
+
+-(void) outputDelayIsNow:(float)outputDelay
+{
+	outputDelayLabel.text = [NSString stringWithFormat:@"%gms", outputDelay*1000.0];
 }
 
 @synthesize delegate;

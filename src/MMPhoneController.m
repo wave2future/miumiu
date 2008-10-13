@@ -28,6 +28,7 @@
 	NSAutoreleasePool *autoreleasePool = [[NSAutoreleasePool alloc] init];
 	
 	audioController = [[MMAudioController alloc] init];
+	audioController.delegate = self;
 	
 	iax = [[MMIAX alloc] init];
 	iax.delegate = self;
@@ -111,6 +112,8 @@
 
 -(void) callDidBegin:(MMCall *)_call
 {
+	[audioController resetOutputDelay];
+
 	[comfortNoiseInjector connectToConsumer:dtmfInjector];
 	[nullProducer connectToConsumer:comfortNoiseInjector];
 	[self performSelector:@selector(notifyDelegateThatCallDidBegin:) onThread:[NSThread mainThread] withObject:_call waitUntilDone:NO];
@@ -118,12 +121,16 @@
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
+	[audioController resetOutputDelay];
+
 	[ringtoneInjector connectToConsumer:comfortNoiseInjector];
 	[nullProducer connectToConsumer:ringtoneInjector];
 }
 
 -(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
 {
+	[audioController resetOutputDelay];
+
 	[nullProducer disconnect];
 	[ringtoneInjector disconnect];
 
@@ -152,12 +159,16 @@
 
 -(void) callDidReturnBusy:(MMCall *)_
 {
+	[audioController resetOutputDelay];
+
 	[busyInjector connectToConsumer:comfortNoiseInjector];
 	[nullProducer connectToConsumer:busyInjector];
 }
 
 -(void) callDidFail:(MMCall *)_
 {
+	[audioController resetOutputDelay];
+
 	[fastBusyInjector connectToConsumer:comfortNoiseInjector];
 	[nullProducer connectToConsumer:fastBusyInjector];
 }
@@ -193,6 +204,17 @@
 -(void) notifyDelegateThatCallDidEnd:(MMCall *)call
 {
 	[delegate phoneControllerDidEndCall:self];
+}
+
+-(void) audioController:(MMAudioController *)audioController outputDelayIsNow:(float)outputDelay
+{
+	outputDelayToPassToMainThread = outputDelay;
+	[self performSelector:@selector(notifyDelegateThatOutputDelayHasChanged) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+}
+
+-(void) notifyDelegateThatOutputDelayHasChanged
+{
+	[delegate phoneController:self outputDelayIsNow:outputDelayToPassToMainThread];
 }
 
 @synthesize delegate;
