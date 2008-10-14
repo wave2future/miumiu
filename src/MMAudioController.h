@@ -54,9 +54,6 @@
 
 -(void) resetOutputDelay;
 
--(void) startRecording;
--(void) stopRecording;
-
 #ifndef SIMULATE_AUDIO
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer

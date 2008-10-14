@@ -75,6 +75,7 @@ static void interruptionCallback(
 		float frequencies[] = { 440 };
 		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
 		toneGeneratorOffset = 0;
+		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
 #else
 		AudioSessionInitialize( NULL, NULL, interruptionCallback, self );
 
@@ -129,6 +130,9 @@ static void interruptionCallback(
 			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
 			AudioQueueEnqueueBuffer( inputQueue, buffer, 0, NULL );
 		}
+		
+		AudioQueueStart( inputQueue, NULL );
+		LOG( @"Started input queue" );
 #endif
 	}
 	return self;
@@ -136,13 +140,16 @@ static void interruptionCallback(
 
 -(void) dealloc
 {
-	[self stopRecording];
-
-#ifndef SIMULATE_AUDIO
+#ifdef SIMULATE_AUDIO
+	[recordTimer invalidate];
+	[recordTimer release];
+	recordTimer = nil;
+#else
 	AudioQueueDispose( inputQueue, FALSE );
 	
 	AudioQueueDispose( outputQueue, FALSE );
 	[outputDataBuffer release];
+	
 	AudioSessionSetActive( FALSE );
 #endif
 	
@@ -151,28 +158,6 @@ static void interruptionCallback(
 #endif
 	
 	[super dealloc];
-}
-
--(void) startRecording
-{
-#ifdef SIMULATE_AUDIO
-	recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
-#else
-	AudioQueueStart( inputQueue, NULL );
-	LOG( @"Started input queue" );
-#endif
-}
-
--(void) stopRecording
-{
-#ifdef SIMULATE_AUDIO
-	[recordTimer invalidate];
-	[recordTimer release];
-	recordTimer = nil;
-#else
-	AudioQueuePause( inputQueue );
-	LOG( @"Stopped input queue" );
-#endif
 }
 
 -(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples

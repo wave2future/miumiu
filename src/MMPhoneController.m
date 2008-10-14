@@ -140,8 +140,6 @@
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
-
-	[audioController startRecording];
 }
 
 -(void) callDidReturnBusy:(MMCall *)_
@@ -162,7 +160,6 @@
 
 -(void) callDidEnd:(MMCall *)_call
 {
-	[audioController stopRecording];
 	[audioController disconnect];
 	
 	[postClockDataProcessorChain zap];
