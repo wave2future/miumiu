@@ -252,6 +252,4 @@ static void interruptionCallback(
 {
 }
 
-@synthesize delegate;
-
 @end

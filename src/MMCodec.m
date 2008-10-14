@@ -10,9 +10,9 @@
 
 @implementation MMCodec
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
++(MMCodec *) codec
 {
-	[self produceData:data ofSize:size numSamples:numSamples];
+	return [[[self alloc] init] autorelease];
 }
 
 @end

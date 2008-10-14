@@ -26,4 +26,6 @@
 -(void) connectToConsumer:(id <MMDataConsumer>)consumer;
 -(void) disconnect;
 
+@property ( nonatomic, readonly ) id <MMDataConsumer> connectedConsumer;
+
 @end

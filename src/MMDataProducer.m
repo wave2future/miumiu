@@ -34,4 +34,6 @@
 	connectedConsumer = nil;
 }
 
+@synthesize connectedConsumer;
+
 @end

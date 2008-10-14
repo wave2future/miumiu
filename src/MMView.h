@@ -26,7 +26,6 @@
 @private
 	id <MMViewDelegate> delegate;
 	UITextField *numberTextField;
-	UILabel *outputDelayLabel;
 	UIButton *beginCallButton;
 	UIButton *endCallButton;
 	UIButton *clearNumberButton;
@@ -38,8 +37,6 @@
 
 -(void) didBeginCall;
 -(void) didEndCall;
-
--(void) outputDelayIsNow:(float)outputDelay;
 
 @property ( nonatomic, assign ) id <MMViewDelegate> delegate;
 

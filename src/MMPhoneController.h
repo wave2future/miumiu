@@ -20,8 +20,6 @@
 -(void) phoneControllerDidBeginCall:(MMPhoneController *)phoneController;
 -(void) phoneControllerDidEndCall:(MMPhoneController *)phoneController;
 
--(void) phoneController:(MMPhoneController *)phoneController outputDelayIsNow:(float)outputDelay;
-
 @end
 
 @class MMCodec;
@@ -31,22 +29,24 @@
 @class MMDTMFInjector;
 @class MMClock;
 @class MMComfortNoiseInjector;
+@class MMDataProcessorChain;
 
-@interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate, MMAudioControllerDelegate>
+@interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate>
 {
 @private
 	id <MMPhoneControllerDelegate> delegate;
-	MMAudioController *audioController;
-	MMCodec *encoder, *decoder;
+
 	MMIAX *iax;
+
+	MMAudioController *audioController;
 	MMCall *call;
+	MMClock *clock;
+	MMDataProcessorChain *postClockDataProcessorChain;
 	MMRingInjector *ringtoneInjector;
 	MMBusyInjector *busyInjector;
 	MMFastBusyInjector *fastBusyInjector;
 	MMDTMFInjector *dtmfInjector;
-	MMClock *clock;
 	MMComfortNoiseInjector *comfortNoiseInjector;
-	float outputDelayToPassToMainThread;
 }
 
 -(void) beginCallWithNumber:(NSString *)number;

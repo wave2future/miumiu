@@ -18,6 +18,7 @@
 #import "MMDTMFInjector.h"
 #import "MMClock.h"
 #import "MMComfortNoiseInjector.h"
+#import "MMDataProcessorChain.h"
 
 //#define LOOPBACK_THROUGH_CODECS
 
@@ -28,7 +29,6 @@
 	NSAutoreleasePool *autoreleasePool = [[NSAutoreleasePool alloc] init];
 	
 	audioController = [[MMAudioController alloc] init];
-	audioController.delegate = self;
 	
 	iax = [[MMIAX alloc] init];
 	iax.delegate = self;
@@ -38,10 +38,12 @@
 	fastBusyInjector = [[MMFastBusyInjector alloc] init];
 	dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
 	clock = [[MMClock alloc] initWithSamplesPerTick:160 samplingFrequency:8000];
+	postClockDataProcessorChain = [[MMDataProcessorChain alloc] init];
 	comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
-	
-	[dtmfInjector connectToConsumer:audioController];
-	[clock connectToConsumer:dtmfInjector];
+
+	[clock connectToConsumer:postClockDataProcessorChain];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+	[postClockDataProcessorChain connectToConsumer:audioController];
 
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
@@ -53,6 +55,7 @@
 -(void) dealloc
 {
 	[comfortNoiseInjector release];
+	[postClockDataProcessorChain release];
 	[clock release];
 	[dtmfInjector release];
 	[fastBusyInjector release];
@@ -112,36 +115,35 @@
 
 -(void) callDidBegin:(MMCall *)_call
 {
-	[audioController resetOutputDelay];
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
 
-	[comfortNoiseInjector connectToConsumer:dtmfInjector];
-	[clock connectToConsumer:comfortNoiseInjector];
 	[self performSelector:@selector(notifyDelegateThatCallDidBegin:) onThread:[NSThread mainThread] withObject:_call waitUntilDone:NO];
 }
 
 -(void) callDidBeginRinging:(MMCall *)call
 {
-	[audioController resetOutputDelay];
-
-	[ringtoneInjector connectToConsumer:comfortNoiseInjector];
-	[clock connectToConsumer:ringtoneInjector];
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:ringtoneInjector];
 }
 
 -(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
 {
-	[audioController resetOutputDelay];
-
 	[ringtoneInjector disconnect];
 
+	MMCodec *encoder, *decoder;
 	if ( useSpeex )
 	{
-		encoder = [[MMSpeexEncoder alloc] init];
-		decoder = [[MMSpeexDecoder alloc] init];
+		encoder = [MMSpeexEncoder codec];
+		decoder = [MMSpeexDecoder codec];
 	}
 	else
 	{
-		encoder = [[MMULawEncoder alloc] init];
-		decoder = [[MMULawDecoder alloc] init];
+		encoder = [MMULawEncoder codec];
+		decoder = [MMULawDecoder codec];
 	}
 	
 	[audioController connectToConsumer:encoder];
@@ -152,51 +154,40 @@
 	[call connectToConsumer:decoder];
 #endif
 	[decoder connectToConsumer:clock];
-	[clock connectToConsumer:comfortNoiseInjector];
+	
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
 
 	[audioController startRecording];
 }
 
 -(void) callDidReturnBusy:(MMCall *)_
 {
-	[audioController resetOutputDelay];
-
-	[busyInjector connectToConsumer:comfortNoiseInjector];
-	[clock connectToConsumer:busyInjector];
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:busyInjector];
 }
 
 -(void) callDidFail:(MMCall *)_
 {
-	[audioController resetOutputDelay];
-
-	[fastBusyInjector connectToConsumer:comfortNoiseInjector];
-	[clock connectToConsumer:fastBusyInjector];
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:fastBusyInjector];
 }
 
 -(void) callDidEnd:(MMCall *)_call
 {
 	[audioController stopRecording];
-	
-	[comfortNoiseInjector disconnect];
-
-	[ringtoneInjector disconnect];
-	[busyInjector disconnect];
-	[fastBusyInjector disconnect];
-	
-	[decoder disconnect];
-	[call disconnect];
-	[encoder disconnect];
 	[audioController disconnect];
 	
-	[encoder release];
-	encoder = nil;
-	[decoder release];
-	decoder = nil;
-	
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+
 	[call release];
 	call = nil;
-	
-	[clock connectToConsumer:dtmfInjector];
 	
 	[self performSelector:@selector(notifyDelegateThatCallDidEnd) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
@@ -204,17 +195,6 @@
 -(void) notifyDelegateThatCallDidEnd
 {
 	[delegate phoneControllerDidEndCall:self];
-}
-
--(void) audioController:(MMAudioController *)audioController outputDelayIsNow:(float)outputDelay
-{
-	outputDelayToPassToMainThread = outputDelay;
-	[self performSelector:@selector(notifyDelegateThatOutputDelayHasChanged) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-}
-
--(void) notifyDelegateThatOutputDelayHasChanged
-{
-	[delegate phoneController:self outputDelayIsNow:outputDelayToPassToMainThread];
 }
 
 @synthesize delegate;

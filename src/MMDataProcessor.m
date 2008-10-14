@@ -1,14 +1,14 @@
 //
-//  MMInjector.m
+//  MMDataProcessor.m
 //  MiuMiu
 //
-//  Created by Peter Zion on 11/10/08.
+//  Created by Peter Zion on 14/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMInjector.h"
+#import "MMDataProcessor.h"
 
-@implementation MMInjector
+@implementation MMDataProcessor
 
 -(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {

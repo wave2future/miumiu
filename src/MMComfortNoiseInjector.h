@@ -6,9 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMInjector.h"
+#import "MMDataProcessor.h"
 
-@interface MMComfortNoiseInjector : MMInjector
+@interface MMComfortNoiseInjector : MMDataProcessor
 {
 @private
 	unsigned short lfsr;

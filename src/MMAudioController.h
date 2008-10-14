@@ -15,15 +15,6 @@
 @class MMToneGenerator;
 @class MMCircularBuffer;
 
-@protocol MMAudioControllerDelegate <NSObject>
-
-@required
-
--(void) audioController:(MMAudioController *)audioController outputDelayIsNow:(float)playbackDelay;
-
-@end
-
-
 // [pzion 20081010] Audio is broken on the iPhone simulator;
 // work around this by detecting the target architecture and
 // simulating audio instead
@@ -41,7 +32,6 @@
 @interface MMAudioController : MMDataProducer <MMDataConsumer>
 {
 @private
-	id <MMAudioControllerDelegate> delegate;
 #ifdef MM_AUDIO_CONTROLLER_LOG
 	NSOutputStream *logStream;
 #endif
@@ -80,8 +70,5 @@
 #ifdef MM_AUDIO_CONTROLLER_LOG
 -(void) logWithFormatAndArgs:format, ...;
 #endif
-
-
-@property ( nonatomic, assign ) id <MMAudioControllerDelegate> delegate;
 
 @end

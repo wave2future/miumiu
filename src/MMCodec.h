@@ -6,11 +6,12 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProducer.h"
-#import "MMDataConsumer.h"
+#import "MMDataProcessor.h"
 
-@interface MMCodec : MMDataProducer <MMDataConsumer>
+@interface MMCodec : MMDataProcessor
 {
 }
+
++(MMCodec *) codec;
 
 @end
