@@ -21,8 +21,14 @@
 		spx_int32_t samplingRate = 8000;
 		speex_encoder_ctl( enc_state, SPEEX_SET_SAMPLING_RATE, &samplingRate );
 
-		spx_int32_t quality = 8;
-		speex_encoder_ctl( enc_state, SPEEX_SET_QUALITY, &quality );
+		spx_int32_t vbr = 1;
+		speex_encoder_ctl( enc_state, SPEEX_SET_VBR, &vbr );
+
+		float vbrQuality = 4.0;
+		speex_encoder_ctl( enc_state, SPEEX_SET_VBR_QUALITY, &vbrQuality );
+
+		spx_int32_t vad = 1;
+		speex_encoder_ctl( enc_state, SPEEX_SET_VAD, &vad );
 
 		speex_encoder_ctl( enc_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrame );
 		
