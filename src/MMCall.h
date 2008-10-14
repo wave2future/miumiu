@@ -11,6 +11,7 @@
 #import "MMDataConsumer.h"
 
 @class MMCall;
+@class MMCodec;
 
 @protocol MMCallDelegate <NSObject>
 
@@ -18,7 +19,7 @@
 
 -(void) callDidBegin:(MMCall *)call;
 -(void) callDidBeginRinging:(MMCall *)call;
--(void) call:(MMCall *)call didAnswerWithUseSpeex:(BOOL)useSpeex;
+-(void) call:(MMCall *)call didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder;
 -(void) callDidFail:(MMCall *)call;
 -(void) callDidReturnBusy:(MMCall *)call;
 -(void) callDidEnd:(MMCall *)call;

@@ -10,10 +10,6 @@
 #import "MMRingInjector.h"
 #import "MMBusyInjector.h"
 #import "MMFastBusyInjector.h"
-#import "MMULawEncoder.h"
-#import "MMULawDecoder.h"
-#import "MMSpeexEncoder.h"
-#import "MMSpeexDecoder.h"
 #import "MMAudioController.h"
 #import "MMDTMFInjector.h"
 #import "MMClock.h"
@@ -130,22 +126,8 @@
 	[postClockDataProcessorChain pushDataProcessorOntoFront:ringtoneInjector];
 }
 
--(void) call:(MMCall *)_ didAnswerWithUseSpeex:(BOOL)useSpeex
+-(void) call:(MMCall *)_ didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder
 {
-	[ringtoneInjector disconnect];
-
-	MMCodec *encoder, *decoder;
-	if ( useSpeex )
-	{
-		encoder = [MMSpeexEncoder codec];
-		decoder = [MMSpeexDecoder codec];
-	}
-	else
-	{
-		encoder = [MMULawEncoder codec];
-		decoder = [MMULawDecoder codec];
-	}
-	
 	[audioController connectToConsumer:encoder];
 #ifdef LOOPBACK_THROUGH_CODECS
 	[encoder connectToConsumer:decoder];

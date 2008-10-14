@@ -8,6 +8,10 @@
 
 #import "MMIAXCall.h"
 #import "MMIAX.h"
+#import "MMULawEncoder.h"
+#import "MMULawDecoder.h"
+#import "MMSpeexEncoder.h"
+#import "MMSpeexDecoder.h"
 
 @implementation MMIAXCall
 
@@ -79,8 +83,21 @@
 			[delegate callDidBeginRinging:self];
 			break;
 		case IAX_EVENT_ANSWER:
-			[delegate call:self didAnswerWithUseSpeex:(format==AST_FORMAT_SPEEX)];
-			break;
+		{
+			MMCodec *encoder, *decoder;
+			if ( format == AST_FORMAT_SPEEX )
+			{
+				encoder = [MMSpeexEncoder codec];
+				decoder = [MMSpeexDecoder codec];
+			}
+			else
+			{
+				encoder = [MMULawEncoder codec];
+				decoder = [MMULawDecoder codec];
+			}
+			[delegate call:self didAnswerWithEncoder:encoder decoder:decoder];
+		}
+		break;
 		case IAX_EVENT_VOICE:
 			[self produceData:event->data ofSize:event->datalen numSamples:MM_DATA_NUM_SAMPLES_UNKNOWN];
 			break;
