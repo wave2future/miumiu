@@ -24,13 +24,16 @@
 
 -(void) connectToConsumer:(id <MMDataConsumer>)consumer
 {
-	[self disconnect];
-	connectedConsumer = [consumer retain];
+	if ( connectedConsumer != consumer )
+	{
+		[self disconnect];
+		connectedConsumer = [consumer retain];
+	}
 }
 
 -(void) disconnect
 {
-	[connectedConsumer autorelease];
+	[connectedConsumer release];
 	connectedConsumer = nil;
 }
 
