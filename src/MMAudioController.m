@@ -130,9 +130,6 @@ static void interruptionCallback(
 			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
 			AudioQueueEnqueueBuffer( inputQueue, buffer, 0, NULL );
 		}
-		
-		AudioQueueStart( inputQueue, NULL );
-		LOG( @"Started input queue" );
 #endif
 	}
 	return self;
@@ -174,6 +171,7 @@ static void interruptionCallback(
 			AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
 		}
 		AudioQueueStart( outputQueue, NULL );
+		AudioQueueStart( inputQueue, NULL );
 	}
 #endif
 }
@@ -206,7 +204,10 @@ static void interruptionCallback(
 	availableOutputBuffers[numAvailableOutputBuffers++] = buffer;
 	
 	if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS )
+	{
+		AudioQueuePause( inputQueue );
 		AudioQueuePause( outputQueue );
+	}
 	else while ( numAvailableOutputBuffers > 0
 		&& outputDataBuffer.used >= MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER * sizeof(short) )
 	{
