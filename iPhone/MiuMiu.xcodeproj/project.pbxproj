@@ -619,22 +619,22 @@
 		DB77897A0E9DCE1F00EC2FC3 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
-				DBC1EE560E9F04110071E7EC /* libiax2 */,
-				DB778A200E9DCF2100EC2FC3 /* libspeex */,
+				DBC1EE560E9F04110071E7EC /* iax2 */,
+				DB778A200E9DCF2100EC2FC3 /* speex */,
 			);
 			name = "Third Party";
 			sourceTree = "<group>";
 		};
-		DB778A200E9DCF2100EC2FC3 /* libspeex */ = {
+		DB778A200E9DCF2100EC2FC3 /* speex */ = {
 			isa = PBXGroup;
 			children = (
-				DB1878780E9E8C1C004319C4 /* include */,
 				DB1878770E9E8C0D004319C4 /* src */,
+				DB1878780E9E8C1C004319C4 /* include */,
 			);
-			name = libspeex;
+			name = speex;
 			sourceTree = "<group>";
 		};
-		DBC1EE560E9F04110071E7EC /* libiax2 */ = {
+		DBC1EE560E9F04110071E7EC /* iax2 */ = {
 			isa = PBXGroup;
 			children = (
 				DBC1EF7A0E9F066B0071E7EC /* answer.h */,
@@ -656,7 +656,7 @@
 				DBC1EF8C0E9F066B0071E7EC /* ring10.h */,
 				DBC1EF8D0E9F066B0071E7EC /* ringtone.h */,
 			);
-			name = libiax2;
+			name = iax2;
 			sourceTree = "<group>";
 		};
 		DBCFF2CF0E9D833D0006A803 /* Sources */ = {
