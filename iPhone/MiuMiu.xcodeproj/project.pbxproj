@@ -11,9 +11,10 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MMViewController.m */; };
 		DB079F190EA202A300179412 /* MMPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB079F180EA202A300179412 /* MMPhoneController.m */; };
-		DB079FF80EA2124200179412 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = DB079FF70EA2124200179412 /* button.png */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
 		DB4308900EACDDB700484B27 /* MMMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB43088F0EACDDB700484B27 /* MMMain.m */; };
+		DB4308960EACDEDD00484B27 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = DB4308950EACDEDD00484B27 /* button.png */; };
+		DB4308980EACDEE800484B27 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB4308970EACDEE800484B27 /* Info.plist */; };
 		DB44FC560EA17D7800B927E9 /* MMCadencedToneInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */; };
 		DB44FC620EA17DCF00B927E9 /* MMBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5D0EA17DCF00B927E9 /* MMBusyInjector.m */; };
 		DB44FC630EA17DCF00B927E9 /* MMFastBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */; };
@@ -185,13 +186,13 @@
 		28D7ACF60DDB3853001CB0EB /* MMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMViewController.h; path = src/MMViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* MMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMViewController.m; path = src/MMViewController.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MiuMiu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiuMiu_Prefix.pch; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB079F170EA202A300179412 /* MMPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneController.h; path = src/MMPhoneController.h; sourceTree = "<group>"; };
 		DB079F180EA202A300179412 /* MMPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneController.m; path = src/MMPhoneController.m; sourceTree = "<group>"; };
-		DB079FF70EA2124200179412 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = src/button.png; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
 		DB43088F0EACDDB700484B27 /* MMMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMain.m; path = ../src/iPhone/MMMain.m; sourceTree = SOURCE_ROOT; };
+		DB4308950EACDEDD00484B27 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = ../Resources/button.png; sourceTree = SOURCE_ROOT; };
+		DB4308970EACDEE800484B27 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/iPhone/Info.plist; sourceTree = SOURCE_ROOT; };
 		DB44FC540EA17D7800B927E9 /* MMCadencedToneInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCadencedToneInjector.h; path = src/MMCadencedToneInjector.h; sourceTree = "<group>"; };
 		DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCadencedToneInjector.m; path = src/MMCadencedToneInjector.m; sourceTree = "<group>"; };
 		DB44FC5C0EA17DCF00B927E9 /* MMBusyInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMBusyInjector.h; path = src/MMBusyInjector.h; sourceTree = "<group>"; };
@@ -429,8 +430,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DB079FF70EA2124200179412 /* button.png */,
-				8D1107310486CEB800E47090 /* Info.plist */,
+				DB4308970EACDEE800484B27 /* Info.plist */,
+				DB4308950EACDEDD00484B27 /* button.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -857,7 +858,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB079FF80EA2124200179412 /* button.png in Resources */,
+				DB4308960EACDEDD00484B27 /* button.png in Resources */,
+				DB4308980EACDEE800484B27 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
