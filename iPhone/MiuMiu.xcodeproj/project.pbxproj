@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MMViewController.m */; };
 		DB079F190EA202A300179412 /* MMPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB079F180EA202A300179412 /* MMPhoneController.m */; };
 		DB079FF80EA2124200179412 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = DB079FF70EA2124200179412 /* button.png */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
+		DB4308900EACDDB700484B27 /* MMMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB43088F0EACDDB700484B27 /* MMMain.m */; };
 		DB44FC560EA17D7800B927E9 /* MMCadencedToneInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */; };
 		DB44FC620EA17DCF00B927E9 /* MMBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5D0EA17DCF00B927E9 /* MMBusyInjector.m */; };
 		DB44FC630EA17DCF00B927E9 /* MMFastBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */; };
@@ -184,7 +184,6 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		28D7ACF60DDB3853001CB0EB /* MMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMViewController.h; path = src/MMViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* MMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMViewController.m; path = src/MMViewController.m; sourceTree = "<group>"; };
-		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MiuMiu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiuMiu_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB079F170EA202A300179412 /* MMPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneController.h; path = src/MMPhoneController.h; sourceTree = "<group>"; };
@@ -192,6 +191,7 @@
 		DB079FF70EA2124200179412 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = src/button.png; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
+		DB43088F0EACDDB700484B27 /* MMMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMain.m; path = ../src/iPhone/MMMain.m; sourceTree = SOURCE_ROOT; };
 		DB44FC540EA17D7800B927E9 /* MMCadencedToneInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCadencedToneInjector.h; path = src/MMCadencedToneInjector.h; sourceTree = "<group>"; };
 		DB44FC550EA17D7800B927E9 /* MMCadencedToneInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCadencedToneInjector.m; path = src/MMCadencedToneInjector.m; sourceTree = "<group>"; };
 		DB44FC5C0EA17DCF00B927E9 /* MMBusyInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMBusyInjector.h; path = src/MMBusyInjector.h; sourceTree = "<group>"; };
@@ -661,7 +661,7 @@
 		DBCFF2CF0E9D833D0006A803 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				29B97316FDCFA39411CA2CEA /* main.m */,
+				DB43088F0EACDDB700484B27 /* MMMain.m */,
 				DBCFF2CA0E9D825E0006A803 /* MMApplication.h */,
 				DBCFF2CB0E9D825E0006A803 /* MMApplication.m */,
 				28D7ACF60DDB3853001CB0EB /* MMViewController.h */,
@@ -868,7 +868,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MMViewController.m in Sources */,
 				DBCFF2CC0E9D825E0006A803 /* MMApplication.m in Sources */,
 				DBCFF2E50E9D8A200006A803 /* MMView.m in Sources */,
@@ -894,6 +893,7 @@
 				DBAE8B480EA3332700301DF7 /* MMClock.m in Sources */,
 				DB6D0F5C0EA547B400AED2DA /* MMDataProcessor.m in Sources */,
 				DB6D0F5D0EA547B400AED2DA /* MMDataProcessorChain.m in Sources */,
+				DB4308900EACDDB700484B27 /* MMMain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
