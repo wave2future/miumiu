@@ -9,18 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MMIAX.h"
 #import "MMCall.h"
-#import "MMAudioController.h"
-
-@class MMPhoneController;
-
-@protocol MMPhoneControllerDelegate <NSObject>
-
-@required
-
--(void) phoneControllerDidBeginCall:(MMPhoneController *)phoneController;
--(void) phoneControllerDidEndCall:(MMPhoneController *)phoneController;
-
-@end
+#import "MMPhoneView.h"
 
 @class MMCodec;
 @class MMRingInjector;
@@ -30,11 +19,12 @@
 @class MMClock;
 @class MMComfortNoiseInjector;
 @class MMDataProcessorChain;
+@class MMAudioController;
 
-@interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate>
+@interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate, MMPhoneViewDelegate>
 {
 @private
-	id <MMPhoneControllerDelegate> delegate;
+	MMPhoneView *phoneView;
 
 	MMIAX *iax;
 
@@ -49,11 +39,6 @@
 	MMComfortNoiseInjector *comfortNoiseInjector;
 }
 
--(void) beginCallWithNumber:(NSString *)number;
--(void) pressedDTMF:(NSString *)dtmf;
--(void) releasedDTMF:(NSString *)dtmf;
--(void) endCall;
-
-@property ( nonatomic, assign ) id <MMPhoneControllerDelegate> delegate;
+@property ( nonatomic, assign ) MMPhoneView *phoneView;
 
 @end

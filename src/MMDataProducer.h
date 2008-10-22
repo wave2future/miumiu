@@ -6,8 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "MMDataConsumer.h"
+#import <Foundation/Foundation.h>
+
+@protocol MMDataConsumer;
 
 #include <limits.h>
 

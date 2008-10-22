@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MMViewController.h"
+
+@class MMPhoneController;
 
 @interface MMApplication : UIApplication <UIApplicationDelegate>
 {
 @private
 	UIWindow *window;
-	MMViewController *viewController;
+	MMPhoneController *phoneController;
 }
 
 @end

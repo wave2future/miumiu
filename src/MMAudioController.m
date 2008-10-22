@@ -77,6 +77,7 @@ static void interruptionCallback(
 		toneGeneratorOffset = 0;
 		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
 #else
+#ifdef IPHONE
 		AudioSessionInitialize( NULL, NULL, interruptionCallback, self );
 
 		UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
@@ -85,6 +86,7 @@ static void interruptionCallback(
             sizeof(sessionCategory),
             &sessionCategory
 			);
+#endif
 
         audioFormat.mSampleRate = 8000.00;
         audioFormat.mFormatID = kAudioFormatLinearPCM;
@@ -95,7 +97,9 @@ static void interruptionCallback(
         audioFormat.mBytesPerPacket = 2;
         audioFormat.mBytesPerFrame = 2;
 
+#ifdef IPHONE
 		AudioSessionSetActive( TRUE );
+#endif
 		
 		AudioQueueNewOutput(
 			&audioFormat,
@@ -146,8 +150,10 @@ static void interruptionCallback(
 	
 	AudioQueueDispose( outputQueue, FALSE );
 	[outputDataBuffer release];
-	
+
+#ifdef IPHONE	
 	AudioSessionSetActive( FALSE );
+#endif
 #endif
 	
 #ifdef MM_AUDIO_CONTROLLER_LOG

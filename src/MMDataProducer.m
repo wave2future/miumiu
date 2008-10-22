@@ -7,6 +7,7 @@
 //
 
 #import "MMDataProducer.h"
+#import "MMDataConsumer.h"
 
 @implementation MMDataProducer
 

@@ -68,7 +68,7 @@
 	call.delegate = self;
 }
 
--(void) beginCallWithNumber:(NSString *)number
+-(void) view:(MMPhoneView *)view requestedBeginCallWithNumber:(NSString *)number
 {
 	[self performSelector:@selector(internalBeginCallWithNumber:) onThread:self withObject:number waitUntilDone:NO];
 }
@@ -79,7 +79,7 @@
 	[dtmfInjector digitPressed:dtmf];
 }
 
--(void) pressedDTMF:(NSString *)dtmf
+-(void) view:(MMPhoneView *)view pressedDTMF:(NSString *)dtmf
 {
 	[self performSelector:@selector(internalPressedDTMF:) onThread:self withObject:dtmf waitUntilDone:NO];
 }
@@ -89,7 +89,7 @@
 	[dtmfInjector digitReleased:dtmf];
 }
 
--(void) releasedDTMF:(NSString *)dtmf
+-(void) view:(MMPhoneView *)view releasedDTMF:(NSString *)dtmf
 {
 	[self performSelector:@selector(internalReleasedDTMF:) onThread:self withObject:dtmf waitUntilDone:NO];
 }
@@ -99,14 +99,14 @@
 	[call end];
 }
 
--(void) endCall
+-(void) viewRequestedEndCall:(MMPhoneView *)view
 {
 	[self performSelector:@selector(internalEndCall:) onThread:self withObject:nil waitUntilDone:NO];
 }
 
--(void) notifyDelegateThatCallDidBegin:(MMCall *)call
+-(void) notifyPhoneViewThatCallDidBegin:(MMCall *)call
 {
-	[delegate phoneControllerDidBeginCall:self];
+	[phoneView didBeginCall];
 }
 
 -(void) callDidBegin:(MMCall *)_call
@@ -115,7 +115,7 @@
 	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
 
-	[self performSelector:@selector(notifyDelegateThatCallDidBegin:) onThread:[NSThread mainThread] withObject:_call waitUntilDone:NO];
+	[self performSelector:@selector(notifyPhoneViewThatCallDidBegin:) onThread:[NSThread mainThread] withObject:_call waitUntilDone:NO];
 }
 
 -(void) callDidBeginRinging:(MMCall *)call
@@ -168,14 +168,14 @@
 	[call release];
 	call = nil;
 	
-	[self performSelector:@selector(notifyDelegateThatCallDidEnd) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+	[self performSelector:@selector(notifyPhoneViewThatCallDidEnd) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
 
--(void) notifyDelegateThatCallDidEnd
+-(void) notifyPhoneViewThatCallDidEnd
 {
-	[delegate phoneControllerDidEndCall:self];
+	[phoneView didEndCall];
 }
 
-@synthesize delegate;
+@synthesize phoneView;
 
 @end

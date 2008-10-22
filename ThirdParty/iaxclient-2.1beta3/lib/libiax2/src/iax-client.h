@@ -22,7 +22,7 @@
 #ifdef WIN32
 #define socklen_t int
 #endif
-#ifdef IPHONE
+#if defined(MACOSX) || defined(IPHONE)
 #include <sys/socket.h>
 #endif
 

@@ -6,7 +6,6 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "MMDataProducer.h"
 #import "MMDataConsumer.h"
@@ -18,7 +17,7 @@
 // [pzion 20081010] Audio is broken on the iPhone simulator;
 // work around this by detecting the target architecture and
 // simulating audio instead
-#ifdef __i386__
+#if defined(IPHONE) && defined(__i386__)
 #define SIMULATE_AUDIO
 #endif
 

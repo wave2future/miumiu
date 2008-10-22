@@ -1,12 +1,12 @@
 //
-//  MMView.m
+//  MMPhoneView.m
 //  MiuMiu
 //
 //  Created by Peter Zion on 08/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMView.h"
+#import "MMPhoneView.h"
 
 static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
 
@@ -14,7 +14,7 @@ static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberT
 static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#" };
 static NSString *buttonImageFile = @"button.png";
 
-@implementation MMView
+@implementation MMPhoneView
 
 -(UIButton *) buttonWithTitle:(NSString *)title
 {
@@ -34,9 +34,9 @@ static NSString *buttonImageFile = @"button.png";
 	return button;
 }
 
--(id) initWithNumber:(NSString *)number inProgress:(BOOL)inProgress;
+-(id) initWithFrame:(CGRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
 {
-	if ( self = [super init] )
+	if ( self = [super initWithFrame:frame] )
 	{
 		numberTextField = [[UITextField alloc] init];
 		numberTextField.text = number;
