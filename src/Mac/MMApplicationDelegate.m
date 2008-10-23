@@ -13,6 +13,11 @@
 	[window makeKeyAndOrderFront:nil];
 	
 	phoneController = [[MMPhoneController alloc] init];
+	
+	MMPhoneView *phoneView = [[[MMPhoneView alloc] initWithFrame:[[window contentView] bounds] number:@"" inProgress:NO] autorelease];
+	phoneView.delegate = phoneController;
+	phoneController.phoneView = phoneView;
+	[[window contentView] addSubview:phoneView];
 
 	[phoneController start];
 	[NSThread setThreadPriority:0];

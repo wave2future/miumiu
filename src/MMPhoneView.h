@@ -6,7 +6,7 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 #import "MMView.h"
 #import "MMPhoneTextFieldDelegate.h"
 #import "MMRect.h"

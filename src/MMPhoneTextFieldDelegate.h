@@ -15,10 +15,6 @@
 
 @optional
 
--(BOOL) textFieldShouldReturn:(MMPhoneTextField *)textField;
-
--(BOOL) textField:(MMPhoneTextField *)textField
-	shouldChangeCharactersInRange:(NSRange)range
-	replacementString:(NSString *)string;
+-(void) textFieldDidChange:(MMPhoneTextField *)textField;
 
 @end

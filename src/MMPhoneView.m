@@ -26,6 +26,31 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	return button;
 }
 
+-(void) layoutSubviews
+{
+	MMRect bounds = self.bounds;
+	
+	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 60 );
+
+	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 60 );
+	beginCallButton.frame = MMRectMake( MMRectGetMinX(controlBounds), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/2, MMRectGetHeight(controlBounds) );
+	endCallButton.frame = MMRectMake( MMRectGetMaxX(beginCallButton.frame), MMRectGetMinY(controlBounds), MMRectGetMaxX(controlBounds) - MMRectGetMaxX(beginCallButton.frame), MMRectGetHeight(controlBounds) );
+	clearNumberButton.frame = endCallButton.frame;
+	
+	MMRect digitsBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(controlBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(controlBounds) );
+	for ( int i=0; i<12; ++i )
+	{
+		int row = i/3, col = i%3;
+		
+		MMPhoneButton *digitButton = [digitButtons objectAtIndex:i];
+		digitButton.frame = MMRectMake(
+			roundf( MMRectGetMinX(digitsBounds) + col * MMRectGetWidth(digitsBounds) / 3 ),
+			roundf( MMRectGetMinY(digitsBounds) + row * MMRectGetHeight(digitsBounds) / 4 ),
+			roundf( MMRectGetWidth(digitsBounds) / 3 ),
+			roundf( MMRectGetHeight(digitsBounds) / 4 ) );
+	}
+}
+
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
 {
 	if ( self = [super initWithFrame:frame] )
@@ -58,6 +83,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		digitButtons = [[NSMutableArray alloc] initWithCapacity:12];
 		for ( int i=0; i<NUM_DIGITS; ++i )
 			[digitButtons addObject:[self buttonWithTitle:digitTitles[i]]];
+			
+		[self layoutSubviews];
 	}
 	return self;
 }
@@ -73,31 +100,6 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[clearNumberButton release];
 	[numberTextField release];
 	[super dealloc];
-}
-
--(void) layoutSubviews
-{
-	CGRect bounds = self.bounds;
-	
-	numberTextField.frame = CGRectMake( CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetWidth(bounds), 60 );
-
-	CGRect controlBounds = CGRectMake( CGRectGetMinX(bounds), CGRectGetMaxY(numberTextField.frame), CGRectGetWidth(bounds), 60 );
-	beginCallButton.frame = CGRectMake( CGRectGetMinX(controlBounds), CGRectGetMinY(controlBounds), CGRectGetWidth(controlBounds)/2, CGRectGetHeight(controlBounds) );
-	endCallButton.frame = CGRectMake( CGRectGetMaxX(beginCallButton.frame), CGRectGetMinY(controlBounds), CGRectGetMaxX(controlBounds) - CGRectGetMaxX(beginCallButton.frame), CGRectGetHeight(controlBounds) );
-	clearNumberButton.frame = endCallButton.frame;
-	
-	CGRect digitsBounds = CGRectMake( CGRectGetMinX(bounds), CGRectGetMaxY(controlBounds), CGRectGetWidth(bounds), CGRectGetMaxY(bounds) - CGRectGetMaxY(controlBounds) );
-	for ( int i=0; i<12; ++i )
-	{
-		int row = i/3, col = i%3;
-		
-		UIButton *digitButton = [digitButtons objectAtIndex:i];
-		digitButton.frame = CGRectMake(
-			roundf( CGRectGetMinX(digitsBounds) + col * CGRectGetWidth(digitsBounds) / 3 ),
-			roundf( CGRectGetMinY(digitsBounds) + row * CGRectGetHeight(digitsBounds) / 4 ),
-			roundf( CGRectGetWidth(digitsBounds) / 3 ),
-			roundf( CGRectGetHeight(digitsBounds) / 4 ) );
-	}
 }
 
 -(void) updateButtonStates
@@ -163,20 +165,9 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[self updateButtonStates];
 }
 
--(BOOL) textFieldShouldReturn:(MMPhoneTextField *)textField
+-(void) textFieldDidChange:(MMPhoneTextField *)textField
 {
-	[textField resignFirstResponder];
-	return NO;
-}
-
--(BOOL) textField:(MMPhoneTextField *)textField
-	shouldChangeCharactersInRange:(NSRange)range
-	replacementString:(NSString *)string
-{
-	// [pzion 20081012] This is a pretty big hack: we want the button states to
-	// update *after* the text is changed.
-	[self performSelector:@selector(updateButtonStates) withObject:nil afterDelay:0.0];
-	return YES;
+	[self updateButtonStates];
 }
 
 -(void) keyboardDisappearing:(NSNotification *)note

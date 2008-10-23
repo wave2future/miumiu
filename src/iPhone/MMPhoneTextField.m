@@ -41,20 +41,21 @@
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField
 {
-	if ( [delegate respondsToSelector:@selector(textFieldShouldReturn:)] )
-		return [delegate textFieldShouldReturn:self];
-	else
-		return YES;
+	return YES;
+}
+
+-(void) informDelegateThatTextFieldDidChange
+{
+	if ( [delegate respondsToSelector:@selector(textFieldDidChange:)] )
+		[delegate performSelector:@selector(textFieldDidChange:) withObject:self];
 }
 
 -(BOOL) textField:(UITextField *)textField
 	shouldChangeCharactersInRange:(NSRange)range
 	replacementString:(NSString *)string
 {
-	if ( [delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)] )
-		return [delegate textField:self shouldChangeCharactersInRange:range replacementString:string];
-	else
-		return YES;
+	[self performSelector:@selector(informDelegateThatTextFieldDidChange) withObject:nil afterDelay:0.0];
+	return YES;
 }
 
 @dynamic view;

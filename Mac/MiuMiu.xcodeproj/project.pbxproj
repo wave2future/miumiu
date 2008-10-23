@@ -79,6 +79,9 @@
 		DB5B51BA0EAD48AD00241254 /* MMDataProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B50EAD48AD00241254 /* MMDataProcessor.m */; };
 		DB5B51BB0EAD48AD00241254 /* MMDataProcessorChain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B70EAD48AD00241254 /* MMDataProcessorChain.m */; };
 		DB5B51BC0EAD48AD00241254 /* MMDataProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B90EAD48AD00241254 /* MMDataProducer.m */; };
+		DB89770F0EB03805004D7182 /* MMPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB89770E0EB03805004D7182 /* MMPhoneView.m */; };
+		DB8977170EB03935004D7182 /* MMPhoneButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8977160EB03935004D7182 /* MMPhoneButton.m */; };
+		DB89772A0EB03C9D004D7182 /* MMPhoneTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8977290EB03C9D004D7182 /* MMPhoneTextField.m */; };
 		DB937DD30EB0230E006DDBAA /* MMPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937DD20EB0230E006DDBAA /* MMPhoneController.m */; };
 		DBAE8F700EAE9AE90076C726 /* MMCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8F670EAE9AE90076C726 /* MMCodec.m */; };
 		DBAE8F710EAE9AE90076C726 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8F690EAE9AE90076C726 /* MMSpeexDecoder.m */; };
@@ -260,6 +263,15 @@
 		DB6CEC270EAD44F400B58819 /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_resampler.h; path = "../ThirdParty/speex-1.2rc1/include/speex/speex_resampler.h"; sourceTree = SOURCE_ROOT; };
 		DB6CEC280EAD44F400B58819 /* speex_stereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_stereo.h; path = "../ThirdParty/speex-1.2rc1/include/speex/speex_stereo.h"; sourceTree = SOURCE_ROOT; };
 		DB6CEC290EAD44F400B58819 /* speex_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_types.h; path = "../ThirdParty/speex-1.2rc1/include/speex/speex_types.h"; sourceTree = SOURCE_ROOT; };
+		DB89770C0EB03805004D7182 /* MMPhoneTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneTextFieldDelegate.h; path = ../src/MMPhoneTextFieldDelegate.h; sourceTree = SOURCE_ROOT; };
+		DB89770D0EB03805004D7182 /* MMPhoneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneView.h; path = ../src/MMPhoneView.h; sourceTree = SOURCE_ROOT; };
+		DB89770E0EB03805004D7182 /* MMPhoneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneView.m; path = ../src/MMPhoneView.m; sourceTree = SOURCE_ROOT; };
+		DB8977120EB03831004D7182 /* MMRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRect.h; path = ../src/Mac/MMRect.h; sourceTree = SOURCE_ROOT; };
+		DB8977130EB038E8004D7182 /* MMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMView.h; path = ../src/Mac/MMView.h; sourceTree = SOURCE_ROOT; };
+		DB8977150EB03935004D7182 /* MMPhoneButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneButton.h; path = ../src/Mac/MMPhoneButton.h; sourceTree = SOURCE_ROOT; };
+		DB8977160EB03935004D7182 /* MMPhoneButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneButton.m; path = ../src/Mac/MMPhoneButton.m; sourceTree = SOURCE_ROOT; };
+		DB8977280EB03C9D004D7182 /* MMPhoneTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneTextField.h; path = ../src/Mac/MMPhoneTextField.h; sourceTree = SOURCE_ROOT; };
+		DB8977290EB03C9D004D7182 /* MMPhoneTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneTextField.m; path = ../src/Mac/MMPhoneTextField.m; sourceTree = SOURCE_ROOT; };
 		DB937DD10EB0230E006DDBAA /* MMPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneController.h; path = ../src/MMPhoneController.h; sourceTree = SOURCE_ROOT; };
 		DB937DD20EB0230E006DDBAA /* MMPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneController.m; path = ../src/MMPhoneController.m; sourceTree = SOURCE_ROOT; };
 		DBAE8F660EAE9AE90076C726 /* MMCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCodec.h; path = ../src/MMCodec.h; sourceTree = SOURCE_ROOT; };
@@ -411,6 +423,7 @@
 				DBAE8F650EAE9ABE0076C726 /* Codecs */,
 				DBAE8FAF0EAE9D070076C726 /* Tone Generation */,
 				DBAE8F820EAE9BC00076C726 /* Protocols */,
+				DB89770B0EB037EA004D7182 /* UI */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -595,6 +608,22 @@
 				DB5B51B70EAD48AD00241254 /* MMDataProcessorChain.m */,
 			);
 			name = "Data Processing";
+			sourceTree = "<group>";
+		};
+		DB89770B0EB037EA004D7182 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				DB8977120EB03831004D7182 /* MMRect.h */,
+				DB8977130EB038E8004D7182 /* MMView.h */,
+				DB8977150EB03935004D7182 /* MMPhoneButton.h */,
+				DB8977160EB03935004D7182 /* MMPhoneButton.m */,
+				DB8977280EB03C9D004D7182 /* MMPhoneTextField.h */,
+				DB8977290EB03C9D004D7182 /* MMPhoneTextField.m */,
+				DB89770C0EB03805004D7182 /* MMPhoneTextFieldDelegate.h */,
+				DB89770D0EB03805004D7182 /* MMPhoneView.h */,
+				DB89770E0EB03805004D7182 /* MMPhoneView.m */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		DBAE8F650EAE9ABE0076C726 /* Codecs */ = {
@@ -801,6 +830,9 @@
 				DBAE8FCD0EAE9DD80076C726 /* MMAudioController.m in Sources */,
 				DBF63AFB0EB01B5F00E45F4B /* MMApplicationDelegate.m in Sources */,
 				DB937DD30EB0230E006DDBAA /* MMPhoneController.m in Sources */,
+				DB89770F0EB03805004D7182 /* MMPhoneView.m in Sources */,
+				DB8977170EB03935004D7182 /* MMPhoneButton.m in Sources */,
+				DB89772A0EB03C9D004D7182 /* MMPhoneTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
