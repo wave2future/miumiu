@@ -37,6 +37,7 @@
 	
 	[window makeKeyAndVisible];
 	[phoneController start];
+	[NSThread setThreadPriority:0];
 }
 
 @end
