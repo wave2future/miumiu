@@ -102,6 +102,13 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[super dealloc];
 }
 
+#ifdef MACOSX
+-(BOOL) isFlipped
+{
+	return YES;
+}
+#endif
+
 -(void) updateButtonStates
 {
 	beginCallButton.enabled = !inCall && [numberTextField.text length] > 0;
