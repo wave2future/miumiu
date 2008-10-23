@@ -7,49 +7,33 @@
 //
 
 #import "MMPhoneView.h"
+#import "MMPhoneButton.h"
+#import "MMPhoneTextField.h"
 
 static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
 
 #define NUM_DIGITS 12
 static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#" };
-static NSString *buttonImageFile = @"button.png";
 
 @implementation MMPhoneView
 
--(UIButton *) buttonWithTitle:(NSString *)title
+-(MMPhoneButton *) buttonWithTitle:(NSString *)title
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	button.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-	button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-	button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-	UIImage *backgroundImage = [[UIImage imageNamed:buttonImageFile] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-	[button setBackgroundImage:backgroundImage forState:0];
-	button.font = [UIFont boldSystemFontOfSize:24.0];
-	[button setTitle:title forState:UIControlStateNormal];
-	[button setTitleColor:[UIColor blackColor] forState:UIControlEventTouchDown];
-	[button setTitleColor:[UIColor blackColor] forState:UIControlStateDisabled];	
-	[button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchDown];
-	[button addTarget:self action:@selector(buttonReleased:) forControlEvents:UIControlEventTouchUpInside];
-	[self addSubview:button];
+	MMPhoneButton *button = [[[MMPhoneButton alloc] initWithTitle:title] autorelease];
+	[button setPressTarget:self action:@selector(buttonPressed:)];
+	[button setReleaseTarget:self action:@selector(buttonReleased:)];
+	[self addSubview:button.view];
 	return button;
 }
 
--(id) initWithFrame:(CGRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
+-(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
 {
 	if ( self = [super initWithFrame:frame] )
 	{
-		numberTextField = [[UITextField alloc] init];
-		numberTextField.text = number;
-		numberTextField.textColor = [UIColor whiteColor];
-		numberTextField.returnKeyType = UIReturnKeyDone;
-		numberTextField.enablesReturnKeyAutomatically = NO;
-		numberTextField.keyboardType = UIKeyboardTypeEmailAddress;
-		numberTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-		numberTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-		numberTextField.clearButtonMode = UITextFieldViewModeNever;
-		numberTextField.placeholder = @"Dial number then press Call";
+		numberTextField = [[MMPhoneTextField alloc] init];
 		numberTextField.delegate = self;
-		[self addSubview:numberTextField];
+		numberTextField.text = number;
+		[self addSubview:numberTextField.view];
 
 		NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 		[notificationCenter addObserver:self 
@@ -123,7 +107,7 @@ static NSString *buttonImageFile = @"button.png";
 	endCallButton.hidden = !inCall;
 }
 
--(void) buttonPressed:(UIButton *)button
+-(void) buttonPressed:(MMPhoneButton *)button
 {
 	if ( button == beginCallButton )
 		;
@@ -133,7 +117,7 @@ static NSString *buttonImageFile = @"button.png";
 		;
 	else
 	{
-		NSString *digit = [button titleForState:UIControlStateNormal];
+		NSString *digit = button.title;
 
 		NSString *oldText = numberTextField.text;
 		if ( oldText != nil )
@@ -147,7 +131,7 @@ static NSString *buttonImageFile = @"button.png";
 	}
 }
 
--(void) buttonReleased:(UIButton *)button
+-(void) buttonReleased:(MMPhoneButton *)button
 {
 	if ( button == beginCallButton )
 		[delegate view:self requestedBeginCallWithNumber:numberTextField.text];
@@ -160,7 +144,7 @@ static NSString *buttonImageFile = @"button.png";
 	}
 	else
 	{
-		NSString *digit = [button titleForState:UIControlStateNormal];
+		NSString *digit = button.title;
 
 		[delegate view:self releasedDTMF:digit];
 	}
@@ -179,13 +163,13 @@ static NSString *buttonImageFile = @"button.png";
 	[self updateButtonStates];
 }
 
--(BOOL) textFieldShouldReturn:(UITextField *)textField
+-(BOOL) textFieldShouldReturn:(MMPhoneTextField *)textField
 {
 	[textField resignFirstResponder];
 	return NO;
 }
 
--(BOOL) textField:(UITextField *)textField
+-(BOOL) textField:(MMPhoneTextField *)textField
 	shouldChangeCharactersInRange:(NSRange)range
 	replacementString:(NSString *)string
 {

@@ -28,9 +28,11 @@
 		DB7C8B330EA010AB00A91FB4 /* MMULawEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8B320EA010AB00A91FB4 /* MMULawEncoder.m */; };
 		DB7C8B360EA010BA00A91FB4 /* MMULawDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8B350EA010BA00A91FB4 /* MMULawDecoder.m */; };
 		DB7C8B390EA0115400A91FB4 /* MMCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = DB7C8B380EA0115400A91FB4 /* MMCodec.m */; };
+		DB937E040EB02A59006DDBAA /* MMPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937E030EB02A59006DDBAA /* MMPhoneView.m */; };
+		DB937E1F0EB03213006DDBAA /* MMPhoneTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937E1E0EB03213006DDBAA /* MMPhoneTextField.m */; };
+		DB937EC30EB0376D006DDBAA /* MMPhoneButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */; };
 		DBAE8B480EA3332700301DF7 /* MMClock.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8B470EA3332700301DF7 /* MMClock.m */; };
 		DBAE8FF50EAEA4A70076C726 /* MMApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FF40EAEA4A70076C726 /* MMApplication.m */; };
-		DBAE902E0EAEA8830076C726 /* MMPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE902D0EAEA8830076C726 /* MMPhoneView.m */; };
 		DBC1ED700E9EEA3A0071E7EC /* MMIAX.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC1ED6F0E9EEA3A0071E7EC /* MMIAX.m */; };
 		DBC1EEFC0E9F056B0071E7EC /* _kiss_fft_guts.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC1EE9E0E9F056B0071E7EC /* _kiss_fft_guts.h */; };
 		DBC1EEFD0E9F056B0071E7EC /* arch.h in Headers */ = {isa = PBXBuildFile; fileRef = DBC1EE9F0E9F056B0071E7EC /* arch.h */; };
@@ -217,12 +219,19 @@
 		DB7C8B350EA010BA00A91FB4 /* MMULawDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMULawDecoder.m; path = src/MMULawDecoder.m; sourceTree = "<group>"; };
 		DB7C8B370EA0115400A91FB4 /* MMCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCodec.h; path = src/MMCodec.h; sourceTree = "<group>"; };
 		DB7C8B380EA0115400A91FB4 /* MMCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCodec.m; path = src/MMCodec.m; sourceTree = "<group>"; };
+		DB937E020EB02A59006DDBAA /* MMPhoneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneView.h; path = ../src/MMPhoneView.h; sourceTree = SOURCE_ROOT; };
+		DB937E030EB02A59006DDBAA /* MMPhoneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneView.m; path = ../src/MMPhoneView.m; sourceTree = SOURCE_ROOT; };
+		DB937E1B0EB031DE006DDBAA /* MMRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMRect.h; path = ../src/iPhone/MMRect.h; sourceTree = SOURCE_ROOT; };
+		DB937E1C0EB031DE006DDBAA /* MMView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMView.h; path = ../src/iPhone/MMView.h; sourceTree = SOURCE_ROOT; };
+		DB937E1D0EB03213006DDBAA /* MMPhoneTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneTextField.h; path = ../src/iPhone/MMPhoneTextField.h; sourceTree = SOURCE_ROOT; };
+		DB937E1E0EB03213006DDBAA /* MMPhoneTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneTextField.m; path = ../src/iPhone/MMPhoneTextField.m; sourceTree = SOURCE_ROOT; };
+		DB937EC00EB0375C006DDBAA /* MMPhoneTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneTextFieldDelegate.h; path = ../src/MMPhoneTextFieldDelegate.h; sourceTree = SOURCE_ROOT; };
+		DB937EC10EB0376D006DDBAA /* MMPhoneButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneButton.h; path = ../src/iPhone/MMPhoneButton.h; sourceTree = SOURCE_ROOT; };
+		DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneButton.m; path = ../src/iPhone/MMPhoneButton.m; sourceTree = SOURCE_ROOT; };
 		DBAE8B460EA3332700301DF7 /* MMClock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMClock.h; path = src/MMClock.h; sourceTree = "<group>"; };
 		DBAE8B470EA3332700301DF7 /* MMClock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMClock.m; path = src/MMClock.m; sourceTree = "<group>"; };
 		DBAE8FF30EAEA4A70076C726 /* MMApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMApplication.h; path = ../src/iPhone/MMApplication.h; sourceTree = SOURCE_ROOT; };
 		DBAE8FF40EAEA4A70076C726 /* MMApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMApplication.m; path = ../src/iPhone/MMApplication.m; sourceTree = SOURCE_ROOT; };
-		DBAE902C0EAEA8830076C726 /* MMPhoneView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneView.h; path = ../src/iPhone/MMPhoneView.h; sourceTree = SOURCE_ROOT; };
-		DBAE902D0EAEA8830076C726 /* MMPhoneView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneView.m; path = ../src/iPhone/MMPhoneView.m; sourceTree = SOURCE_ROOT; };
 		DBC1ED6E0E9EEA3A0071E7EC /* MMIAX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMIAX.h; path = src/MMIAX.h; sourceTree = "<group>"; };
 		DBC1ED6F0E9EEA3A0071E7EC /* MMIAX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMIAX.m; path = src/MMIAX.m; sourceTree = "<group>"; };
 		DBC1EE980E9F050B0071E7EC /* libspeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libspeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -631,6 +640,22 @@
 			name = speex;
 			sourceTree = "<group>";
 		};
+		DB937E1A0EB031C3006DDBAA /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				DB937E1B0EB031DE006DDBAA /* MMRect.h */,
+				DB937E1C0EB031DE006DDBAA /* MMView.h */,
+				DB937E1D0EB03213006DDBAA /* MMPhoneTextField.h */,
+				DB937E1E0EB03213006DDBAA /* MMPhoneTextField.m */,
+				DB937EC00EB0375C006DDBAA /* MMPhoneTextFieldDelegate.h */,
+				DB937EC10EB0376D006DDBAA /* MMPhoneButton.h */,
+				DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */,
+				DB937E020EB02A59006DDBAA /* MMPhoneView.h */,
+				DB937E030EB02A59006DDBAA /* MMPhoneView.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		DBAE8F7F0EAE9B950076C726 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -685,8 +710,6 @@
 				DBAE8FF40EAEA4A70076C726 /* MMApplication.m */,
 				DB079F170EA202A300179412 /* MMPhoneController.h */,
 				DB079F180EA202A300179412 /* MMPhoneController.m */,
-				DBAE902C0EAEA8830076C726 /* MMPhoneView.h */,
-				DBAE902D0EAEA8830076C726 /* MMPhoneView.m */,
 				DBCFF40B0E9DA59B0006A803 /* MMAudioController.h */,
 				DBCFF40C0E9DA59B0006A803 /* MMAudioController.m */,
 				DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */,
@@ -699,6 +722,7 @@
 				DB6D0F030EA5466F00AED2DA /* Codecs */,
 				DB4C137F0EA11CDF000AAB0A /* Tone Generation */,
 				DBAE8F7F0EAE9B950076C726 /* Protocols */,
+				DB937E1A0EB031C3006DDBAA /* UI */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -905,7 +929,9 @@
 				DB6D0F5D0EA547B400AED2DA /* MMDataProcessorChain.m in Sources */,
 				DB4308900EACDDB700484B27 /* MMMain.m in Sources */,
 				DBAE8FF50EAEA4A70076C726 /* MMApplication.m in Sources */,
-				DBAE902E0EAEA8830076C726 /* MMPhoneView.m in Sources */,
+				DB937E040EB02A59006DDBAA /* MMPhoneView.m in Sources */,
+				DB937E1F0EB03213006DDBAA /* MMPhoneTextField.m in Sources */,
+				DB937EC30EB0376D006DDBAA /* MMPhoneButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,8 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="372"/>
-			<integer value="57"/>
+			<integer value="29"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1102,36 +1101,11 @@
 				</object>
 				<string key="NSName">_NSMainMenu</string>
 			</object>
-			<object class="NSWindowTemplate" id="972006081">
-				<int key="NSWindowStyleMask">3</int>
-				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{99, 258}, {320, 480}}</string>
-				<int key="NSWTFlags">1946157056</int>
-				<string key="NSWindowTitle">Window</string>
-				<string key="NSWindowClass">NSWindow</string>
-				<nil key="NSViewClass"/>
-				<string key="NSWindowContentMaxSize">{3.40282e+38, 3.40282e+38}</string>
-				<object class="NSView" key="NSWindowView" id="439893737">
-					<reference key="NSNextResponder"/>
-					<int key="NSvFlags">256</int>
-					<object class="NSMutableArray" key="NSSubviews">
-						<bool key="EncodedWithXMLCoder">YES</bool>
-						<object class="NSCustomView" id="516517313">
-							<reference key="NSNextResponder" ref="439893737"/>
-							<int key="NSvFlags">274</int>
-							<string key="NSFrameSize">{320, 480}</string>
-							<reference key="NSSuperview" ref="439893737"/>
-							<string key="NSClassName">MMPhoneView</string>
-						</object>
-					</object>
-					<string key="NSFrameSize">{320, 480}</string>
-					<reference key="NSSuperview"/>
-				</object>
-				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
-				<string key="NSMaxSize">{3.40282e+38, 3.40282e+38}</string>
-			</object>
 			<object class="NSCustomObject" id="755631768">
 				<string key="NSClassName">NSFontManager</string>
+			</object>
+			<object class="NSCustomObject" id="713550707">
+				<string key="NSClassName">MMApplicationDelegate</string>
 			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
@@ -1664,6 +1638,14 @@
 						<reference key="destination" ref="632727374"/>
 					</object>
 					<int key="connectionID">449</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="1050"/>
+						<reference key="destination" ref="713550707"/>
+					</object>
+					<int key="connectionID">452</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2238,24 +2220,6 @@
 						<reference key="parent" ref="698887838"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">371</int>
-						<reference key="object" ref="972006081"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="439893737"/>
-						</object>
-						<reference key="parent" ref="1049"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">372</int>
-						<reference key="object" ref="439893737"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="516517313"/>
-						</object>
-						<reference key="parent" ref="972006081"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">375</int>
 						<reference key="object" ref="302598603"/>
 						<object class="NSMutableArray" key="children">
@@ -2566,9 +2530,10 @@
 						<reference key="parent" ref="1049"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">450</int>
-						<reference key="object" ref="516517313"/>
-						<reference key="parent" ref="439893737"/>
+						<int key="objectID">451</int>
+						<reference key="object" ref="713550707"/>
+						<reference key="parent" ref="1049"/>
+						<string key="objectName">Application Delegate</string>
 					</object>
 				</object>
 			</object>
@@ -2708,13 +2673,6 @@
 					<string>351.ImportedFromIB2</string>
 					<string>354.IBPluginDependency</string>
 					<string>354.ImportedFromIB2</string>
-					<string>371.IBEditorWindowLastContentRect</string>
-					<string>371.IBPluginDependency</string>
-					<string>371.IBWindowTemplateEditedContentRect</string>
-					<string>371.NSWindowTemplate.visibleAtLaunch</string>
-					<string>371.editorWindowContentRectSynchronizationRect</string>
-					<string>371.windowTemplate.maxSize</string>
-					<string>372.IBPluginDependency</string>
 					<string>375.IBPluginDependency</string>
 					<string>376.IBEditorWindowLastContentRect</string>
 					<string>376.IBPluginDependency</string>
@@ -2762,7 +2720,7 @@
 					<string>417.IBPluginDependency</string>
 					<string>418.IBPluginDependency</string>
 					<string>419.IBPluginDependency</string>
-					<string>450.IBPluginDependency</string>
+					<string>451.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
 					<string>5.ImportedFromIB2</string>
 					<string>56.IBPluginDependency</string>
@@ -2910,7 +2868,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{525, 802}, {197, 73}}</string>
-					<string>{{207, 285}, {478, 20}}</string>
+					<string>{{87, 469}, {478, 20}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{74, 862}</string>
@@ -2933,13 +2891,6 @@
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{195, 255}, {320, 480}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{195, 255}, {320, 480}}</string>
-					<reference ref="9"/>
-					<string>{{33, 99}, {480, 360}}</string>
-					<string>{3.40282e+38, 3.40282e+38}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{437, 242}, {86, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -2992,7 +2943,7 @@
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>{{219, 102}, {245, 183}}</string>
+					<string>{{99, 286}, {245, 183}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{23, 794}, {245, 183}}</string>
@@ -3045,9 +2996,21 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">450</int>
+			<int key="maxID">452</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">MMApplicationDelegate</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">../src/Mac/MMApplicationDelegate.h</string>
+					</object>
+				</object>
+			</object>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.LastKnownRelativeProjectPath">../MiuMiu.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>

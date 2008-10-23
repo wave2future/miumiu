@@ -79,6 +79,7 @@
 		DB5B51BA0EAD48AD00241254 /* MMDataProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B50EAD48AD00241254 /* MMDataProcessor.m */; };
 		DB5B51BB0EAD48AD00241254 /* MMDataProcessorChain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B70EAD48AD00241254 /* MMDataProcessorChain.m */; };
 		DB5B51BC0EAD48AD00241254 /* MMDataProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B90EAD48AD00241254 /* MMDataProducer.m */; };
+		DB937DD30EB0230E006DDBAA /* MMPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937DD20EB0230E006DDBAA /* MMPhoneController.m */; };
 		DBAE8F700EAE9AE90076C726 /* MMCodec.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8F670EAE9AE90076C726 /* MMCodec.m */; };
 		DBAE8F710EAE9AE90076C726 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8F690EAE9AE90076C726 /* MMSpeexDecoder.m */; };
 		DBAE8F720EAE9AE90076C726 /* MMSpeexEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8F6B0EAE9AE90076C726 /* MMSpeexEncoder.m */; };
@@ -98,7 +99,7 @@
 		DBAE8FC80EAE9D9C0076C726 /* MMComfortNoiseInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FC60EAE9D9C0076C726 /* MMComfortNoiseInjector.m */; };
 		DBAE8FCD0EAE9DD80076C726 /* MMAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */; };
 		DBAE8FDB0EAE9E430076C726 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAE8FDA0EAE9E430076C726 /* AudioToolbox.framework */; };
-		DBAE8FE60EAE9FBC0076C726 /* MMKeypadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FE50EAE9FBC0076C726 /* MMKeypadController.m */; };
+		DBF63AFB0EB01B5F00E45F4B /* MMApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -259,6 +260,8 @@
 		DB6CEC270EAD44F400B58819 /* speex_resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_resampler.h; path = "../ThirdParty/speex-1.2rc1/include/speex/speex_resampler.h"; sourceTree = SOURCE_ROOT; };
 		DB6CEC280EAD44F400B58819 /* speex_stereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_stereo.h; path = "../ThirdParty/speex-1.2rc1/include/speex/speex_stereo.h"; sourceTree = SOURCE_ROOT; };
 		DB6CEC290EAD44F400B58819 /* speex_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = speex_types.h; path = "../ThirdParty/speex-1.2rc1/include/speex/speex_types.h"; sourceTree = SOURCE_ROOT; };
+		DB937DD10EB0230E006DDBAA /* MMPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneController.h; path = ../src/MMPhoneController.h; sourceTree = SOURCE_ROOT; };
+		DB937DD20EB0230E006DDBAA /* MMPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneController.m; path = ../src/MMPhoneController.m; sourceTree = SOURCE_ROOT; };
 		DBAE8F660EAE9AE90076C726 /* MMCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCodec.h; path = ../src/MMCodec.h; sourceTree = SOURCE_ROOT; };
 		DBAE8F670EAE9AE90076C726 /* MMCodec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCodec.m; path = ../src/MMCodec.m; sourceTree = SOURCE_ROOT; };
 		DBAE8F680EAE9AE90076C726 /* MMSpeexDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSpeexDecoder.h; path = ../src/MMSpeexDecoder.h; sourceTree = SOURCE_ROOT; };
@@ -296,8 +299,8 @@
 		DBAE8FCB0EAE9DD80076C726 /* MMAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMAudioController.h; path = ../src/MMAudioController.h; sourceTree = SOURCE_ROOT; };
 		DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMAudioController.m; path = ../src/MMAudioController.m; sourceTree = SOURCE_ROOT; };
 		DBAE8FDA0EAE9E430076C726 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
-		DBAE8FE40EAE9FBC0076C726 /* MMKeypadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMKeypadController.h; path = ../src/Mac/MMKeypadController.h; sourceTree = SOURCE_ROOT; };
-		DBAE8FE50EAE9FBC0076C726 /* MMKeypadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMKeypadController.m; path = ../src/Mac/MMKeypadController.m; sourceTree = SOURCE_ROOT; };
+		DBF63AF90EB01B5F00E45F4B /* MMApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMApplicationDelegate.h; path = ../src/Mac/MMApplicationDelegate.h; sourceTree = SOURCE_ROOT; };
+		DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMApplicationDelegate.m; path = ../src/Mac/MMApplicationDelegate.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -392,6 +395,8 @@
 			isa = PBXGroup;
 			children = (
 				DB43084D0EACDCC400484B27 /* MMMain.m */,
+				DBF63AF90EB01B5F00E45F4B /* MMApplicationDelegate.h */,
+				DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */,
 				DBAE8FC30EAE9D9C0076C726 /* MMClock.h */,
 				DBAE8FC40EAE9D9C0076C726 /* MMClock.m */,
 				DBAE8FC50EAE9D9C0076C726 /* MMComfortNoiseInjector.h */,
@@ -400,8 +405,8 @@
 				DBAE8F7C0EAE9B720076C726 /* MMCircularBuffer.m */,
 				DBAE8FCB0EAE9DD80076C726 /* MMAudioController.h */,
 				DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */,
-				DBAE8FE40EAE9FBC0076C726 /* MMKeypadController.h */,
-				DBAE8FE50EAE9FBC0076C726 /* MMKeypadController.m */,
+				DB937DD10EB0230E006DDBAA /* MMPhoneController.h */,
+				DB937DD20EB0230E006DDBAA /* MMPhoneController.m */,
 				DB5B51B20EAD488600241254 /* Data Processing */,
 				DBAE8F650EAE9ABE0076C726 /* Codecs */,
 				DBAE8FAF0EAE9D070076C726 /* Tone Generation */,
@@ -794,7 +799,8 @@
 				DBAE8FC70EAE9D9C0076C726 /* MMClock.m in Sources */,
 				DBAE8FC80EAE9D9C0076C726 /* MMComfortNoiseInjector.m in Sources */,
 				DBAE8FCD0EAE9DD80076C726 /* MMAudioController.m in Sources */,
-				DBAE8FE60EAE9FBC0076C726 /* MMKeypadController.m in Sources */,
+				DBF63AFB0EB01B5F00E45F4B /* MMApplicationDelegate.m in Sources */,
+				DB937DD30EB0230E006DDBAA /* MMPhoneController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

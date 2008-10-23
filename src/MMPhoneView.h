@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MMView.h"
+#import "MMPhoneTextFieldDelegate.h"
+#import "MMRect.h"
 
 @class MMPhoneView;
+@class MMPhoneButton;
 
 @protocol MMPhoneViewDelegate <NSObject>
 
@@ -21,19 +25,19 @@
 
 @end
 
-@interface MMPhoneView : UIView <UITextFieldDelegate>
+@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate>
 {
 @private
 	id <MMPhoneViewDelegate> delegate;
-	UITextField *numberTextField;
-	UIButton *beginCallButton;
-	UIButton *endCallButton;
-	UIButton *clearNumberButton;
+	MMPhoneTextField *numberTextField;
+	MMPhoneButton *beginCallButton;
+	MMPhoneButton *endCallButton;
+	MMPhoneButton *clearNumberButton;
 	NSMutableArray *digitButtons;
 	BOOL inCall;
 }
 
--(id) initWithFrame:(CGRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
+-(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
 
 -(void) didBeginCall;
 -(void) didEndCall;
