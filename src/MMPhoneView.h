@@ -21,6 +21,8 @@
 -(void) view:(MMPhoneView *)view requestedBeginCallWithNumber:(NSString *)number;
 -(void) view:(MMPhoneView *)view pressedDTMF:(NSString *)dtmf;
 -(void) view:(MMPhoneView *)view releasedDTMF:(NSString *)dtmf;
+-(void) viewMuted:(MMPhoneView *)view;
+-(void) viewUnmuted:(MMPhoneView *)view;
 -(void) viewRequestedEndCall:(MMPhoneView *)view;
 
 @end
@@ -33,8 +35,10 @@
 	MMPhoneButton *beginCallButton;
 	MMPhoneButton *endCallButton;
 	MMPhoneButton *clearNumberButton;
+	MMPhoneButton *muteButton;
+	MMPhoneButton *unmuteButton;
 	NSMutableArray *digitButtons;
-	BOOL inCall;
+	BOOL inCall, muted;
 }
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;

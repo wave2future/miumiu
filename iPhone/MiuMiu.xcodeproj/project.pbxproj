@@ -161,6 +161,7 @@
 		DBCFF40D0E9DA59B0006A803 /* MMAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBCFF40C0E9DA59B0006A803 /* MMAudioController.m */; };
 		DBCFF40F0E9DAA970006A803 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCFF40E0E9DAA970006A803 /* AudioToolbox.framework */; };
 		DBF3D0AF0EA15AF5009AA8A2 /* MMDTMFInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF3D0AE0EA15AF5009AA8A2 /* MMDTMFInjector.m */; };
+		DBF6CA4E0EB64CB300535275 /* MMMuteInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF6CA4D0EB64CB300535275 /* MMMuteInjector.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -371,6 +372,8 @@
 		DBCFF40E0E9DAA970006A803 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DBF3D0AD0EA15AF5009AA8A2 /* MMDTMFInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDTMFInjector.h; path = src/MMDTMFInjector.h; sourceTree = "<group>"; };
 		DBF3D0AE0EA15AF5009AA8A2 /* MMDTMFInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDTMFInjector.m; path = src/MMDTMFInjector.m; sourceTree = "<group>"; };
+		DBF6CA4C0EB64CB300535275 /* MMMuteInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMMuteInjector.h; path = ../src/MMMuteInjector.h; sourceTree = SOURCE_ROOT; };
+		DBF6CA4D0EB64CB300535275 /* MMMuteInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMuteInjector.m; path = ../src/MMMuteInjector.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -718,6 +721,8 @@
 				DBAE8B470EA3332700301DF7 /* MMClock.m */,
 				DB44FD020EA1A74C00B927E9 /* MMComfortNoiseInjector.h */,
 				DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */,
+				DBF6CA4C0EB64CB300535275 /* MMMuteInjector.h */,
+				DBF6CA4D0EB64CB300535275 /* MMMuteInjector.m */,
 				DB6D0F020EA545FF00AED2DA /* Data Processing */,
 				DB6D0F030EA5466F00AED2DA /* Codecs */,
 				DB4C137F0EA11CDF000AAB0A /* Tone Generation */,
@@ -932,6 +937,7 @@
 				DB937E040EB02A59006DDBAA /* MMPhoneView.m in Sources */,
 				DB937E1F0EB03213006DDBAA /* MMPhoneTextField.m in Sources */,
 				DB937EC30EB0376D006DDBAA /* MMPhoneButton.m in Sources */,
+				DBF6CA4E0EB64CB300535275 /* MMMuteInjector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,6 +14,7 @@
 #import "MMDTMFInjector.h"
 #import "MMClock.h"
 #import "MMComfortNoiseInjector.h"
+#import "MMMuteInjector.h"
 #import "MMDataProcessorChain.h"
 
 //#define LOOPBACK_THROUGH_CODECS
@@ -36,6 +37,7 @@
 	clock = [[MMClock alloc] initWithSamplesPerTick:160 samplingFrequency:8000];
 	postClockDataProcessorChain = [[MMDataProcessorChain alloc] init];
 	comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
+	muteInjector = [[MMMuteInjector alloc] init];
 
 	[clock connectToConsumer:postClockDataProcessorChain];
 	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
@@ -50,6 +52,7 @@
 
 -(void) dealloc
 {
+	[muteInjector release];
 	[comfortNoiseInjector release];
 	[postClockDataProcessorChain release];
 	[clock release];
@@ -94,6 +97,26 @@
 	[self performSelector:@selector(internalReleasedDTMF:) onThread:self withObject:dtmf waitUntilDone:NO];
 }
 
+-(void) internalMuted
+{
+	[muteInjector mute];
+}
+
+-(void) viewMuted:(MMPhoneView *)view
+{
+	[self performSelector:@selector(internalMuted) onThread:self withObject:nil waitUntilDone:NO];
+}
+
+-(void) internalUnmuted
+{
+	[muteInjector unmute];
+}
+
+-(void) viewUnmuted:(MMPhoneView *)view
+{
+	[self performSelector:@selector(internalUnmuted) onThread:self withObject:nil waitUntilDone:NO];
+}
+
 -(void) internalEndCall:(id)_
 {
 	[call end];
@@ -128,7 +151,8 @@
 
 -(void) call:(MMCall *)_ didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder
 {
-	[audioController connectToConsumer:encoder];
+	[audioController connectToConsumer:muteInjector];
+	[muteInjector connectToConsumer:encoder];
 #ifdef LOOPBACK_THROUGH_CODECS
 	[encoder connectToConsumer:decoder];
 #else

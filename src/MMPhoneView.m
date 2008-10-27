@@ -11,6 +11,7 @@
 #import "MMPhoneTextField.h"
 
 static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
+static NSString *muteTitle = @"Mute", *unmuteTitle = @"Unmute";
 
 #define NUM_DIGITS 12
 static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @"*", @"0", @"#" };
@@ -33,9 +34,11 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 60 );
 
 	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 60 );
-	beginCallButton.frame = MMRectMake( MMRectGetMinX(controlBounds), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/2, MMRectGetHeight(controlBounds) );
-	endCallButton.frame = MMRectMake( MMRectGetMaxX(beginCallButton.frame), MMRectGetMinY(controlBounds), MMRectGetMaxX(controlBounds) - MMRectGetMaxX(beginCallButton.frame), MMRectGetHeight(controlBounds) );
+	beginCallButton.frame = MMRectMake( MMRectGetMinX(controlBounds), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/3, MMRectGetHeight(controlBounds) );
+	endCallButton.frame = MMRectMake( MMRectGetMaxX(beginCallButton.frame), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/3, MMRectGetHeight(controlBounds) );
 	clearNumberButton.frame = endCallButton.frame;
+	muteButton.frame = MMRectMake( MMRectGetMaxX(endCallButton.frame), MMRectGetMinY(controlBounds), MMRectGetMaxX(controlBounds) - MMRectGetMaxX(endCallButton.frame), MMRectGetHeight(controlBounds) );
+	unmuteButton.frame = muteButton.frame;
 	
 	MMRect digitsBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(controlBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(controlBounds) );
 	for ( int i=0; i<12; ++i )
@@ -79,6 +82,12 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		
 		clearNumberButton = [[self buttonWithTitle:clearNumberTitle] retain];
 		clearNumberButton.hidden = inProgress;
+		
+		muteButton = [[self buttonWithTitle:muteTitle] retain];
+		muteButton.enabled = NO;
+		
+		unmuteButton = [[self buttonWithTitle:unmuteTitle] retain];
+		unmuteButton.hidden = YES;
 	
 		digitButtons = [[NSMutableArray alloc] initWithCapacity:12];
 		for ( int i=0; i<NUM_DIGITS; ++i )
@@ -95,6 +104,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[notificationCenter removeObserver:self];
 	
 	[digitButtons release];
+	[unmuteButton release];
+	[muteButton release];
 	[endCallButton release];
 	[beginCallButton release];
 	[clearNumberButton release];
@@ -114,6 +125,10 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	beginCallButton.enabled = !inCall && [numberTextField.text length] > 0;
 	clearNumberButton.hidden = inCall;
 	endCallButton.hidden = !inCall;
+	muteButton.enabled = inCall;
+	muteButton.hidden = muted;
+	unmuteButton.enabled = inCall;
+	unmuteButton.hidden = !muted;
 }
 
 -(void) buttonPressed:(MMPhoneButton *)button
@@ -124,6 +139,10 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		;
 	else if ( button == clearNumberButton )
 		;
+	else if ( button == muteButton )
+		;
+	else if ( button == unmuteButton )
+		;
 	else
 	{
 		NSString *digit = button.title;
@@ -133,7 +152,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 			numberTextField.text = [NSString stringWithFormat:@"%@%@", oldText, digit];
 		else
 			numberTextField.text = digit;
-		
+
 		[self updateButtonStates];
 
 		[delegate view:self pressedDTMF:digit];
@@ -150,6 +169,18 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	{
 		numberTextField.text = @"";
 		beginCallButton.enabled = NO;
+	}
+	else if ( button == muteButton )
+	{
+		[delegate viewMuted:self];
+		muted = YES;
+		[self updateButtonStates];
+	}
+	else if ( button == unmuteButton )
+	{
+		[delegate viewUnmuted:self];
+		muted = NO;
+		[self updateButtonStates];
 	}
 	else
 	{

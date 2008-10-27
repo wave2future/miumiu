@@ -18,6 +18,7 @@
 @class MMDTMFInjector;
 @class MMClock;
 @class MMComfortNoiseInjector;
+@class MMMuteInjector;
 @class MMDataProcessorChain;
 @class MMAudioController;
 
@@ -37,6 +38,7 @@
 	MMFastBusyInjector *fastBusyInjector;
 	MMDTMFInjector *dtmfInjector;
 	MMComfortNoiseInjector *comfortNoiseInjector;
+	MMMuteInjector *muteInjector;
 }
 
 @property ( nonatomic, assign ) MMPhoneView *phoneView;
