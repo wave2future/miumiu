@@ -102,6 +102,7 @@
 		DBAE8FC80EAE9D9C0076C726 /* MMComfortNoiseInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FC60EAE9D9C0076C726 /* MMComfortNoiseInjector.m */; };
 		DBAE8FCD0EAE9DD80076C726 /* MMAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */; };
 		DBAE8FDB0EAE9E430076C726 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAE8FDA0EAE9E430076C726 /* AudioToolbox.framework */; };
+		DBD868380EB76D3900832097 /* MMMuteInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868370EB76D3900832097 /* MMMuteInjector.m */; };
 		DBF63AFB0EB01B5F00E45F4B /* MMApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */; };
 /* End PBXBuildFile section */
 
@@ -311,6 +312,8 @@
 		DBAE8FCB0EAE9DD80076C726 /* MMAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMAudioController.h; path = ../src/MMAudioController.h; sourceTree = SOURCE_ROOT; };
 		DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMAudioController.m; path = ../src/MMAudioController.m; sourceTree = SOURCE_ROOT; };
 		DBAE8FDA0EAE9E430076C726 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
+		DBD868360EB76D3900832097 /* MMMuteInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMMuteInjector.h; path = ../src/MMMuteInjector.h; sourceTree = SOURCE_ROOT; };
+		DBD868370EB76D3900832097 /* MMMuteInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMuteInjector.m; path = ../src/MMMuteInjector.m; sourceTree = SOURCE_ROOT; };
 		DBF63AF90EB01B5F00E45F4B /* MMApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMApplicationDelegate.h; path = ../src/Mac/MMApplicationDelegate.h; sourceTree = SOURCE_ROOT; };
 		DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMApplicationDelegate.m; path = ../src/Mac/MMApplicationDelegate.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -413,6 +416,8 @@
 				DBAE8FC40EAE9D9C0076C726 /* MMClock.m */,
 				DBAE8FC50EAE9D9C0076C726 /* MMComfortNoiseInjector.h */,
 				DBAE8FC60EAE9D9C0076C726 /* MMComfortNoiseInjector.m */,
+				DBD868360EB76D3900832097 /* MMMuteInjector.h */,
+				DBD868370EB76D3900832097 /* MMMuteInjector.m */,
 				DBAE8F7B0EAE9B720076C726 /* MMCircularBuffer.h */,
 				DBAE8F7C0EAE9B720076C726 /* MMCircularBuffer.m */,
 				DBAE8FCB0EAE9DD80076C726 /* MMAudioController.h */,
@@ -833,6 +838,7 @@
 				DB89770F0EB03805004D7182 /* MMPhoneView.m in Sources */,
 				DB8977170EB03935004D7182 /* MMPhoneButton.m in Sources */,
 				DB89772A0EB03C9D004D7182 /* MMPhoneTextField.m in Sources */,
+				DBD868380EB76D3900832097 /* MMMuteInjector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

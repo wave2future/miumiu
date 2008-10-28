@@ -34,11 +34,13 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 60 );
 
 	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 60 );
-	beginCallButton.frame = MMRectMake( MMRectGetMinX(controlBounds), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/3, MMRectGetHeight(controlBounds) );
-	endCallButton.frame = MMRectMake( MMRectGetMaxX(beginCallButton.frame), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/3, MMRectGetHeight(controlBounds) );
-	clearNumberButton.frame = endCallButton.frame;
-	muteButton.frame = MMRectMake( MMRectGetMaxX(endCallButton.frame), MMRectGetMinY(controlBounds), MMRectGetMaxX(controlBounds) - MMRectGetMaxX(endCallButton.frame), MMRectGetHeight(controlBounds) );
-	unmuteButton.frame = muteButton.frame;
+	MMRect leftButtonFrame = MMRectMake( MMRectGetMinX(controlBounds), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/2, MMRectGetHeight(controlBounds) ); 
+	beginCallButton.frame = leftButtonFrame;
+	endCallButton.frame = leftButtonFrame;
+	MMRect rightButtonFrame = MMRectMake( MMRectGetMaxX(leftButtonFrame), MMRectGetMinY(controlBounds), MMRectGetMaxX(controlBounds) - MMRectGetMaxX(leftButtonFrame), MMRectGetHeight(controlBounds) );
+	clearNumberButton.frame = rightButtonFrame;
+	muteButton.frame = rightButtonFrame;
+	unmuteButton.frame = rightButtonFrame;
 	
 	MMRect digitsBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(controlBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(controlBounds) );
 	for ( int i=0; i<12; ++i )
@@ -52,6 +54,21 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 			roundf( MMRectGetWidth(digitsBounds) / 3 ),
 			roundf( MMRectGetHeight(digitsBounds) / 4 ) );
 	}
+}
+
+-(void) updateButtonStates
+{
+	BOOL haveDigits = [numberTextField.text length] > 0;
+	
+	beginCallButton.enabled = !inCall && haveDigits;
+	endCallButton.hidden = !inCall;
+
+	clearNumberButton.enabled = haveDigits;
+	clearNumberButton.hidden = inCall;
+	muteButton.enabled = !muted;
+	muteButton.hidden = !inCall;
+	unmuteButton.enabled = muted;
+	unmuteButton.hidden = !inCall;
 }
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
@@ -75,24 +92,16 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 							   object:nil];
 		
 		beginCallButton = [[self buttonWithTitle:beginCallTitle] retain];
-		beginCallButton.enabled = !inProgress && ([numberTextField.text length] != 0);
-		
 		endCallButton = [[self buttonWithTitle:endCallTitle] retain];
-		endCallButton.hidden = !inProgress;
-		
 		clearNumberButton = [[self buttonWithTitle:clearNumberTitle] retain];
-		clearNumberButton.hidden = inProgress;
-		
 		muteButton = [[self buttonWithTitle:muteTitle] retain];
-		muteButton.enabled = NO;
-		
 		unmuteButton = [[self buttonWithTitle:unmuteTitle] retain];
-		unmuteButton.hidden = YES;
 	
 		digitButtons = [[NSMutableArray alloc] initWithCapacity:12];
 		for ( int i=0; i<NUM_DIGITS; ++i )
 			[digitButtons addObject:[self buttonWithTitle:digitTitles[i]]];
-			
+		
+		[self updateButtonStates];
 		[self layoutSubviews];
 	}
 	return self;
@@ -119,17 +128,6 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	return YES;
 }
 #endif
-
--(void) updateButtonStates
-{
-	beginCallButton.enabled = !inCall && [numberTextField.text length] > 0;
-	clearNumberButton.hidden = inCall;
-	endCallButton.hidden = !inCall;
-	muteButton.enabled = inCall;
-	muteButton.hidden = muted;
-	unmuteButton.enabled = inCall;
-	unmuteButton.hidden = !muted;
-}
 
 -(void) buttonPressed:(MMPhoneButton *)button
 {
@@ -169,6 +167,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	{
 		numberTextField.text = @"";
 		beginCallButton.enabled = NO;
+		[self updateButtonStates];
 	}
 	else if ( button == muteButton )
 	{
