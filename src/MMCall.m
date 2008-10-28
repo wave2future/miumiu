@@ -10,6 +10,15 @@
 
 @implementation MMCall
 
+-(id) initWithCallDelegate:(id <MMCallDelegate>)_delegate
+{
+	if ( self = [super init] )
+	{
+		delegate = _delegate;
+	}
+	return self;
+}
+
 -(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 }
@@ -21,7 +30,5 @@
 -(void) end
 {
 }
-
-@synthesize delegate;
 
 @end

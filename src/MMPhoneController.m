@@ -7,6 +7,8 @@
 //
 
 #import "MMPhoneController.h"
+#import "MMIAX.h"
+#import "MMLoopback.h"
 #import "MMRingInjector.h"
 #import "MMBusyInjector.h"
 #import "MMFastBusyInjector.h"
@@ -16,8 +18,9 @@
 #import "MMComfortNoiseInjector.h"
 #import "MMMuteInjector.h"
 #import "MMDataProcessorChain.h"
+#import "MMCall.h"
 
-//#define LOOPBACK_THROUGH_CODECS
+#define MM_PHONE_CONTROLLER_LOOPBACK
 
 @implementation MMPhoneController
 
@@ -27,8 +30,11 @@
 	
 	audioController = [[MMAudioController alloc] init];
 	
-	iax = [[MMIAX alloc] init];
-	iax.delegate = self;
+#ifdef MM_PHONE_CONTROLLER_LOOPBACK
+	protocol = [[MMLoopback alloc] initWithProtocolDelegate:self];
+#else
+	protocol = [[MMIAX alloc] initWithProtocolDelegate:self];
+#endif
 
 	ringtoneInjector = [[MMRingInjector alloc] init];
 	busyInjector = [[MMBusyInjector alloc] init];
@@ -60,15 +66,14 @@
 	[fastBusyInjector release];
 	[busyInjector release];
 	[ringtoneInjector release];
-	[iax release];
+	[protocol release];
 	[audioController release];
 	[super dealloc];
 }
 
 -(void) internalBeginCallWithNumber:(NSString *)number
 {
-	call = [[iax beginCall:number] retain];
-	call.delegate = self;
+	call = [[protocol beginCallWithNumber:number callDelegate:self] retain];
 }
 
 -(void) view:(MMPhoneView *)view requestedBeginCallWithNumber:(NSString *)number
@@ -153,12 +158,9 @@
 {
 	[audioController connectToConsumer:muteInjector];
 	[muteInjector connectToConsumer:encoder];
-#ifdef LOOPBACK_THROUGH_CODECS
-	[encoder connectToConsumer:decoder];
-#else
 	[encoder connectToConsumer:call];
+	
 	[call connectToConsumer:decoder];
-#endif
 	[decoder connectToConsumer:clock];
 	
 	[postClockDataProcessorChain zap];

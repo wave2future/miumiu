@@ -12,12 +12,13 @@
 #import "MMULawDecoder.h"
 #import "MMSpeexEncoder.h"
 #import "MMSpeexDecoder.h"
+#import "MMCallDelegate.h"
 
 @implementation MMIAXCall
 
--(id) initWithNumber:(NSString *)number iax:(MMIAX *)_iax
+-(id) initWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
 {
-	if ( self = [super init] )
+	if ( self = [super initWithCallDelegate:_delegate] )
 	{
 		iax = [_iax retain];
 		

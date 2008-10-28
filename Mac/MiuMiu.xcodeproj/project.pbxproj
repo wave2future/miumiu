@@ -105,6 +105,8 @@
 		DBD868380EB76D3900832097 /* MMMuteInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868370EB76D3900832097 /* MMMuteInjector.m */; };
 		DBD868690EB7722400832097 /* MMUIHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868680EB7722400832097 /* MMUIHelpers.m */; };
 		DBD868930EB7771D00832097 /* MMProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868920EB7771D00832097 /* MMProtocol.m */; };
+		DBD868B60EB778C100832097 /* MMLoopback.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868B30EB778C100832097 /* MMLoopback.m */; };
+		DBD868B70EB778C100832097 /* MMLoopbackCall.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868B50EB778C100832097 /* MMLoopbackCall.m */; };
 		DBF63AFB0EB01B5F00E45F4B /* MMApplicationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */; };
 /* End PBXBuildFile section */
 
@@ -321,6 +323,12 @@
 		DBD8686A0EB7727000832097 /* MMFloat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMFloat.h; path = ../src/MMFloat.h; sourceTree = SOURCE_ROOT; };
 		DBD868910EB7771D00832097 /* MMProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMProtocol.h; path = ../src/MMProtocol.h; sourceTree = SOURCE_ROOT; };
 		DBD868920EB7771D00832097 /* MMProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMProtocol.m; path = ../src/MMProtocol.m; sourceTree = SOURCE_ROOT; };
+		DBD868B20EB778C100832097 /* MMLoopback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMLoopback.h; path = ../src/MMLoopback.h; sourceTree = SOURCE_ROOT; };
+		DBD868B30EB778C100832097 /* MMLoopback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMLoopback.m; path = ../src/MMLoopback.m; sourceTree = SOURCE_ROOT; };
+		DBD868B40EB778C100832097 /* MMLoopbackCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMLoopbackCall.h; path = ../src/MMLoopbackCall.h; sourceTree = SOURCE_ROOT; };
+		DBD868B50EB778C100832097 /* MMLoopbackCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMLoopbackCall.m; path = ../src/MMLoopbackCall.m; sourceTree = SOURCE_ROOT; };
+		DBD868E90EB77C2E00832097 /* MMCallDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCallDelegate.h; path = ../src/MMCallDelegate.h; sourceTree = SOURCE_ROOT; };
+		DBD868EA0EB77C2E00832097 /* MMProtocolDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMProtocolDelegate.h; path = ../src/MMProtocolDelegate.h; sourceTree = SOURCE_ROOT; };
 		DBF63AF90EB01B5F00E45F4B /* MMApplicationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMApplicationDelegate.h; path = ../src/Mac/MMApplicationDelegate.h; sourceTree = SOURCE_ROOT; };
 		DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMApplicationDelegate.m; path = ../src/Mac/MMApplicationDelegate.m; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -661,10 +669,13 @@
 		DBAE8F820EAE9BC00076C726 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				DBD868EA0EB77C2E00832097 /* MMProtocolDelegate.h */,
 				DBD868910EB7771D00832097 /* MMProtocol.h */,
 				DBD868920EB7771D00832097 /* MMProtocol.m */,
+				DBD868E90EB77C2E00832097 /* MMCallDelegate.h */,
 				DBAE8F840EAE9BE50076C726 /* MMCall.h */,
 				DBAE8F850EAE9BE50076C726 /* MMCall.m */,
+				DBD868AD0EB7789400832097 /* Loopback */,
 				DBAE8F830EAE9BD20076C726 /* IAX */,
 			);
 			name = Protocols;
@@ -698,6 +709,17 @@
 				DBAE8FB70EAE9D440076C726 /* MMFastBusyInjector.m */,
 			);
 			name = "Tone Generation";
+			sourceTree = "<group>";
+		};
+		DBD868AD0EB7789400832097 /* Loopback */ = {
+			isa = PBXGroup;
+			children = (
+				DBD868B20EB778C100832097 /* MMLoopback.h */,
+				DBD868B30EB778C100832097 /* MMLoopback.m */,
+				DBD868B40EB778C100832097 /* MMLoopbackCall.h */,
+				DBD868B50EB778C100832097 /* MMLoopbackCall.m */,
+			);
+			name = Loopback;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -853,6 +875,8 @@
 				DBD868380EB76D3900832097 /* MMMuteInjector.m in Sources */,
 				DBD868690EB7722400832097 /* MMUIHelpers.m in Sources */,
 				DBD868930EB7771D00832097 /* MMProtocol.m in Sources */,
+				DBD868B60EB778C100832097 /* MMLoopback.m in Sources */,
+				DBD868B70EB778C100832097 /* MMLoopbackCall.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

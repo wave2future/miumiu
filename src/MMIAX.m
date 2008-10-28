@@ -33,9 +33,9 @@ static void iaxErrorCallback( const char *data )
 
 @implementation MMIAX
 
--(id) init
+-(id) initWithProtocolDelegate:(id <MMProtocolDelegate>)_delegate;
 {
-	if ( self = [super init] )
+	if ( self = [super initWithProtocolDelegate:_delegate] )
 	{
 #ifdef DEBUG 
 		iax_enable_debug();
@@ -83,12 +83,12 @@ static void iaxErrorCallback( const char *data )
 	}
 }
 
--(MMCall *) beginCall:(NSString *)number
+-(MMCall *) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
 {
 	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
 		return nil;
 		
-	return [[[MMIAXCall alloc] initWithNumber:number iax:self] autorelease];
+	return [[[MMIAXCall alloc] initWithNumber:number callDelegate:callDelegate iax:self] autorelease];
 }
 
 -(void) socketCallbackCalled

@@ -68,9 +68,9 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	clearNumberButton.enabled = haveDigits;
 	clearNumberButton.hidden = inCall;
 	muteButton.enabled = !muted;
-	muteButton.hidden = !inCall;
+	muteButton.hidden = muted || !inCall;
 	unmuteButton.enabled = muted;
-	unmuteButton.hidden = !inCall;
+	unmuteButton.hidden = !muted || !inCall;
 }
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;

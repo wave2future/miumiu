@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MMIAX.h"
-#import "MMCall.h"
+#import "MMProtocolDelegate.h"
+#import "MMCallDelegate.h"
 #import "MMPhoneView.h"
 
+@class MMProtocol;
 @class MMCodec;
 @class MMRingInjector;
 @class MMBusyInjector;
@@ -27,7 +28,7 @@
 @private
 	MMPhoneView *phoneView;
 
-	MMIAX *iax;
+	MMProtocol *protocol;
 
 	MMAudioController *audioController;
 	MMCall *call;

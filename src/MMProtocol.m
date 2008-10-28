@@ -10,10 +10,12 @@
 
 @implementation MMProtocol
 
--(id) init
+-(id) initWithProtocolDelegate:(id <MMProtocolDelegate>)_delegate
 {
 	if ( self = [super init] )
 	{
+		delegate = _delegate;
+		
 		hostname = [@"lickmypony.com" retain];
 		username = [@"miumiu" retain];
 		password = [@"snowdog1" retain];
@@ -33,12 +35,11 @@
 	[super dealloc];
 }
 
--(MMCall *) beginCall:(NSString *)number
+-(MMCall *) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
 {
 	return nil;
 }
 
-@synthesize delegate;
 @synthesize hostname;
 @synthesize username;
 @synthesize password;

@@ -22,7 +22,7 @@
 	BOOL sentBegin;
 }
 
--(id) initWithNumber:(NSString *)number iax:(MMIAX *)_iax;
+-(id) initWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax;
 
 -(void) handleEvent:(struct iax_event *)event;
 

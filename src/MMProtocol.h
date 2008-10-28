@@ -8,13 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol MMProtocolDelegate;
 @class MMCall;
-
-@protocol MMProtocolDelegate <NSObject>
-
-@required
-
-@end
+@protocol MMCallDelegate;
 
 @interface MMProtocol : NSObject
 {
@@ -23,9 +19,10 @@
 	NSString *hostname, *username, *password, *cidName, *cidNumber;
 }
 
--(MMCall *) beginCall:(NSString *)number;
+-(id) initWithProtocolDelegate:(id <MMProtocolDelegate>)_delegate;
 
-@property ( nonatomic, assign ) id <MMProtocolDelegate> delegate;
+-(MMCall *) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate;
+
 @property ( nonatomic, readonly ) NSString *hostname;
 @property ( nonatomic, readonly ) NSString *username;
 @property ( nonatomic, readonly ) NSString *password;
