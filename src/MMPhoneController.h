@@ -22,7 +22,7 @@
 @class MMDataProcessorChain;
 @class MMAudioController;
 
-@interface MMPhoneController : NSThread <MMIAXDelegate, MMCallDelegate, MMPhoneViewDelegate>
+@interface MMPhoneController : NSThread <MMProtocolDelegate, MMCallDelegate, MMPhoneViewDelegate>
 {
 @private
 	MMPhoneView *phoneView;

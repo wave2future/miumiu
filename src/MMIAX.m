@@ -37,12 +37,6 @@ static void iaxErrorCallback( const char *data )
 {
 	if ( self = [super init] )
 	{
-		hostname = [@"lickmypony.com" retain];
-		username = [@"miumiu" retain];
-		password = [@"snowdog1" retain];
-		cidName = [@"Peter Zion" retain];
-		cidNumber = [@"5146515041" retain];
-
 #ifdef DEBUG 
 		iax_enable_debug();
 		iax_set_output( iaxOutputCallback );
@@ -60,7 +54,6 @@ static void iaxErrorCallback( const char *data )
 		session = iax_session_new();
 		
 		iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
-		
 	}
 	return self;
 }
@@ -68,11 +61,6 @@ static void iaxErrorCallback( const char *data )
 -(void) dealloc
 {
 	iax_destroy( session );
-	[password release];
-	[username release];
-	[hostname release];
-	[cidNumber release];
-	[cidName release];
 	[super dealloc];
 }
 
@@ -97,7 +85,7 @@ static void iaxErrorCallback( const char *data )
 
 -(MMCall *) beginCall:(NSString *)number
 {
-	if ( numCalls >= MAX_NUM_CALLS )
+	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
 		return nil;
 		
 	return [[[MMIAXCall alloc] initWithNumber:number iax:self] autorelease];
@@ -132,12 +120,5 @@ static void iaxErrorCallback( const char *data )
 		iax_event_free( event );
 	}
 }
-
-@synthesize delegate;
-@synthesize hostname;
-@synthesize username;
-@synthesize password;
-@synthesize cidName;
-@synthesize cidNumber;
 
 @end
