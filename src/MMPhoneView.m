@@ -9,6 +9,7 @@
 #import "MMPhoneView.h"
 #import "MMPhoneButton.h"
 #import "MMPhoneTextField.h"
+#import "MMUIHelpers.h"
 
 static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
 static NSString *muteTitle = @"Mute", *unmuteTitle = @"Unmute";
@@ -34,25 +35,26 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 60 );
 
 	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 60 );
-	MMRect leftButtonFrame = MMRectMake( MMRectGetMinX(controlBounds), MMRectGetMinY(controlBounds), MMRectGetWidth(controlBounds)/2, MMRectGetHeight(controlBounds) ); 
-	beginCallButton.frame = leftButtonFrame;
-	endCallButton.frame = leftButtonFrame;
-	MMRect rightButtonFrame = MMRectMake( MMRectGetMaxX(leftButtonFrame), MMRectGetMinY(controlBounds), MMRectGetMaxX(controlBounds) - MMRectGetMaxX(leftButtonFrame), MMRectGetHeight(controlBounds) );
-	clearNumberButton.frame = rightButtonFrame;
-	muteButton.frame = rightButtonFrame;
-	unmuteButton.frame = rightButtonFrame;
+	MMRect controlButtonFrames[2];
+	MMSubdivideRectEvenly( controlBounds, 1, 2, controlButtonFrames );
+	beginCallButton.frame = controlButtonFrames[0];
+	endCallButton.frame = controlButtonFrames[0];
+	clearNumberButton.frame = controlButtonFrames[1];
+	muteButton.frame = controlButtonFrames[1];
+	unmuteButton.frame = controlButtonFrames[1];
 	
-	MMRect digitsBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(controlBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(controlBounds) );
-	for ( int i=0; i<12; ++i )
+	MMRect digitBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(controlBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(controlBounds) );
+	MMRect digitButtonBounds[12];
+	MMSubdivideRectEvenly( digitBounds, 4, 3, digitButtonBounds );
+	for ( unsigned row=0; row<4; ++row )
 	{
-		int row = i/3, col = i%3;
+		for ( unsigned col=0; col<3; ++col )
+		{
+			unsigned i = row*3 + col;
 		
-		MMPhoneButton *digitButton = [digitButtons objectAtIndex:i];
-		digitButton.frame = MMRectMake(
-			roundf( MMRectGetMinX(digitsBounds) + col * MMRectGetWidth(digitsBounds) / 3 ),
-			roundf( MMRectGetMinY(digitsBounds) + row * MMRectGetHeight(digitsBounds) / 4 ),
-			roundf( MMRectGetWidth(digitsBounds) / 3 ),
-			roundf( MMRectGetHeight(digitsBounds) / 4 ) );
+			MMPhoneButton *digitButton = [digitButtons objectAtIndex:i];
+			digitButton.frame = digitButtonBounds[i];
+		}
 	}
 }
 
