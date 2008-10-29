@@ -21,7 +21,7 @@
 #import "MMCall.h"
 #import "MMCodec.h"
 
-#define MM_PHONE_CONTROLLER_LOOPBACK
+//#define MM_PHONE_CONTROLLER_LOOPBACK
 
 @implementation MMPhoneController
 
