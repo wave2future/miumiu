@@ -17,7 +17,7 @@
 #import "MMClock.h"
 #import "MMComfortNoiseInjector.h"
 #import "MMMuteInjector.h"
-#import "MMDataProcessorChain.h"
+#import "MMDataPipeChain.h"
 #import "MMCall.h"
 
 #define MM_PHONE_CONTROLLER_LOOPBACK
@@ -41,13 +41,13 @@
 	fastBusyInjector = [[MMFastBusyInjector alloc] init];
 	dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
 	clock = [[MMClock alloc] initWithSamplesPerTick:160 samplingFrequency:8000];
-	postClockDataProcessorChain = [[MMDataProcessorChain alloc] init];
+	postClockDataProcessorChain = [[MMDataPipeChain alloc] init];
 	comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
 	muteInjector = [[MMMuteInjector alloc] init];
 
-	[clock connectToConsumer:postClockDataProcessorChain];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
-	[postClockDataProcessorChain connectToConsumer:audioController];
+	[clock connectToTarget:postClockDataProcessorChain];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+	[postClockDataProcessorChain connectToTarget:audioController];
 
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
@@ -140,8 +140,8 @@
 -(void) callDidBegin:(MMCall *)_call
 {
 	[postClockDataProcessorChain zap];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
 
 	[self performSelector:@selector(notifyPhoneViewThatCallDidBegin:) onThread:[NSThread mainThread] withObject:_call waitUntilDone:NO];
 }
@@ -149,47 +149,47 @@
 -(void) callDidBeginRinging:(MMCall *)call
 {
 	[postClockDataProcessorChain zap];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:ringtoneInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
 }
 
 -(void) call:(MMCall *)_ didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder
 {
-	[audioController connectToConsumer:muteInjector];
-	[muteInjector connectToConsumer:encoder];
-	[encoder connectToConsumer:call];
+	[audioController connectToTarget:muteInjector];
+	[muteInjector connectToTarget:encoder];
+	[encoder connectToTarget:call];
 	
-	[call connectToConsumer:decoder];
-	[decoder connectToConsumer:clock];
+	[call connectToTarget:decoder];
+	[decoder connectToTarget:clock];
 	
 	[postClockDataProcessorChain zap];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
 }
 
 -(void) callDidReturnBusy:(MMCall *)_
 {
 	[postClockDataProcessorChain zap];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:busyInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:busyInjector];
 }
 
 -(void) callDidFail:(MMCall *)_
 {
 	[postClockDataProcessorChain zap];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:comfortNoiseInjector];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:fastBusyInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:fastBusyInjector];
 }
 
 -(void) callDidEnd:(MMCall *)_call
 {
-	[audioController disconnect];
+	[audioController disconnectFromTarget];
 	
 	[postClockDataProcessorChain zap];
-	[postClockDataProcessorChain pushDataProcessorOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 
 	[call release];
 	call = nil;

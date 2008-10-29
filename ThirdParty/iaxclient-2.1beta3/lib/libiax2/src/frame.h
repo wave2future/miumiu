@@ -117,7 +117,7 @@ rame? */
         /*! How far into "data" the data really starts */
         int offset;
         /*! Optional source of frame for debugging */
-        char *src;
+        char *source;
         /*! Pointer to actual data */
         void *data;
         /*! Next/Prev for linking stand alone frames */

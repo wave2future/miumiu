@@ -7,13 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MMDataProducer.h"
-#import "MMDataConsumer.h"
+#import "MMDataPipe.h"
 
 @protocol MMCallDelegate;
 @class MMCodec;
 
-@interface MMCall : MMDataProducer <MMDataConsumer>
+@interface MMCall : MMDataPipe
 {
 @protected
 	id <MMCallDelegate> delegate;
@@ -23,5 +22,7 @@
 
 -(void) sendDTMF:(NSString *)dtmf;
 -(void) end;
+
+@property ( nonatomic, assign ) id <MMCallDelegate> delegate;
 
 @end

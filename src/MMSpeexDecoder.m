@@ -35,14 +35,14 @@
 	[super dealloc];
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	speex_bits_read_from( &bits, data, size );
 	
 	unsigned frameSize = samplesPerFrame * sizeof(short);
 	short *frame = alloca( frameSize );
 	while ( speex_decode_int( dec_state, &bits, frame ) == 0 )
-		[self produceData:frame ofSize:frameSize numSamples:samplesPerFrame];
+		[self pushData:frame ofSize:frameSize numSamples:samplesPerFrame];
 }
 
 @end

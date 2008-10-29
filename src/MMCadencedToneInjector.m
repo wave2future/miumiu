@@ -20,6 +20,7 @@
 {
 	if ( self = [super init] )
 	{
+		self.dataPipeDelegate = self;
 		samplingFrequency = _samplingFrequency;
 		onSamples = roundf( onSeconds * samplingFrequency );
 		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones
@@ -38,20 +39,18 @@
 	[super dealloc];
 }
 
--(void) connectToConsumer:(id <MMDataConsumer>)consumer
+-(void) dataPipe:(MMDataPipe *)_ didConnectToTarget:(MMDataPipe *)newSource
 {
-	[super connectToConsumer:consumer];
-	
 	timePosition = 0;
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
 {
 	if ( timePosition % totalSamples < onSamples )
 		[toneGenerator injectSamples:data count:numSamples offset:timePosition];
 	timePosition += numSamples;
 
-	[self produceData:data ofSize:size numSamples:numSamples];
+	[self pushData:data ofSize:size numSamples:numSamples];
 }
 
 @end

@@ -10,14 +10,17 @@
 
 @implementation MMComfortNoiseInjector
 
--(void) connectToConsumer:(id <MMDataConsumer>)consumer
+-(id) init
 {
-	[super connectToConsumer:consumer];
-	lfsr = 0xACE1u;
-	lastInjection = 0;
+	if ( self = [super init] )
+	{
+		lfsr = 0xACE1u;
+		lastInjection = 0;
+	}
+	return self;
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	short *samples = data;
 	for ( unsigned i=0; i<numSamples; ++i )
@@ -28,7 +31,7 @@
 		samples[i] += injection;
 		lastInjection = injection;
 	}
-	[self produceData:data ofSize:size numSamples:numSamples];
+	[self pushData:data ofSize:size numSamples:numSamples];
 }
 
 @end

@@ -37,9 +37,9 @@
 	return self;
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
-	[self produceData:data ofSize:size numSamples:numSamples];
+	[self pushData:data ofSize:size numSamples:numSamples];
 }
 
 -(void) sendDTMF:(NSString *)dtmf

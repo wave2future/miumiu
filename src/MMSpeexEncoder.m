@@ -58,10 +58,10 @@
 	char data[dataSize];
 	int dataUsed = speex_bits_write( &bits, data, dataSize );
 	
-	[self produceData:data ofSize:dataUsed numSamples:samplesPerFrame];
+	[self pushData:data ofSize:dataUsed numSamples:samplesPerFrame];
 }
 
--(void) consumeData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	const char *data = (char *)_data;
 	unsigned frameSize = samplesPerFrame * sizeof(short);

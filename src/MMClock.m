@@ -16,6 +16,7 @@
 {
 	if ( self = [super init] )
 	{
+		self.dataPipeDelegate = self;
 		samplesPerTick = _samplesPerTick;
 		timerInterval = samplesPerTick / samplingFrequency;
 	}
@@ -27,21 +28,17 @@
 	[super dealloc];
 }
 
--(void) connectToConsumer:(id <MMDataConsumer>)consumer
+-(void) dataPipe:(MMDataPipe *)dataPipe didConnectToTarget:(MMDataPipe *)newTarget
 {
-	[super connectToConsumer:consumer];
-	
 	timer = [[NSTimer scheduledTimerWithTimeInterval:timerInterval target:self selector:@selector(timerCallback:) userInfo:nil repeats:YES] retain];
 	samplesSent = samplesNeeded = 0;
 }
 
--(void) disconnect
+-(void) dataPipe:(MMDataPipe *)dataPipe willDisconnectFromTarget:(MMDataPipe *)oldTarget
 {
 	[timer invalidate];
 	[timer release];
 	timer = nil;
-	
-	[super disconnect];
 }
 
 -(void) timerCallback:(id)_
@@ -55,15 +52,15 @@
 
 		while ( samplesSent < samplesNeeded )
 		{
-			[self produceData:data ofSize:size numSamples:samplesPerTick];
+			[self pushData:data ofSize:size numSamples:samplesPerTick];
 			samplesSent += samplesPerTick;
 		}
 	}
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
-	[self produceData:data ofSize:size numSamples:numSamples];
+	[self pushData:data ofSize:size numSamples:numSamples];
 	samplesSent += numSamples;
 }
 @end

@@ -20,7 +20,7 @@
 @class MMClock;
 @class MMComfortNoiseInjector;
 @class MMMuteInjector;
-@class MMDataProcessorChain;
+@class MMDataPipeChain;
 @class MMAudioController;
 
 @interface MMPhoneController : NSThread <MMProtocolDelegate, MMCallDelegate, MMPhoneViewDelegate>
@@ -33,7 +33,7 @@
 	MMAudioController *audioController;
 	MMCall *call;
 	MMClock *clock;
-	MMDataProcessorChain *postClockDataProcessorChain;
+	MMDataPipeChain *postClockDataProcessorChain;
 	MMRingInjector *ringtoneInjector;
 	MMBusyInjector *busyInjector;
 	MMFastBusyInjector *fastBusyInjector;

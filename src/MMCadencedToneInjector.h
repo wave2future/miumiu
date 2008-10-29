@@ -6,11 +6,12 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCodec.h"
+#import "MMDataProcessor.h"
+#import "MMDataPipeDelegate.h"
 
 @class MMToneGenerator;
 
-@interface MMCadencedToneInjector : MMCodec
+@interface MMCadencedToneInjector : MMDataProcessor <MMDataPipeDelegate>
 {
 @private
 	unsigned samplingFrequency;

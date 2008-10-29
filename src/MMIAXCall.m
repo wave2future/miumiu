@@ -45,7 +45,7 @@
 	[super dealloc];
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	if ( sessionValid )
 		iax_send_voice( session, format, data, size, numSamples );
@@ -64,14 +64,14 @@
 		iax_hangup( session, "later!" );
 		sessionValid = NO;
 	}
-	[delegate callDidEnd:self];
+	[self.delegate callDidEnd:self];
 }
 
 -(void) handleEvent:(struct iax_event *)event
 {
 	if ( !sentBegin )
 	{
-		[delegate callDidBegin:self];
+		[self.delegate callDidBegin:self];
 		sentBegin = YES;
 	}
 	
@@ -100,7 +100,7 @@
 		}
 		break;
 		case IAX_EVENT_VOICE:
-			[self produceData:event->data ofSize:event->datalen numSamples:MM_DATA_NUM_SAMPLES_UNKNOWN];
+			[self pushData:event->data ofSize:event->datalen numSamples:MM_DATA_NUM_SAMPLES_UNKNOWN];
 			break;
 		case IAX_EVENT_REJECT:
 			sessionValid = NO;

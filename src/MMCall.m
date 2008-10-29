@@ -14,12 +14,12 @@
 {
 	if ( self = [super init] )
 	{
-		delegate = _delegate;
+		self.delegate = _delegate;
 	}
 	return self;
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 }
 
@@ -30,5 +30,7 @@
 -(void) end
 {
 }
+
+@synthesize delegate;
 
 @end

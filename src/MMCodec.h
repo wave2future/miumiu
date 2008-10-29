@@ -6,9 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProcessor.h"
+#import "MMDataPipe.h"
 
-@interface MMCodec : MMDataProcessor
+@interface MMCodec : MMDataPipe
 {
 }
 

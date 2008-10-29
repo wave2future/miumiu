@@ -57,14 +57,14 @@
 	return self;
 }
 
--(void) consumeData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 	short *samples = (short *)_data;
 	unsigned newSize = numSamples * sizeof(unsigned char);
 	unsigned char *newSamples = alloca( newSize );
 	for ( unsigned i=0; i<numSamples; ++i )
 		newSamples[i] = linearToULaw[((unsigned short)samples[i])>>2];
-	[self produceData:newSamples ofSize:numSamples numSamples:numSamples];
+	[self pushData:newSamples ofSize:numSamples numSamples:numSamples];
 }
 
 @end

@@ -1293,9 +1293,9 @@ static int __send_command(struct iax_session *i, char type, int command,
 	f.mallocd = 0;
 	f.offset = 0;
 #ifdef __GNUC__
-	f.src = (char *) __FUNCTION__;
+	f.source = (char *) __FUNCTION__;
 #else
-	f.src = (char *) __FILE__;
+	f.source = (char *) __FILE__;
 #endif
 	f.data = data;
 	return iax_send(i, &f, ts, seqno, now, transfer, final, fullframe);

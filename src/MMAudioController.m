@@ -163,7 +163,7 @@ static void interruptionCallback(
 	[super dealloc];
 }
 
--(void) consumeData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
 #ifndef SIMULATE_AUDIO
 	[outputDataBuffer putData:data ofSize:size];
@@ -189,7 +189,7 @@ static void interruptionCallback(
 	memset( samples, 0, sizeof(samples) );
 	[toneGenerator injectSamples:samples count:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER offset:toneGeneratorOffset];
 	toneGeneratorOffset += MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER;
-	[self produceData:samples ofSize:sizeof(samples) numSamples:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
+	[self pushData:samples ofSize:sizeof(samples) numSamples:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
 }
 #else
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
@@ -198,7 +198,7 @@ static void interruptionCallback(
 		numPackets:(UInt32)numPackets
 		packetDescription:(const AudioStreamPacketDescription *)packetDescription
 {
-	[self produceData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
+	[self pushData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
 
 	AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
 	LOG( @"Requeued input buffer" );

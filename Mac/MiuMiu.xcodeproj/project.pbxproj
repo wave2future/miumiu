@@ -77,8 +77,6 @@
 		DB5B51990EAD471200241254 /* ring10.h in Headers */ = {isa = PBXBuildFile; fileRef = DB5B51840EAD471200241254 /* ring10.h */; };
 		DB5B519A0EAD471200241254 /* ringtone.h in Headers */ = {isa = PBXBuildFile; fileRef = DB5B51850EAD471200241254 /* ringtone.h */; };
 		DB5B51BA0EAD48AD00241254 /* MMDataProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B50EAD48AD00241254 /* MMDataProcessor.m */; };
-		DB5B51BB0EAD48AD00241254 /* MMDataProcessorChain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B70EAD48AD00241254 /* MMDataProcessorChain.m */; };
-		DB5B51BC0EAD48AD00241254 /* MMDataProducer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB5B51B90EAD48AD00241254 /* MMDataProducer.m */; };
 		DB89770F0EB03805004D7182 /* MMPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB89770E0EB03805004D7182 /* MMPhoneView.m */; };
 		DB8977170EB03935004D7182 /* MMPhoneButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8977160EB03935004D7182 /* MMPhoneButton.m */; };
 		DB89772A0EB03C9D004D7182 /* MMPhoneTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DB8977290EB03C9D004D7182 /* MMPhoneTextField.m */; };
@@ -102,6 +100,8 @@
 		DBAE8FC80EAE9D9C0076C726 /* MMComfortNoiseInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FC60EAE9D9C0076C726 /* MMComfortNoiseInjector.m */; };
 		DBAE8FCD0EAE9DD80076C726 /* MMAudioController.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */; };
 		DBAE8FDB0EAE9E430076C726 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBAE8FDA0EAE9E430076C726 /* AudioToolbox.framework */; };
+		DBB1EDAC0EB7DE270002A266 /* MMDataPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EDAB0EB7DE270002A266 /* MMDataPipe.m */; };
+		DBB1EDAF0EB7DFEF0002A266 /* MMDataPipeChain.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EDAE0EB7DFEF0002A266 /* MMDataPipeChain.m */; };
 		DBD868380EB76D3900832097 /* MMMuteInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868370EB76D3900832097 /* MMMuteInjector.m */; };
 		DBD868690EB7722400832097 /* MMUIHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868680EB7722400832097 /* MMUIHelpers.m */; };
 		DBD868930EB7771D00832097 /* MMProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868920EB7771D00832097 /* MMProtocol.m */; };
@@ -158,13 +158,8 @@
 		DB5B51830EAD471200241254 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = options.h; path = "../ThirdParty/iaxclient-2.1beta3/lib/libiax2/src/options.h"; sourceTree = SOURCE_ROOT; };
 		DB5B51840EAD471200241254 /* ring10.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ring10.h; path = "../ThirdParty/iaxclient-2.1beta3/lib/libiax2/src/ring10.h"; sourceTree = SOURCE_ROOT; };
 		DB5B51850EAD471200241254 /* ringtone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ringtone.h; path = "../ThirdParty/iaxclient-2.1beta3/lib/libiax2/src/ringtone.h"; sourceTree = SOURCE_ROOT; };
-		DB5B51B30EAD48AD00241254 /* MMDataConsumer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataConsumer.h; path = ../src/MMDataConsumer.h; sourceTree = SOURCE_ROOT; };
 		DB5B51B40EAD48AD00241254 /* MMDataProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataProcessor.h; path = ../src/MMDataProcessor.h; sourceTree = SOURCE_ROOT; };
 		DB5B51B50EAD48AD00241254 /* MMDataProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDataProcessor.m; path = ../src/MMDataProcessor.m; sourceTree = SOURCE_ROOT; };
-		DB5B51B60EAD48AD00241254 /* MMDataProcessorChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataProcessorChain.h; path = ../src/MMDataProcessorChain.h; sourceTree = SOURCE_ROOT; };
-		DB5B51B70EAD48AD00241254 /* MMDataProcessorChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDataProcessorChain.m; path = ../src/MMDataProcessorChain.m; sourceTree = SOURCE_ROOT; };
-		DB5B51B80EAD48AD00241254 /* MMDataProducer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataProducer.h; path = ../src/MMDataProducer.h; sourceTree = SOURCE_ROOT; };
-		DB5B51B90EAD48AD00241254 /* MMDataProducer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDataProducer.m; path = ../src/MMDataProducer.m; sourceTree = SOURCE_ROOT; };
 		DB6CEB620EAD44DB00B58819 /* _kiss_fft_guts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = _kiss_fft_guts.h; path = "../ThirdParty/speex-1.2rc1/libspeex/_kiss_fft_guts.h"; sourceTree = SOURCE_ROOT; };
 		DB6CEB630EAD44DB00B58819 /* arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arch.h; path = "../ThirdParty/speex-1.2rc1/libspeex/arch.h"; sourceTree = SOURCE_ROOT; };
 		DB6CEB640EAD44DB00B58819 /* bits.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bits.c; path = "../ThirdParty/speex-1.2rc1/libspeex/bits.c"; sourceTree = SOURCE_ROOT; };
@@ -316,6 +311,11 @@
 		DBAE8FCB0EAE9DD80076C726 /* MMAudioController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMAudioController.h; path = ../src/MMAudioController.h; sourceTree = SOURCE_ROOT; };
 		DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMAudioController.m; path = ../src/MMAudioController.m; sourceTree = SOURCE_ROOT; };
 		DBAE8FDA0EAE9E430076C726 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = /System/Library/Frameworks/AudioToolbox.framework; sourceTree = "<absolute>"; };
+		DBB1EDAA0EB7DE270002A266 /* MMDataPipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPipe.h; path = ../src/MMDataPipe.h; sourceTree = SOURCE_ROOT; };
+		DBB1EDAB0EB7DE270002A266 /* MMDataPipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDataPipe.m; path = ../src/MMDataPipe.m; sourceTree = SOURCE_ROOT; };
+		DBB1EDAD0EB7DFEF0002A266 /* MMDataPipeChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPipeChain.h; path = ../src/MMDataPipeChain.h; sourceTree = SOURCE_ROOT; };
+		DBB1EDAE0EB7DFEF0002A266 /* MMDataPipeChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDataPipeChain.m; path = ../src/MMDataPipeChain.m; sourceTree = SOURCE_ROOT; };
+		DBB1EDB90EB7E5090002A266 /* MMDataPipeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPipeDelegate.h; path = ../src/MMDataPipeDelegate.h; sourceTree = SOURCE_ROOT; };
 		DBD868360EB76D3900832097 /* MMMuteInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMMuteInjector.h; path = ../src/MMMuteInjector.h; sourceTree = SOURCE_ROOT; };
 		DBD868370EB76D3900832097 /* MMMuteInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMuteInjector.m; path = ../src/MMMuteInjector.m; sourceTree = SOURCE_ROOT; };
 		DBD868670EB7722400832097 /* MMUIHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMUIHelpers.h; path = ../src/MMUIHelpers.h; sourceTree = SOURCE_ROOT; };
@@ -619,13 +619,13 @@
 		DB5B51B20EAD488600241254 /* Data Processing */ = {
 			isa = PBXGroup;
 			children = (
-				DB5B51B80EAD48AD00241254 /* MMDataProducer.h */,
-				DB5B51B90EAD48AD00241254 /* MMDataProducer.m */,
-				DB5B51B30EAD48AD00241254 /* MMDataConsumer.h */,
+				DBB1EDB90EB7E5090002A266 /* MMDataPipeDelegate.h */,
+				DBB1EDAA0EB7DE270002A266 /* MMDataPipe.h */,
+				DBB1EDAB0EB7DE270002A266 /* MMDataPipe.m */,
+				DBB1EDAD0EB7DFEF0002A266 /* MMDataPipeChain.h */,
+				DBB1EDAE0EB7DFEF0002A266 /* MMDataPipeChain.m */,
 				DB5B51B40EAD48AD00241254 /* MMDataProcessor.h */,
 				DB5B51B50EAD48AD00241254 /* MMDataProcessor.m */,
-				DB5B51B60EAD48AD00241254 /* MMDataProcessorChain.h */,
-				DB5B51B70EAD48AD00241254 /* MMDataProcessorChain.m */,
 			);
 			name = "Data Processing";
 			sourceTree = "<group>";
@@ -847,8 +847,6 @@
 			files = (
 				DB43084E0EACDCC400484B27 /* MMMain.m in Sources */,
 				DB5B51BA0EAD48AD00241254 /* MMDataProcessor.m in Sources */,
-				DB5B51BB0EAD48AD00241254 /* MMDataProcessorChain.m in Sources */,
-				DB5B51BC0EAD48AD00241254 /* MMDataProducer.m in Sources */,
 				DBAE8F700EAE9AE90076C726 /* MMCodec.m in Sources */,
 				DBAE8F710EAE9AE90076C726 /* MMSpeexDecoder.m in Sources */,
 				DBAE8F720EAE9AE90076C726 /* MMSpeexEncoder.m in Sources */,
@@ -877,6 +875,8 @@
 				DBD868930EB7771D00832097 /* MMProtocol.m in Sources */,
 				DBD868B60EB778C100832097 /* MMLoopback.m in Sources */,
 				DBD868B70EB778C100832097 /* MMLoopbackCall.m in Sources */,
+				DBB1EDAC0EB7DE270002A266 /* MMDataPipe.m in Sources */,
+				DBB1EDAF0EB7DFEF0002A266 /* MMDataPipeChain.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

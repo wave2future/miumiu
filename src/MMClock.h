@@ -6,10 +6,10 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProducer.h"
-#import "MMDataConsumer.h"
+#import "MMDataPipe.h"
+#import "MMDataPipeDelegate.h"
 
-@interface MMClock : MMDataProducer <MMDataConsumer>
+@interface MMClock : MMDataPipe <MMDataPipeDelegate>
 {
 @private
 	unsigned samplesPerTick;

@@ -6,11 +6,14 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProducer.h"
-#import "MMDataConsumer.h"
+#import "MMDataPipe.h"
 
-@interface MMDataProcessor : MMDataProducer <MMDataConsumer>
+@interface MMDataProcessor : MMDataPipe
 {
 }
+
+// A subclass of MMDataProcessor MUST override this function
+// to provide its functionality
+-(void) processData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples;
 
 @end

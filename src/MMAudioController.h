@@ -7,8 +7,7 @@
 //
 
 #import <AudioToolbox/AudioToolbox.h>
-#import "MMDataProducer.h"
-#import "MMDataConsumer.h"
+#import "MMDataPipe.h"
 
 @class MMAudioController;
 @class MMToneGenerator;
@@ -33,7 +32,7 @@
 #define MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER 160
 #define MM_AUDIO_CONTROLLER_BUFFER_SIZE (MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))
 
-@interface MMAudioController : MMDataProducer <MMDataConsumer>
+@interface MMAudioController : MMDataPipe
 {
 @private
 #ifdef MM_AUDIO_CONTROLLER_LOG
