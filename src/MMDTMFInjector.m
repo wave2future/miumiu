@@ -127,12 +127,12 @@
 	[[digitToCol valueForKey:digit] released];
 }
 
--(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) processData:(void *)data ofSize:(unsigned)size
 {
+	unsigned numSamples = size/sizeof(short);
 	for ( MMDTMFRowCol *rowCol in rowCols )
 		[rowCol injectSamples:data count:numSamples offset:offset];
 	offset += numSamples;
-	[self pushData:data ofSize:size numSamples:numSamples];
 }
 
 @end

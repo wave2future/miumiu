@@ -10,15 +10,10 @@
 
 @implementation MMMuteInjector
 
--(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) processData:(void *)data ofSize:(unsigned)size
 {
 	if ( muted )
-	{
-		void *mutedData = alloca( size );
-		memset( mutedData, 0, size );
-		return [self pushData:mutedData ofSize:size numSamples:numSamples];
-	}
-	return [self pushData:data ofSize:size numSamples:numSamples];
+		memset( data, 0, size );
 }
 
 -(void) mute

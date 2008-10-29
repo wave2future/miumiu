@@ -14,6 +14,6 @@
 
 // A subclass of MMDataProcessor MUST override this function
 // to provide its functionality
--(void) processData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples;
+-(void) processData:(void *)data ofSize:(unsigned)size;
 
 @end

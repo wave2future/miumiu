@@ -35,13 +35,13 @@
 				[dataPipeDelegate dataPipe:self willDisconnectFromSource:oldSource];
 			[source autorelease];
 			source = nil;
-			[oldSource disconnectFromSource];
+			[oldSource disconnectFromTarget];
 		}
 		
 		if ( newSource != nil )
 		{
 			source = [newSource retain];
-			[newSource connectToSource:self];
+			[newSource connectToTarget:self];
 			if ( [dataPipeDelegate respondsToSelector:@selector(dataPipe:didConnectToSource:)] )
 				[dataPipeDelegate dataPipe:self didConnectToSource:newSource];
 		}
@@ -52,12 +52,12 @@
 {
 }
 
--(void) pullData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples
+-(void) pullData:(void *)data ofSize:(unsigned)size
 {
-	[source respondToPullData:data ofSize:size numSamples:numSamples];
+	[source respondToPullData:data ofSize:size];
 }
 
--(void) respondToPullData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples
+-(void) respondToPullData:(void *)data ofSize:(unsigned)size
 {
 	@throw [NSException exceptionWithName:@"MMDataPipe" reason:@"respondToPullData unspecialize" userInfo:nil];
 }
@@ -102,7 +102,7 @@
 
 -(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
-	@throw [NSException exceptionWithName:@"MMDataPipe" reason:@"respondToPushData unspecialize" userInfo:nil];
+	@throw [NSException exceptionWithName:@"MMDataPipe" reason:@"respondToPushData unspecialized" userInfo:nil];
 }
 
 -(void) disconnectFromTarget

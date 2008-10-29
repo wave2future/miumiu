@@ -14,11 +14,12 @@
 #import "MMFastBusyInjector.h"
 #import "MMAudioController.h"
 #import "MMDTMFInjector.h"
-#import "MMClock.h"
+#import "MMDataPushToPullAdapter.h"
 #import "MMComfortNoiseInjector.h"
 #import "MMMuteInjector.h"
 #import "MMDataPipeChain.h"
 #import "MMCall.h"
+#import "MMCodec.h"
 
 #define MM_PHONE_CONTROLLER_LOOPBACK
 
@@ -40,12 +41,12 @@
 	busyInjector = [[MMBusyInjector alloc] init];
 	fastBusyInjector = [[MMFastBusyInjector alloc] init];
 	dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
-	clock = [[MMClock alloc] initWithSamplesPerTick:160 samplingFrequency:8000];
+	pushToPullAdapter = [[MMDataPushToPullAdapter alloc] initWithBufferCapacity:320*4];
 	postClockDataProcessorChain = [[MMDataPipeChain alloc] init];
 	comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
 	muteInjector = [[MMMuteInjector alloc] init];
 
-	[clock connectToTarget:postClockDataProcessorChain];
+	[pushToPullAdapter connectToTarget:postClockDataProcessorChain];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain connectToTarget:audioController];
 
@@ -61,7 +62,7 @@
 	[muteInjector release];
 	[comfortNoiseInjector release];
 	[postClockDataProcessorChain release];
-	[clock release];
+	[pushToPullAdapter release];
 	[dtmfInjector release];
 	[fastBusyInjector release];
 	[busyInjector release];
@@ -161,7 +162,7 @@
 	[encoder connectToTarget:call];
 	
 	[call connectToTarget:decoder];
-	[decoder connectToTarget:clock];
+	[decoder connectToTarget:pushToPullAdapter];
 	
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];

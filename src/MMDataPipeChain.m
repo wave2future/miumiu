@@ -29,12 +29,12 @@
 	return self;
 }
 
--(void) respondToPullData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples
+-(void) respondToPullData:(void *)data ofSize:(unsigned)size
 {
 	if ( self.source != nil )
-		[self pullData:data ofSize:size numSamples:numSamples];
+		[self pullData:data ofSize:size];
 	else
-		[dataPipeChain pullData:data ofSize:size numSamples:numSamples];
+		[dataPipeChain pullData:data ofSize:size];
 }
 
 -(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
@@ -65,12 +65,12 @@
 	[super dealloc];
 }
 
--(void) respondToPullData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples
+-(void) respondToPullData:(void *)data ofSize:(unsigned)size
 {
 	if ( lastDataPipe != nil )
-		[lastDataPipe respondToPullData:data ofSize:size numSamples:numSamples];
+		[lastDataPipe respondToPullData:data ofSize:size];
 	else
-		[self pullData:data ofSize:size numSamples:numSamples];
+		[self pullData:data ofSize:size];
 }
 
 -(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples

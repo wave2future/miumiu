@@ -20,8 +20,9 @@
 	return self;
 }
 
--(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) processData:(void *)data ofSize:(unsigned)size
 {
+	unsigned numSamples = size/sizeof(short);
 	short *samples = data;
 	for ( unsigned i=0; i<numSamples; ++i )
 	{
@@ -31,7 +32,6 @@
 		samples[i] += injection;
 		lastInjection = injection;
 	}
-	[self pushData:data ofSize:size numSamples:numSamples];
 }
 
 @end

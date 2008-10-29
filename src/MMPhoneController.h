@@ -17,7 +17,7 @@
 @class MMBusyInjector;
 @class MMFastBusyInjector;
 @class MMDTMFInjector;
-@class MMClock;
+@class MMDataPushToPullAdapter;
 @class MMComfortNoiseInjector;
 @class MMMuteInjector;
 @class MMDataPipeChain;
@@ -32,7 +32,7 @@
 
 	MMAudioController *audioController;
 	MMCall *call;
-	MMClock *clock;
+	MMDataPushToPullAdapter *pushToPullAdapter;
 	MMDataPipeChain *postClockDataProcessorChain;
 	MMRingInjector *ringtoneInjector;
 	MMBusyInjector *busyInjector;

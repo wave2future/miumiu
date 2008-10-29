@@ -44,13 +44,12 @@
 	timePosition = 0;
 }
 
--(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
+-(void) processData:(void *)data ofSize:(unsigned)size
 {
+	unsigned numSamples = size/sizeof(short);
 	if ( timePosition % totalSamples < onSamples )
 		[toneGenerator injectSamples:data count:numSamples offset:timePosition];
 	timePosition += numSamples;
-
-	[self pushData:data ofSize:size numSamples:numSamples];
 }
 
 @end

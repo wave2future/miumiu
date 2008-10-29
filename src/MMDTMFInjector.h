@@ -6,9 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCodec.h"
+#import "MMDataProcessor.h"
 
-@interface MMDTMFInjector : MMCodec
+@interface MMDTMFInjector : MMDataProcessor
 {
 @private
 	NSArray *rowCols;

@@ -109,10 +109,15 @@ static void interruptionCallback(
 			);
 		LOG( @"Created output queue" );
 		
-		outputDataBuffer = [[MMCircularBuffer alloc] initWithCapacity:(2*MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS*MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))];
-		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
-			AudioQueueAllocateBuffer( outputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &availableOutputBuffers[numAvailableOutputBuffers++] );
+		{
+			AudioQueueBufferRef buffer;
+			AudioQueueAllocateBuffer( outputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
+			buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
+			memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );
+			AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
+		}
+			
 		
 		AudioQueueNewInput(
 			&audioFormat,
@@ -134,6 +139,9 @@ static void interruptionCallback(
 			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
 			AudioQueueEnqueueBuffer( inputQueue, buffer, 0, NULL );
 		}
+		
+		AudioQueueStart( outputQueue, NULL );
+		AudioQueueStart( inputQueue, NULL );
 #endif
 	}
 	return self;
@@ -149,7 +157,6 @@ static void interruptionCallback(
 	AudioQueueDispose( inputQueue, FALSE );
 	
 	AudioQueueDispose( outputQueue, FALSE );
-	[outputDataBuffer release];
 
 #ifdef IPHONE	
 	AudioSessionSetActive( FALSE );
@@ -161,25 +168,6 @@ static void interruptionCallback(
 #endif
 	
 	[super dealloc];
-}
-
--(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
-{
-#ifndef SIMULATE_AUDIO
-	[outputDataBuffer putData:data ofSize:size];
-	if ( outputDataBuffer.used >= MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS * MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER * sizeof(short) )
-	{
-		while ( numAvailableOutputBuffers > 0 )
-		{
-			AudioQueueBufferRef buffer = availableOutputBuffers[--numAvailableOutputBuffers];
-			buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
-			[outputDataBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
-			AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
-		}
-		AudioQueueStart( outputQueue, NULL );
-		AudioQueueStart( inputQueue, NULL );
-	}
-#endif
 }
 
 #ifdef SIMULATE_AUDIO
@@ -199,7 +187,6 @@ static void interruptionCallback(
 		packetDescription:(const AudioStreamPacketDescription *)packetDescription
 {
 	[self pushData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
-
 	AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
 	LOG( @"Requeued input buffer" );
 }
@@ -207,22 +194,8 @@ static void interruptionCallback(
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 {
-	availableOutputBuffers[numAvailableOutputBuffers++] = buffer;
-	
-	if ( numAvailableOutputBuffers == MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS )
-	{
-		AudioQueuePause( inputQueue );
-		AudioQueuePause( outputQueue );
-	}
-	else while ( numAvailableOutputBuffers > 0
-		&& outputDataBuffer.used >= MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER * sizeof(short) )
-	{
-		buffer = availableOutputBuffers[--numAvailableOutputBuffers];
-		buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
-		[outputDataBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
-		AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
-	}
-
+	[self pullData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
+	AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
 }
 #endif
 

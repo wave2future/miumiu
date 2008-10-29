@@ -47,11 +47,7 @@
 	AudioStreamBasicDescription audioFormat;
 
 	AudioQueueRef inputQueue;
-	
-	MMCircularBuffer *outputDataBuffer;
 	AudioQueueRef outputQueue;
-	unsigned numAvailableOutputBuffers;
-	AudioQueueBufferRef availableOutputBuffers[MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS];
 #endif
 }
 

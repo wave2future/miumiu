@@ -28,14 +28,14 @@
 
 // You MUST NOT override these
 -(void) connectToSource:(MMDataPipe *)source;
--(void) pullData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples;
+-(void) pullData:(void *)data ofSize:(unsigned)size;
 -(void) disconnectFromSource;
 -(void) connectToTarget:(MMDataPipe *)_dst;
 -(void) pushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
 -(void) disconnectFromTarget;
 
 // You MUST override these to provide functionality
--(void) respondToPullData:(void *)data ofSize:(unsigned)size numSamples:(unsigned *)numSamples;
+-(void) respondToPullData:(void *)data ofSize:(unsigned)size;
 -(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples;
 
 @end
