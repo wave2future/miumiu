@@ -16,11 +16,14 @@
 	{
 		delegate = _delegate;
 		
-		hostname = [@"lickmypony.com" retain];
-		username = [@"miumiu" retain];
-		password = [@"snowdog1" retain];
-		cidName = [@"Peter Zion" retain];
-		cidNumber = [@"5146515041" retain];
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		
+		hostname = [[userDefaults stringForKey:@"server"] retain];
+		username = [[userDefaults stringForKey:@"username"] retain];
+		password = [[userDefaults stringForKey:@"password"] retain];
+		cidName = [[userDefaults stringForKey:@"cidName"] retain];
+		cidNumber = [[userDefaults stringForKey:@"cidNumber"] retain];
+		NSLog( @"password=%@", password );
 	}
 	return self;
 }
