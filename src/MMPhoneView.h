@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "MMView.h"
 #import "MMPhoneTextFieldDelegate.h"
+#import "MMPhoneAlertDelegate.h"
 #import "MMRect.h"
 
 @class MMPhoneView;
 @class MMPhoneButton;
+@class MMPhoneAlert;
 
 @protocol MMPhoneViewDelegate <NSObject>
 
@@ -24,12 +26,12 @@
 -(void) viewMuted:(MMPhoneView *)view;
 -(void) viewUnmuted:(MMPhoneView *)view;
 -(void) viewRequestedEndCall:(MMPhoneView *)view;
--(void) viewAnswerCall:(MMPhoneView *)view;
--(void) viewIgnoreCall:(MMPhoneView *)view;
+-(void) viewDidAnswerCall:(MMPhoneView *)view;
+-(void) viewDidIgnoreCall:(MMPhoneView *)view;
 
 @end
 
-@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate>
+@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate, MMPhoneAlertDelegate>
 {
 @private
 	id <MMPhoneViewDelegate> delegate;
@@ -40,6 +42,7 @@
 	MMPhoneButton *muteButton;
 	MMPhoneButton *unmuteButton;
 	NSMutableArray *digitButtons;
+	MMPhoneAlert *incommingAlert;
 	BOOL inCall, muted;
 }
 

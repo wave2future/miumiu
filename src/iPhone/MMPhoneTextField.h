@@ -18,8 +18,6 @@
 	id <MMPhoneTextFieldDelegate> delegate;
 }
 
--(void) resignFirstResponder;
-
 @property ( nonatomic, readonly ) MMView *view;
 @property ( nonatomic, assign ) MMRect frame;
 @property ( nonatomic, assign ) NSString *text;

@@ -223,12 +223,12 @@
 	[protocol ignoreCall];
 }
 
--(void) viewAnswerCall:(MMPhoneView *)view
+-(void) viewDidAnswerCall:(MMPhoneView *)view
 {
 	[self performSelector:@selector(internalAnswerCall) onThread:self withObject:nil waitUntilDone:NO];
 }
 
--(void) viewIgnoreCall:(MMPhoneView *)view
+-(void) viewDidIgnoreCall:(MMPhoneView *)view
 {
 	[self performSelector:@selector(internalIgnoreCall) onThread:self withObject:nil waitUntilDone:NO];
 }

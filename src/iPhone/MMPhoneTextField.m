@@ -34,13 +34,9 @@
 	[super dealloc];
 }
 
--(void) resignFirstResponder
+-(BOOL) textFieldShouldReturn:(UITextField *)_textField
 {
 	[textField resignFirstResponder];
-}
-
--(BOOL) textFieldShouldReturn:(UITextField *)textField
-{
 	return YES;
 }
 

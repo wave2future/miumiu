@@ -10,6 +10,8 @@
 #import "MMPhoneButton.h"
 #import "MMPhoneTextField.h"
 #import "MMUIHelpers.h"
+#import "MMPhoneAlert.h"
+#import "MMWindow.h"
 
 static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
 static NSString *muteTitle = @"Mute", *unmuteTitle = @"Unmute";
@@ -114,6 +116,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter removeObserver:self];
 	
+	[incommingAlert release];
 	[digitButtons release];
 	[unmuteButton release];
 	[muteButton release];
@@ -221,14 +224,23 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 
 -(void) callIsBeingReceivedFrom:(NSString *)cidInfo
 {
-	NSApplication *application = [NSApplication sharedApplication];
-	NSInteger requestID = [application requestUserAttention:NSCriticalRequest];
-	int result = NSRunAlertPanel( @"Incomming call", @"Incoming call from \"%@\"", @"Answer", @"Ignore", nil, cidInfo );
-	[application cancelUserAttentionRequest:requestID];
-	if ( result == NSAlertDefaultReturn )
-		[delegate viewAnswerCall:self];
-	else
-		[delegate viewIgnoreCall:self];
+	incommingAlert = [[MMPhoneAlert alloc] initWithWindow:[self window] cidInfo:cidInfo];
+	incommingAlert.delegate = self;
+	[incommingAlert post];
+}
+
+-(void) phoneAlertDidAccept:(MMPhoneAlert *)phoneAlert
+{
+	[incommingAlert autorelease];
+	incommingAlert = nil;
+	[delegate viewDidAnswerCall:self];
+}
+
+-(void) phoneAlertDidIgnore:(MMPhoneAlert *)phoneAlert
+{
+	[incommingAlert autorelease];
+	incommingAlert = nil;
+	[delegate viewDidIgnoreCall:self];
 }
 
 @synthesize delegate;

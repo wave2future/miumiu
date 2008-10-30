@@ -150,7 +150,6 @@ static void iaxErrorCallback( const char *data )
 			{
 				if ( calls[i].session == event->session )
 				{
-					NSLog( @"Found IAXCall for session %p", event->session );
 					foundSession = YES;
 					[calls[i].iaxCall handleEvent:event];
 					break;
@@ -176,15 +175,10 @@ static void iaxErrorCallback( const char *data )
 						else
 						{
 							iax_accept( callingSession, callingFormat );
-							NSLog( @"Connect: session=%p, event->session=%p", session, event->session);
 							iax_ring_announce( callingSession );
 							[delegate protocol:self isReceivingCallFrom:[NSString stringWithFormat:@"%s <%s>", event->ies.calling_name, event->ies.calling_number]];
 						}
 						
-						break;
-					
-					default:
-						NSLog( @"Unknown event %u for session %p", (unsigned)event->etype, event->session );
 						break;
 				}
 			}

@@ -11,6 +11,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		DB079F190EA202A300179412 /* MMPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = DB079F180EA202A300179412 /* MMPhoneController.m */; };
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
+		DB23DBB10EBA22A60000A767 /* MMPhoneAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = DB23DBB00EBA22A60000A767 /* MMPhoneAlert.m */; };
 		DB4308900EACDDB700484B27 /* MMMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB43088F0EACDDB700484B27 /* MMMain.m */; };
 		DB4308960EACDEDD00484B27 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = DB4308950EACDEDD00484B27 /* button.png */; };
 		DB4308980EACDEE800484B27 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB4308970EACDEE800484B27 /* Info.plist */; };
@@ -194,6 +195,10 @@
 		DB079F180EA202A300179412 /* MMPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneController.m; path = src/MMPhoneController.m; sourceTree = "<group>"; };
 		DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMCircularBuffer.h; path = src/MMCircularBuffer.h; sourceTree = "<group>"; };
 		DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMCircularBuffer.m; path = src/MMCircularBuffer.m; sourceTree = "<group>"; };
+		DB23DBAB0EBA22450000A767 /* MMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMWindow.h; path = ../src/iPhone/MMWindow.h; sourceTree = SOURCE_ROOT; };
+		DB23DBAF0EBA22A60000A767 /* MMPhoneAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneAlert.h; path = ../src/iPhone/MMPhoneAlert.h; sourceTree = SOURCE_ROOT; };
+		DB23DBB00EBA22A60000A767 /* MMPhoneAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneAlert.m; path = ../src/iPhone/MMPhoneAlert.m; sourceTree = SOURCE_ROOT; };
+		DB23DBB90EBA24360000A767 /* MMPhoneAlertDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneAlertDelegate.h; path = ../src/MMPhoneAlertDelegate.h; sourceTree = SOURCE_ROOT; };
 		DB43088F0EACDDB700484B27 /* MMMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMain.m; path = ../src/iPhone/MMMain.m; sourceTree = SOURCE_ROOT; };
 		DB4308950EACDEDD00484B27 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = ../Resources/button.png; sourceTree = SOURCE_ROOT; };
 		DB4308970EACDEE800484B27 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/iPhone/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -663,11 +668,12 @@
 		DB937E1A0EB031C3006DDBAA /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				DBB1F0B70EB816840002A266 /* MMUIHelpers.h */,
-				DBB1F0B80EB816840002A266 /* MMUIHelpers.m */,
 				DBB1F0B40EB8165C0002A266 /* MMFloat.h */,
 				DB937E1B0EB031DE006DDBAA /* MMRect.h */,
 				DB937E1C0EB031DE006DDBAA /* MMView.h */,
+				DB23DBAB0EBA22450000A767 /* MMWindow.h */,
+				DBB1F0B70EB816840002A266 /* MMUIHelpers.h */,
+				DBB1F0B80EB816840002A266 /* MMUIHelpers.m */,
 				DB937E1D0EB03213006DDBAA /* MMPhoneTextField.h */,
 				DB937E1E0EB03213006DDBAA /* MMPhoneTextField.m */,
 				DB937EC00EB0375C006DDBAA /* MMPhoneTextFieldDelegate.h */,
@@ -675,6 +681,9 @@
 				DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */,
 				DB937E020EB02A59006DDBAA /* MMPhoneView.h */,
 				DB937E030EB02A59006DDBAA /* MMPhoneView.m */,
+				DB23DBAF0EBA22A60000A767 /* MMPhoneAlert.h */,
+				DB23DBB00EBA22A60000A767 /* MMPhoneAlert.m */,
+				DB23DBB90EBA24360000A767 /* MMPhoneAlertDelegate.h */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -976,6 +985,7 @@
 				DBB1F0B20EB816500002A266 /* MMLoopback.m in Sources */,
 				DBB1F0B30EB816500002A266 /* MMLoopbackCall.m in Sources */,
 				DBB1F0B90EB816840002A266 /* MMUIHelpers.m in Sources */,
+				DB23DBB10EBA22A60000A767 /* MMPhoneAlert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

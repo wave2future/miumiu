@@ -10,6 +10,7 @@
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		DB23DB230EBA17FB0000A767 /* MMPhoneAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = DB23DB220EBA17FB0000A767 /* MMPhoneAlert.m */; };
 		DB43084E0EACDCC400484B27 /* MMMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB43084D0EACDCC400484B27 /* MMMain.m */; };
 		DB5B51310EAD45D600241254 /* vq.c in Sources */ = {isa = PBXBuildFile; fileRef = DB6CEBBB0EAD44DB00B58819 /* vq.c */; };
 		DB5B51320EAD45D600241254 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = DB6CEBC00EAD44DB00B58819 /* window.c */; };
@@ -137,6 +138,10 @@
 		32CA4F630368D1EE00C91783 /* MiuMiu_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiuMiu_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* MiuMiu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiuMiu.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB23DB210EBA17FB0000A767 /* MMPhoneAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneAlert.h; path = ../src/Mac/MMPhoneAlert.h; sourceTree = SOURCE_ROOT; };
+		DB23DB220EBA17FB0000A767 /* MMPhoneAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneAlert.m; path = ../src/Mac/MMPhoneAlert.m; sourceTree = SOURCE_ROOT; };
+		DB23DB260EBA18A90000A767 /* MMPhoneAlertDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneAlertDelegate.h; path = ../src/MMPhoneAlertDelegate.h; sourceTree = SOURCE_ROOT; };
+		DB23DB270EBA1FBF0000A767 /* MMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMWindow.h; path = ../src/Mac/MMWindow.h; sourceTree = SOURCE_ROOT; };
 		DB43084D0EACDCC400484B27 /* MMMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMain.m; path = ../src/Mac/MMMain.m; sourceTree = SOURCE_ROOT; };
 		DB5B512D0EAD45BD00241254 /* libspeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libspeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB5B51690EAD46C900241254 /* libiax2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libiax2.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -636,6 +641,7 @@
 				DBD8686A0EB7727000832097 /* MMFloat.h */,
 				DB8977120EB03831004D7182 /* MMRect.h */,
 				DB8977130EB038E8004D7182 /* MMView.h */,
+				DB23DB270EBA1FBF0000A767 /* MMWindow.h */,
 				DBD868670EB7722400832097 /* MMUIHelpers.h */,
 				DBD868680EB7722400832097 /* MMUIHelpers.m */,
 				DB8977150EB03935004D7182 /* MMPhoneButton.h */,
@@ -645,6 +651,9 @@
 				DB89770C0EB03805004D7182 /* MMPhoneTextFieldDelegate.h */,
 				DB89770D0EB03805004D7182 /* MMPhoneView.h */,
 				DB89770E0EB03805004D7182 /* MMPhoneView.m */,
+				DB23DB210EBA17FB0000A767 /* MMPhoneAlert.h */,
+				DB23DB220EBA17FB0000A767 /* MMPhoneAlert.m */,
+				DB23DB260EBA18A90000A767 /* MMPhoneAlertDelegate.h */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -877,6 +886,7 @@
 				DBB1EDAC0EB7DE270002A266 /* MMDataPipe.m in Sources */,
 				DBB1EDAF0EB7DFEF0002A266 /* MMDataPipeChain.m in Sources */,
 				DBB1EE800EB806CA0002A266 /* MMDataPushToPullAdapter.m in Sources */,
+				DB23DB230EBA17FB0000A767 /* MMPhoneAlert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
