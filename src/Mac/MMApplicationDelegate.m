@@ -1,10 +1,13 @@
 #import "MMApplicationDelegate.h"
 #import "MMPhoneController.h"
+#import "MMSettingsHelper.h"
 
 @implementation MMApplicationDelegate
 
 -(void) applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+	MMSetupDefaultSettings();
+	
 	NSRect contentRect = NSMakeRect( 10, 40, 320, 480 );
 	window = [[NSWindow alloc] initWithContentRect:contentRect
 		styleMask:(NSTitledWindowMask|NSClosableWindowMask)

@@ -17,10 +17,14 @@ void MMSetupDefaultSettings( void )
 		|| [userDefaults stringForKey:@"password"] == nil )
     {
         NSString *pathStr = [[NSBundle mainBundle] bundlePath];
-        NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
-        NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
+#ifdef MACOSX
+        pathStr = [pathStr stringByAppendingPathComponent:@"Contents"];
+        pathStr = [pathStr stringByAppendingPathComponent:@"Resources"];
+#endif
+        pathStr = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
+        pathStr = [pathStr stringByAppendingPathComponent:@"Root.plist"];
 
-        NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
+        NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:pathStr];
         NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
 
 		NSMutableDictionary *appDefaults = [NSMutableDictionary dictionary];
