@@ -24,7 +24,7 @@
 			username = [@"dfcarney" retain];
 		password = [[userDefaults stringForKey:@"password"] retain];
 		if ( [password length] == 0 )
-			password = [@"password" retain];
+			password = [@"scsscs" retain];
 		cidName = [[userDefaults stringForKey:@"cidName"] retain];
 		cidNumber = [[userDefaults stringForKey:@"cidNumber"] retain];
 	}
