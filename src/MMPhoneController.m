@@ -223,7 +223,6 @@
 {
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
-	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
 
 	[self performSelector:@selector(notifyPhoneViewThatCallIsBeingReceivedFrom:) onThread:[NSThread mainThread] withObject:cidInfo waitUntilDone:NO];
