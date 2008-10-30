@@ -9,6 +9,7 @@
 #import "MMApplication.h"
 #import "MMPhoneController.h"
 #import "MMPhoneView.h"
+#import "MMSettingsHelper.h"
 
 @implementation MMApplication
 
@@ -21,31 +22,8 @@
 
 -(void) applicationDidFinishLaunching:(UIApplication *)application
 {
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	MMSetupDefaultSettings();
 	
-    if ( [userDefaults stringForKey:@"server"] == nil
-		|| [userDefaults stringForKey:@"username"] == nil
-		|| [userDefaults stringForKey:@"password"] == nil )
-    {
-        NSString *pathStr = [[NSBundle mainBundle] bundlePath];
-        NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
-        NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
-
-        NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
-        NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
-
-		NSMutableDictionary *appDefaults = [NSMutableDictionary dictionary];
-        for ( NSDictionary *prefItem in prefSpecifierArray )
-		{
-			NSString *key = [prefItem objectForKey:@"Key"];
-			if ( key != nil )
-				[appDefaults setObject:[prefItem objectForKey:@"DefaultValue"] forKey:key];
-		}
-
-        [userDefaults registerDefaults:appDefaults];
-        [userDefaults synchronize];
-    }
- 
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 	window = [[UIWindow alloc] initWithFrame:screenBounds];
 

@@ -20,10 +20,13 @@
 		
 		hostname = [[userDefaults stringForKey:@"server"] retain];
 		username = [[userDefaults stringForKey:@"username"] retain];
+		if ( [username length] == 0 )
+			username = [@"dfcarney" retain];
 		password = [[userDefaults stringForKey:@"password"] retain];
+		if ( [password length] == 0 )
+			password = [@"password" retain];
 		cidName = [[userDefaults stringForKey:@"cidName"] retain];
 		cidNumber = [[userDefaults stringForKey:@"cidNumber"] retain];
-		NSLog( @"password=%@", password );
 	}
 	return self;
 }

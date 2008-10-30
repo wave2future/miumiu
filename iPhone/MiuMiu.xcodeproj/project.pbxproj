@@ -13,6 +13,7 @@
 		DB18790D0E9E937F004319C4 /* MMCircularBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */; };
 		DB23DBB10EBA22A60000A767 /* MMPhoneAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = DB23DBB00EBA22A60000A767 /* MMPhoneAlert.m */; };
 		DB23DC150EBA2DD10000A767 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DB23DC140EBA2DD10000A767 /* Settings.bundle */; };
+		DB23DCA50EBA368F0000A767 /* MMSettingsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DB23DCA40EBA368F0000A767 /* MMSettingsHelper.m */; };
 		DB4308900EACDDB700484B27 /* MMMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB43088F0EACDDB700484B27 /* MMMain.m */; };
 		DB4308960EACDEDD00484B27 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = DB4308950EACDEDD00484B27 /* button.png */; };
 		DB4308980EACDEE800484B27 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DB4308970EACDEE800484B27 /* Info.plist */; };
@@ -201,6 +202,8 @@
 		DB23DBB00EBA22A60000A767 /* MMPhoneAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneAlert.m; path = ../src/iPhone/MMPhoneAlert.m; sourceTree = SOURCE_ROOT; };
 		DB23DBB90EBA24360000A767 /* MMPhoneAlertDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneAlertDelegate.h; path = ../src/MMPhoneAlertDelegate.h; sourceTree = SOURCE_ROOT; };
 		DB23DC140EBA2DD10000A767 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Resources/iPhone/Settings.bundle; sourceTree = SOURCE_ROOT; };
+		DB23DCA30EBA368F0000A767 /* MMSettingsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSettingsHelper.h; path = ../src/MMSettingsHelper.h; sourceTree = SOURCE_ROOT; };
+		DB23DCA40EBA368F0000A767 /* MMSettingsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMSettingsHelper.m; path = ../src/MMSettingsHelper.m; sourceTree = SOURCE_ROOT; };
 		DB43088F0EACDDB700484B27 /* MMMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMain.m; path = ../src/iPhone/MMMain.m; sourceTree = SOURCE_ROOT; };
 		DB4308950EACDEDD00484B27 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = ../Resources/button.png; sourceTree = SOURCE_ROOT; };
 		DB4308970EACDEE800484B27 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Resources/iPhone/Info.plist; sourceTree = SOURCE_ROOT; };
@@ -759,6 +762,8 @@
 				DB43088F0EACDDB700484B27 /* MMMain.m */,
 				DBAE8FF30EAEA4A70076C726 /* MMApplication.h */,
 				DBAE8FF40EAEA4A70076C726 /* MMApplication.m */,
+				DB23DCA30EBA368F0000A767 /* MMSettingsHelper.h */,
+				DB23DCA40EBA368F0000A767 /* MMSettingsHelper.m */,
 				DB079F170EA202A300179412 /* MMPhoneController.h */,
 				DB079F180EA202A300179412 /* MMPhoneController.m */,
 				DBCFF40B0E9DA59B0006A803 /* MMAudioController.h */,
@@ -990,6 +995,7 @@
 				DBB1F0B30EB816500002A266 /* MMLoopbackCall.m in Sources */,
 				DBB1F0B90EB816840002A266 /* MMUIHelpers.m in Sources */,
 				DB23DBB10EBA22A60000A767 /* MMPhoneAlert.m in Sources */,
+				DB23DCA50EBA368F0000A767 /* MMSettingsHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

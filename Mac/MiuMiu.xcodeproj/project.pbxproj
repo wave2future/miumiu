@@ -11,6 +11,7 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		DB23DB230EBA17FB0000A767 /* MMPhoneAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = DB23DB220EBA17FB0000A767 /* MMPhoneAlert.m */; };
+		DB23DD400EBA37080000A767 /* MMSettingsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DB23DD3F0EBA37080000A767 /* MMSettingsHelper.m */; };
 		DB43084E0EACDCC400484B27 /* MMMain.m in Sources */ = {isa = PBXBuildFile; fileRef = DB43084D0EACDCC400484B27 /* MMMain.m */; };
 		DB5B51310EAD45D600241254 /* vq.c in Sources */ = {isa = PBXBuildFile; fileRef = DB6CEBBB0EAD44DB00B58819 /* vq.c */; };
 		DB5B51320EAD45D600241254 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = DB6CEBC00EAD44DB00B58819 /* window.c */; };
@@ -142,6 +143,8 @@
 		DB23DB220EBA17FB0000A767 /* MMPhoneAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneAlert.m; path = ../src/Mac/MMPhoneAlert.m; sourceTree = SOURCE_ROOT; };
 		DB23DB260EBA18A90000A767 /* MMPhoneAlertDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneAlertDelegate.h; path = ../src/MMPhoneAlertDelegate.h; sourceTree = SOURCE_ROOT; };
 		DB23DB270EBA1FBF0000A767 /* MMWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMWindow.h; path = ../src/Mac/MMWindow.h; sourceTree = SOURCE_ROOT; };
+		DB23DD3E0EBA37080000A767 /* MMSettingsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMSettingsHelper.h; path = ../src/MMSettingsHelper.h; sourceTree = SOURCE_ROOT; };
+		DB23DD3F0EBA37080000A767 /* MMSettingsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMSettingsHelper.m; path = ../src/MMSettingsHelper.m; sourceTree = SOURCE_ROOT; };
 		DB43084D0EACDCC400484B27 /* MMMain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMain.m; path = ../src/Mac/MMMain.m; sourceTree = SOURCE_ROOT; };
 		DB5B512D0EAD45BD00241254 /* libspeex.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libspeex.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB5B51690EAD46C900241254 /* libiax2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libiax2.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -432,6 +435,8 @@
 				DB43084D0EACDCC400484B27 /* MMMain.m */,
 				DBF63AF90EB01B5F00E45F4B /* MMApplicationDelegate.h */,
 				DBF63AFA0EB01B5F00E45F4B /* MMApplicationDelegate.m */,
+				DB23DD3E0EBA37080000A767 /* MMSettingsHelper.h */,
+				DB23DD3F0EBA37080000A767 /* MMSettingsHelper.m */,
 				DBAE8FC50EAE9D9C0076C726 /* MMComfortNoiseInjector.h */,
 				DBAE8FC60EAE9D9C0076C726 /* MMComfortNoiseInjector.m */,
 				DBD868360EB76D3900832097 /* MMMuteInjector.h */,
@@ -887,6 +892,7 @@
 				DBB1EDAF0EB7DFEF0002A266 /* MMDataPipeChain.m in Sources */,
 				DBB1EE800EB806CA0002A266 /* MMDataPushToPullAdapter.m in Sources */,
 				DB23DB230EBA17FB0000A767 /* MMPhoneAlert.m in Sources */,
+				DB23DD400EBA37080000A767 /* MMSettingsHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
