@@ -221,6 +221,11 @@
 
 -(void) protocol:(MMProtocol *)protocol isReceivingCallFrom:(NSString *)cidInfo
 {
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
+	[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
+
 	[self performSelector:@selector(notifyPhoneViewThatCallIsBeingReceivedFrom:) onThread:[NSThread mainThread] withObject:cidInfo waitUntilDone:NO];
 }
 
@@ -231,11 +236,17 @@
 
 -(void) internalAnswerCall
 {
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+
 	[protocol answerCallWithCallDelegate:self];
 }
 
 -(void) internalIgnoreCall
 {
+	[postClockDataProcessorChain zap];
+	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+
 	[protocol ignoreCall];
 }
 
