@@ -21,10 +21,10 @@
 		hostname = [[userDefaults stringForKey:@"server"] retain];
 		username = [[userDefaults stringForKey:@"username"] retain];
 		if ( [username length] == 0 )
-			username = [@"pzion" retain];
+			username = [@"dfcarney" retain];
 		password = [[userDefaults stringForKey:@"password"] retain];
 		if ( [password length] == 0 )
-			password = [@"snowdog1" retain];
+			password = [@"scsscs" retain];
 		cidName = [[userDefaults stringForKey:@"cidName"] retain];
 		cidNumber = [[userDefaults stringForKey:@"cidNumber"] retain];
 	}
