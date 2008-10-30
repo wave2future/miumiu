@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+@class MMProtocol;
+
 @protocol MMProtocolDelegate <NSObject>
 
 @required
+
+-(void) protocol:(MMProtocol *)protocol isReceivingCallFrom:(NSString *)cidInfo;
 
 @end

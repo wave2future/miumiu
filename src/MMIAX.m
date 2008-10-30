@@ -8,6 +8,12 @@
 
 #import "MMIAX.h"
 #import "MMIAXCall.h"
+#import "MMProtocolDelegate.h"
+#import "MMSpeexEncoder.h"
+#import "MMSpeexDecoder.h"
+#import "MMULawEncoder.h"
+#import "MMULawDecoder.h"
+#import "MMCallDelegate.h"
 
 static void socketCallback(
 	CFSocketRef s,
@@ -88,7 +94,47 @@ static void iaxErrorCallback( const char *data )
 	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
 		return nil;
 		
-	return [[[MMIAXCall alloc] initWithNumber:number callDelegate:callDelegate iax:self] autorelease];
+	struct iax_session *newSession = iax_session_new();
+	
+	char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", username, password, hostname, number] UTF8String] );
+	iax_call( newSession, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_ULAW, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
+	free( ich );
+		
+	MMCall *result = [[[MMIAXCall alloc] initWithSession:newSession callDelegate:callDelegate iax:self] autorelease];
+	[callDelegate callDidBegin:result];
+	return result;
+}
+
+-(MMCall *) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate
+{
+	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
+		return nil;
+	
+	MMCodec *encoder, *decoder;
+	if ( callingFormat == AST_FORMAT_SPEEX )
+	{
+		encoder = [MMSpeexEncoder codec];
+		decoder = [MMSpeexDecoder codec];
+	}
+	else
+	{
+		encoder = [MMULawEncoder codec];
+		decoder = [MMULawDecoder codec];
+	}
+	
+	iax_answer( callingSession );
+	
+	MMCall *result = [[[MMIAXCall alloc] initWithFormat:callingFormat session:callingSession callDelegate:callDelegate iax:self] autorelease];
+	callingSession = NULL;
+	[callDelegate callDidBegin:result];
+	[callDelegate call:result didAnswerWithEncoder:encoder decoder:decoder];
+	return result;
+}
+
+-(void) ignoreCall
+{
+	iax_reject( callingSession, "Refused" );
+	callingSession = NULL;
 }
 
 -(void) socketCallbackCalled
@@ -98,21 +144,48 @@ static void iaxErrorCallback( const char *data )
 	{
 		if ( event->etype != IAX_EVENT_NULL )
 		{
-			if ( event->session == session )
+			BOOL foundSession = NO;
+			
+			for ( unsigned i=0; i<numCalls; ++i )
+			{
+				if ( calls[i].session == event->session )
+				{
+					NSLog( @"Found IAXCall for session %p", event->session );
+					foundSession = YES;
+					[calls[i].iaxCall handleEvent:event];
+					break;
+				}
+			}
+			
+			if ( !foundSession )
 			{
 				switch ( event->etype )
 				{
-				}
-			}
-			else
-			{
-				for ( unsigned i=0; i<numCalls; ++i )
-				{
-					if ( calls[i].session == event->session )
-					{
-						[calls[i].iaxCall handleEvent:event];
+					case IAX_EVENT_CONNECT:
+						callingSession = event->session;
+						
+						if ( event->ies.format & AST_FORMAT_SPEEX )
+							callingFormat = AST_FORMAT_SPEEX;
+						else if ( event->ies.format & AST_FORMAT_ULAW )
+							callingFormat = AST_FORMAT_ULAW;
+						else
+							callingFormat = 0;
+						
+						if ( callingFormat == 0 )
+							iax_reject( callingSession, "No codec found" );
+						else
+						{
+							iax_accept( callingSession, callingFormat );
+							NSLog( @"Connect: session=%p, event->session=%p", session, event->session);
+							iax_ring_announce( callingSession );
+							[delegate protocol:self isReceivingCallFrom:[NSString stringWithFormat:@"%s <%s>", event->ies.calling_name, event->ies.calling_number]];
+						}
+						
 						break;
-					}
+					
+					default:
+						NSLog( @"Unknown event %u for session %p", (unsigned)event->etype, event->session );
+						break;
 				}
 			}
 		}

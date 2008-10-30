@@ -22,6 +22,8 @@
 -(id) initWithProtocolDelegate:(id <MMProtocolDelegate>)_delegate;
 
 -(MMCall *) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate;
+-(MMCall *) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate;
+-(void) ignoreCall;
 
 @property ( nonatomic, readonly ) NSString *hostname;
 @property ( nonatomic, readonly ) NSString *username;

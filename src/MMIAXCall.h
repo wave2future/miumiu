@@ -19,10 +19,10 @@
 	struct iax_session *session;
 	BOOL sessionValid;
 	unsigned format;
-	BOOL sentBegin;
 }
 
--(id) initWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax;
+-(id) initWithSession:(struct iax_session *)session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax;
+-(id) initWithFormat:(unsigned)_format session:(struct iax_session *)session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax;
 
 -(void) handleEvent:(struct iax_event *)event;
 

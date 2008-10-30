@@ -40,6 +40,15 @@
 	return nil;
 }
 
+-(MMCall *) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate
+{
+	return nil;
+}
+
+-(void) ignoreCall
+{
+}
+
 @synthesize hostname;
 @synthesize username;
 @synthesize password;

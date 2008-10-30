@@ -31,7 +31,7 @@
 	MMProtocol *protocol;
 
 	MMAudioController *audioController;
-	MMCall *call;
+	MMCall *mCall;
 	MMDataPushToPullAdapter *pushToPullAdapter;
 	MMDataPipeChain *postClockDataProcessorChain;
 	MMRingInjector *ringtoneInjector;

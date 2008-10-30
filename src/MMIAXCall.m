@@ -16,20 +16,25 @@
 
 @implementation MMIAXCall
 
--(id) initWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
+-(id) initWithSession:(struct iax_session *)_session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
 {
 	if ( self = [super initWithCallDelegate:_delegate] )
 	{
 		iax = [_iax retain];
 		
-		session = iax_session_new();
+		session = _session;
 		[iax registerIAXCall:self withSession:session];
 		
-		char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", iax.username, iax.password, iax.hostname, number] UTF8String] );
-		iax_call( session, [iax.cidNumber UTF8String], [iax.cidName UTF8String], ich, NULL, 0, AST_FORMAT_ULAW, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
-		free( ich );
-		
 		sessionValid = YES;
+	}
+	return self;
+}
+
+-(id) initWithFormat:(unsigned)_format session:(struct iax_session *)_session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
+{
+	if ( self = [self initWithSession:_session callDelegate:_delegate iax:_iax] )
+	{
+		format = _format;
 	}
 	return self;
 }
@@ -69,12 +74,6 @@
 
 -(void) handleEvent:(struct iax_event *)event
 {
-	if ( !sentBegin )
-	{
-		[self.delegate callDidBegin:self];
-		sentBegin = YES;
-	}
-	
 	switch ( event->etype )
 	{
 		case IAX_EVENT_ACCEPT:

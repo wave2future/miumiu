@@ -25,6 +25,8 @@
 	} calls[MM_IAX_MAX_NUM_CALLS];
 	struct iax_session *session;
 	CFSocketContext socketContext;
+	struct iax_session *callingSession;
+	unsigned callingFormat;
 }
 
 -(void) registerIAXCall:(MMIAXCall *)call withSession:(struct iax_session *)callSession;

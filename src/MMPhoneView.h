@@ -24,6 +24,8 @@
 -(void) viewMuted:(MMPhoneView *)view;
 -(void) viewUnmuted:(MMPhoneView *)view;
 -(void) viewRequestedEndCall:(MMPhoneView *)view;
+-(void) viewAnswerCall:(MMPhoneView *)view;
+-(void) viewIgnoreCall:(MMPhoneView *)view;
 
 @end
 
@@ -45,6 +47,7 @@
 
 -(void) didBeginCall;
 -(void) didEndCall;
+-(void) callIsBeingReceivedFrom:(NSString *)cidInfo;
 
 @property ( nonatomic, assign ) id <MMPhoneViewDelegate> delegate;
 

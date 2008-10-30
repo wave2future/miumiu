@@ -74,7 +74,7 @@
 
 -(void) internalBeginCallWithNumber:(NSString *)number
 {
-	call = [[protocol beginCallWithNumber:number callDelegate:self] retain];
+	mCall = [[protocol beginCallWithNumber:number callDelegate:self] retain];
 }
 
 -(void) view:(MMPhoneView *)view requestedBeginCallWithNumber:(NSString *)number
@@ -84,7 +84,7 @@
 
 -(void) internalPressedDTMF:(NSString *)dtmf
 {
-	[call sendDTMF:dtmf];
+	[mCall sendDTMF:dtmf];
 	[dtmfInjector digitPressed:dtmf];
 }
 
@@ -123,14 +123,14 @@
 	[self performSelector:@selector(internalUnmuted) onThread:self withObject:nil waitUntilDone:NO];
 }
 
--(void) internalEndCall:(id)_
+-(void) internalEndCall
 {
-	[call end];
+	[mCall end];
 }
 
 -(void) viewRequestedEndCall:(MMPhoneView *)view
 {
-	[self performSelector:@selector(internalEndCall:) onThread:self withObject:nil waitUntilDone:NO];
+	[self performSelector:@selector(internalEndCall) onThread:self withObject:nil waitUntilDone:NO];
 }
 
 -(void) notifyPhoneViewThatCallDidBegin:(MMCall *)call
@@ -138,13 +138,13 @@
 	[phoneView didBeginCall];
 }
 
--(void) callDidBegin:(MMCall *)_call
+-(void) callDidBegin:(MMCall *)call
 {
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
 
-	[self performSelector:@selector(notifyPhoneViewThatCallDidBegin:) onThread:[NSThread mainThread] withObject:_call waitUntilDone:NO];
+	[self performSelector:@selector(notifyPhoneViewThatCallDidBegin:) onThread:[NSThread mainThread] withObject:call waitUntilDone:NO];
 }
 
 -(void) callDidBeginRinging:(MMCall *)call
@@ -155,7 +155,7 @@
 	[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
 }
 
--(void) call:(MMCall *)_ didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder
+-(void) call:(MMCall *)call didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder
 {
 	[audioController connectToTarget:muteInjector];
 	[muteInjector connectToTarget:encoder];
@@ -192,8 +192,8 @@
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 
-	[call release];
-	call = nil;
+	[mCall release];
+	mCall = nil;
 	
 	[self performSelector:@selector(notifyPhoneViewThatCallDidEnd) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
@@ -201,6 +201,36 @@
 -(void) notifyPhoneViewThatCallDidEnd
 {
 	[phoneView didEndCall];
+}
+
+-(void) protocol:(MMProtocol *)protocol isReceivingCallFrom:(NSString *)cidInfo
+{
+	[self performSelector:@selector(notifyPhoneViewThatCallIsBeingReceivedFrom:) onThread:[NSThread mainThread] withObject:cidInfo waitUntilDone:NO];
+}
+
+-(void) notifyPhoneViewThatCallIsBeingReceivedFrom:(NSString *)cidInfo
+{
+	[phoneView callIsBeingReceivedFrom:cidInfo];
+}
+
+-(void) internalAnswerCall
+{
+	mCall = [[protocol answerCallWithCallDelegate:self] retain];
+}
+
+-(void) internalIgnoreCall
+{
+	[protocol ignoreCall];
+}
+
+-(void) viewAnswerCall:(MMPhoneView *)view
+{
+	[self performSelector:@selector(internalAnswerCall) onThread:self withObject:nil waitUntilDone:NO];
+}
+
+-(void) viewIgnoreCall:(MMPhoneView *)view
+{
+	[self performSelector:@selector(internalIgnoreCall) onThread:self withObject:nil waitUntilDone:NO];
 }
 
 @synthesize phoneView;

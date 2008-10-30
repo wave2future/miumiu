@@ -219,6 +219,18 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	NSLog(@"Received notification: %@", note);
 }
 
+-(void) callIsBeingReceivedFrom:(NSString *)cidInfo
+{
+	NSApplication *application = [NSApplication sharedApplication];
+	NSInteger requestID = [application requestUserAttention:NSCriticalRequest];
+	int result = NSRunAlertPanel( @"Incomming call", @"Incoming call from \"%@\"", @"Answer", @"Ignore", nil, cidInfo );
+	[application cancelUserAttentionRequest:requestID];
+	if ( result == NSAlertDefaultReturn )
+		[delegate viewAnswerCall:self];
+	else
+		[delegate viewIgnoreCall:self];
+}
+
 @synthesize delegate;
 
 @end
