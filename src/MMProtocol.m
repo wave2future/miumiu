@@ -41,14 +41,12 @@
 	[super dealloc];
 }
 
--(MMCall *) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
+-(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
 {
-	return nil;
 }
 
--(MMCall *) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate
+-(void) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate
 {
-	return nil;
 }
 
 -(void) ignoreCall

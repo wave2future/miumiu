@@ -11,9 +11,9 @@
 
 @implementation MMLoopback
 
--(MMCall *) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
+-(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
 {
-	return [[[MMLoopbackCall alloc] initWithCallDelegate:callDelegate] autorelease];
+	[[[MMLoopbackCall alloc] initWithCallDelegate:callDelegate] autorelease];
 }
 
 @end

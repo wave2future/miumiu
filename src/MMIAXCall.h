@@ -17,7 +17,6 @@
 @private
 	MMIAX *iax;
 	struct iax_session *session;
-	BOOL sessionValid;
 	unsigned format;
 }
 
@@ -25,5 +24,6 @@
 -(id) initWithFormat:(unsigned)_format session:(struct iax_session *)session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax;
 
 -(void) handleEvent:(struct iax_event *)event;
+-(void) willDestroySession;
 
 @end

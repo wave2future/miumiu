@@ -89,10 +89,10 @@ static void iaxErrorCallback( const char *data )
 	}
 }
 
--(MMCall *) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
+-(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
 {
 	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
-		return nil;
+		return;
 		
 	struct iax_session *newSession = iax_session_new();
 	
@@ -100,35 +100,17 @@ static void iaxErrorCallback( const char *data )
 	iax_call( newSession, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_ULAW, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
 	free( ich );
 		
-	MMCall *result = [[[MMIAXCall alloc] initWithSession:newSession callDelegate:callDelegate iax:self] autorelease];
-	[callDelegate callDidBegin:result];
-	return result;
+	[[[MMIAXCall alloc] initWithSession:newSession callDelegate:callDelegate iax:self] autorelease];
 }
 
--(MMCall *) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate
+-(void) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate
 {
 	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
-		return nil;
-	
-	MMCodec *encoder, *decoder;
-	if ( callingFormat == AST_FORMAT_SPEEX )
-	{
-		encoder = [MMSpeexEncoder codec];
-		decoder = [MMSpeexDecoder codec];
-	}
-	else
-	{
-		encoder = [MMULawEncoder codec];
-		decoder = [MMULawDecoder codec];
-	}
+		return;
 	
 	iax_answer( callingSession );
-	
-	MMCall *result = [[[MMIAXCall alloc] initWithFormat:callingFormat session:callingSession callDelegate:callDelegate iax:self] autorelease];
+	[[[MMIAXCall alloc] initWithFormat:callingFormat session:callingSession callDelegate:callDelegate iax:self] autorelease];
 	callingSession = NULL;
-	[callDelegate callDidBegin:result];
-	[callDelegate call:result didAnswerWithEncoder:encoder decoder:decoder];
-	return result;
 }
 
 -(void) ignoreCall

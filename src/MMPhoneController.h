@@ -40,6 +40,7 @@
 	MMDTMFInjector *dtmfInjector;
 	MMComfortNoiseInjector *comfortNoiseInjector;
 	MMMuteInjector *muteInjector;
+	MMCodec *encoder, *decoder;
 }
 
 @property ( nonatomic, assign ) MMPhoneView *phoneView;

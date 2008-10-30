@@ -225,6 +225,9 @@ struct iax_session {
 
 	/* For linking if there are multiple connections */
 	struct iax_session *next;
+	
+	void (*will_destroy_session_callback)( struct iax_session *session, void *userdata );
+	void *will_destroy_session_userdata;
 };
 
 char iax_errstr[256];
@@ -1602,6 +1605,8 @@ static void destroy_session(struct iax_session *session)
 
 			jb_destroy(session->jb);
 
+			if ( session->will_destroy_session_callback != NULL )
+				session->will_destroy_session_callback( session, session->will_destroy_session_userdata );
 			free(session);
 			return;
 		}
@@ -3510,3 +3515,10 @@ struct timeval iax_tvnow(void)
 #endif
 	return tv;
 }
+
+void iax_set_will_destroy_session_handler( struct iax_session *session, void (*callback)( struct iax_session *, void * ), void *userdata )
+{
+	session->will_destroy_session_callback = callback;
+	session->will_destroy_session_userdata = userdata;
+}
+	

@@ -197,6 +197,7 @@ extern int iax_transfer(struct iax_session *session, const char *number);
 extern int iax_quelch_moh(struct iax_session *session, int MOH);
 extern int iax_send_video(struct iax_session *session, int format, unsigned char *data, int datalen, int fullframe);
 extern int iax_send_video_trunk(struct iax_session *session, int format, char *data, int datalen, int fullframe, int ntrunk);
+extern void iax_set_will_destroy_session_handler( struct iax_session *session, void (*callback)( struct iax_session *, void * ), void *userdata );
 
 extern void iax_destroy(struct iax_session  * session);
 

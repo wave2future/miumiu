@@ -49,6 +49,7 @@
 	[pushToPullAdapter connectToTarget:postClockDataProcessorChain];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain connectToTarget:audioController];
+	[audioController connectToTarget:muteInjector];
 
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
@@ -59,6 +60,8 @@
 
 -(void) dealloc
 {
+	[decoder release];
+	[encoder release];
 	[muteInjector release];
 	[comfortNoiseInjector release];
 	[postClockDataProcessorChain release];
@@ -74,7 +77,7 @@
 
 -(void) internalBeginCallWithNumber:(NSString *)number
 {
-	mCall = [[protocol beginCallWithNumber:number callDelegate:self] retain];
+	[protocol beginCallWithNumber:number callDelegate:self];
 }
 
 -(void) view:(MMPhoneView *)view requestedBeginCallWithNumber:(NSString *)number
@@ -140,6 +143,8 @@
 
 -(void) callDidBegin:(MMCall *)call
 {
+	mCall = [call retain];
+	
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
@@ -155,12 +160,13 @@
 	[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
 }
 
--(void) call:(MMCall *)call didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder
+-(void) call:(MMCall *)call didAnswerWithEncoder:(MMCodec *)_encoder decoder:(MMCodec *)_decoder
 {
-	[audioController connectToTarget:muteInjector];
+	encoder = [_encoder retain];
+	decoder = [_decoder retain];
+	
 	[muteInjector connectToTarget:encoder];
 	[encoder connectToTarget:call];
-	
 	[call connectToTarget:decoder];
 	[decoder connectToTarget:pushToPullAdapter];
 	
@@ -192,6 +198,16 @@
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 
+	[muteInjector disconnectFromTarget];
+	[encoder disconnectFromTarget];
+	[mCall disconnectFromTarget];
+	[decoder disconnectFromTarget];
+	
+	[decoder release];
+	decoder = nil;
+	[encoder release];
+	encoder = nil;
+	
 	[mCall release];
 	mCall = nil;
 	
@@ -215,7 +231,7 @@
 
 -(void) internalAnswerCall
 {
-	mCall = [[protocol answerCallWithCallDelegate:self] retain];
+	[protocol answerCallWithCallDelegate:self];
 }
 
 -(void) internalIgnoreCall

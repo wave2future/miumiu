@@ -14,6 +14,11 @@
 #import "MMSpeexDecoder.h"
 #import "MMCallDelegate.h"
 
+void willDestroySessionCallback( struct iax_session *session, void *userdata )
+{
+	[(MMIAXCall *)userdata willDestroySession];
+}
+
 @implementation MMIAXCall
 
 -(id) initWithSession:(struct iax_session *)_session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
@@ -23,9 +28,11 @@
 		iax = [_iax retain];
 		
 		session = _session;
+		iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
+		
 		[iax registerIAXCall:self withSession:session];
 		
-		sessionValid = YES;
+		[delegate callDidBegin:self];
 	}
 	return self;
 }
@@ -35,15 +42,31 @@
 	if ( self = [self initWithSession:_session callDelegate:_delegate iax:_iax] )
 	{
 		format = _format;
+
+		MMCodec *encoder, *decoder;
+		if ( format == AST_FORMAT_SPEEX )
+		{
+			encoder = [MMSpeexEncoder codec];
+			decoder = [MMSpeexDecoder codec];
+		}
+		else
+		{
+			encoder = [MMULawEncoder codec];
+			decoder = [MMULawDecoder codec];
+		}
+		
+		[delegate call:self didAnswerWithEncoder:encoder decoder:decoder];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
-	[iax unregisterIAXCall:self withSession:session];
-	if ( sessionValid )
-		iax_destroy( session );
+	if ( session != NULL )
+	{
+		[self willDestroySession];
+		iax_hangup( session, NULL );
+	}
 	
 	[iax release];
 	
@@ -52,24 +75,20 @@
 
 -(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
 {
-	if ( sessionValid )
+	if ( session != NULL )
 		iax_send_voice( session, format, data, size, numSamples );
 }
 
 -(void) sendDTMF:(NSString *)dtmf
 {
-	if ( sessionValid )
+	if ( session != NULL )
 		iax_send_dtmf( session, *[dtmf UTF8String] );
 }
 
 -(void) end
 {
-	if ( sessionValid )
-	{
+	if ( session != NULL )
 		iax_hangup( session, "later!" );
-		sessionValid = NO;
-	}
-	[self.delegate callDidEnd:self];
 }
 
 -(void) handleEvent:(struct iax_event *)event
@@ -102,7 +121,6 @@
 			[self pushData:event->data ofSize:event->datalen numSamples:MM_DATA_NUM_SAMPLES_UNKNOWN];
 			break;
 		case IAX_EVENT_REJECT:
-			sessionValid = NO;
 			[delegate callDidFail:self];
 			break;
 		case IAX_EVENT_BUSY:
@@ -112,6 +130,14 @@
 			[delegate callDidEnd:self];
 			break;
 	}
+}
+
+-(void) willDestroySession
+{
+	[iax unregisterIAXCall:self withSession:session];
+	iax_set_will_destroy_session_handler( session, NULL, NULL );
+	session = NULL;
+	[delegate callDidEnd:self];
 }
 
 @end
