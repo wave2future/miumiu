@@ -63,7 +63,7 @@
 	unsigned newSize = numSamples * sizeof(unsigned char);
 	unsigned char *newSamples = alloca( newSize );
 	for ( unsigned i=0; i<numSamples; ++i )
-		newSamples[i] = linearToULaw[((unsigned short)samples[i])>>2];
+		newSamples[i] = linearToULaw[((unsigned short)(samples[i]>>1))>>2];
 	[self pushData:newSamples ofSize:numSamples numSamples:numSamples];
 }
 
