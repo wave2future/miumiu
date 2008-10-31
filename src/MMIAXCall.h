@@ -23,7 +23,7 @@
 -(id) initWithSession:(struct iax_session *)session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax;
 -(id) initWithFormat:(unsigned)_format session:(struct iax_session *)session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax;
 
--(void) handleEvent:(struct iax_event *)event;
--(void) willDestroySession;
+-(BOOL) handleEvent:(struct iax_event *)event;
+-(void) end;
 
 @end

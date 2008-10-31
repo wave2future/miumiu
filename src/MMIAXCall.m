@@ -14,11 +14,6 @@
 #import "MMSpeexDecoder.h"
 #import "MMCallDelegate.h"
 
-void willDestroySessionCallback( struct iax_session *session, void *userdata )
-{
-	[(MMIAXCall *)userdata willDestroySession];
-}
-
 @implementation MMIAXCall
 
 -(id) initWithSession:(struct iax_session *)_session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
@@ -28,9 +23,6 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 		iax = [_iax retain];
 		
 		session = _session;
-		iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
-		
-		[iax registerIAXCall:self withSession:session];
 		
 		[delegate callDidBegin:self];
 	}
@@ -62,12 +54,6 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 
 -(void) dealloc
 {
-	if ( session != NULL )
-	{
-		[self willDestroySession];
-		iax_hangup( session, NULL );
-	}
-	
 	[iax release];
 	
 	[super dealloc];
@@ -85,13 +71,7 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 		iax_send_dtmf( session, *[dtmf UTF8String] );
 }
 
--(void) end
-{
-	if ( session != NULL )
-		iax_hangup( session, "later!" );
-}
-
--(void) handleEvent:(struct iax_event *)event
+-(BOOL) handleEvent:(struct iax_event *)event
 {
 	switch ( event->etype )
 	{
@@ -127,16 +107,22 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 			[delegate callDidReturnBusy:self];
 			break;
 		case IAX_EVENT_HANGUP:
-			[delegate callDidEnd:self];
+			// This will be taken care of by the session ending
 			break;
+		default:
+			return NO;
 	}
+	return YES;
 }
 
--(void) willDestroySession
+-(void) end
 {
-	[iax unregisterIAXCall:self withSession:session];
-	iax_set_will_destroy_session_handler( session, NULL, NULL );
-	session = NULL;
+	if ( session != NULL )
+	{
+		struct iax_session *oldSession = session;
+		session = NULL;
+		iax_hangup( oldSession, NULL );
+	}
 	[delegate callDidEnd:self];
 }
 

@@ -37,6 +37,11 @@ static void iaxErrorCallback( const char *data )
 	NSLog( @"IAX Error: %s", data );
 }
 
+void willDestroySessionCallback( struct iax_session *session, void *userdata )
+{
+	[(MMIAX *)userdata willDestroySession];
+}
+
 @implementation MMIAX
 
 -(id) initWithProtocolDelegate:(id <MMProtocolDelegate>)_delegate;
@@ -58,7 +63,7 @@ static void iaxErrorCallback( const char *data )
 		CFRunLoopAddSource( CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes );
 
 		session = iax_session_new();
-		
+		iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 		iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
 	}
 	return self;
@@ -66,51 +71,52 @@ static void iaxErrorCallback( const char *data )
 
 -(void) dealloc
 {
-	iax_destroy( session );
+	iax_unregister( session, [hostname UTF8String], [username UTF8String], [password UTF8String], NULL );
+	iax_set_will_destroy_session_handler( session, NULL, NULL );
+	iax_session_destroy( &session );
 	[super dealloc];
 }
 
--(void) registerIAXCall:(MMIAXCall *)iaxCall withSession:(struct iax_session *)callSession
+-(void) willDestroySession
 {
-	calls[numCalls].session = callSession;
-	calls[numCalls++].iaxCall = iaxCall;
-}
-
--(void) unregisterIAXCall:(MMIAXCall *)iaxCall withSession:(struct iax_session *)callSession
-{
-	for ( unsigned i=0; i<numCalls; ++i )
-	{
-		if ( calls[i].session == callSession && calls[i].iaxCall == iaxCall )
-		{
-			memmove( &calls[i], &calls[i+1], (numCalls - i - 1)*sizeof(calls[0]) );
-			--numCalls;
-			break;
-		}
-	}
+	[call end];
+	[call release];
+	call = nil;
+	
+	session = iax_session_new();
+	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
+	iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
 }
 
 -(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate
 {
-	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
-		return;
-		
-	struct iax_session *newSession = iax_session_new();
+	struct iax_session *oldSession = session;
+	session = NULL;
+	iax_unregister( oldSession, [hostname UTF8String], [username UTF8String], [password UTF8String], NULL );
+	iax_set_will_destroy_session_handler( oldSession, NULL, NULL );
+	iax_session_destroy( &oldSession );
 	
+	session = iax_session_new();
+	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 	char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", username, password, hostname, number] UTF8String] );
-	iax_call( newSession, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
+	iax_call( session, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
 	free( ich );
 		
-	[[[MMIAXCall alloc] initWithSession:newSession callDelegate:callDelegate iax:self] autorelease];
+	call = [[MMIAXCall alloc] initWithSession:session callDelegate:callDelegate iax:self];
 }
 
 -(void) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate
 {
-	if ( numCalls >= MM_IAX_MAX_NUM_CALLS )
-		return;
-	
-	iax_answer( callingSession );
-	[[[MMIAXCall alloc] initWithFormat:callingFormat session:callingSession callDelegate:callDelegate iax:self] autorelease];
-	callingSession = NULL;
+	struct iax_session *oldSession = session;
+	session = NULL;
+	iax_unregister( oldSession, [hostname UTF8String], [username UTF8String], [password UTF8String], NULL );
+	iax_set_will_destroy_session_handler( oldSession, NULL, NULL );
+	iax_session_destroy( &oldSession );
+
+	session = callingSession;
+	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
+	iax_answer( session );
+	call = [[MMIAXCall alloc] initWithFormat:callingFormat session:session callDelegate:callDelegate iax:self];
 }
 
 -(void) ignoreCall
@@ -126,19 +132,7 @@ static void iaxErrorCallback( const char *data )
 	{
 		if ( event->etype != IAX_EVENT_NULL )
 		{
-			BOOL foundSession = NO;
-			
-			for ( unsigned i=0; i<numCalls; ++i )
-			{
-				if ( calls[i].session == event->session )
-				{
-					foundSession = YES;
-					[calls[i].iaxCall handleEvent:event];
-					break;
-				}
-			}
-			
-			if ( !foundSession )
+			if ( ![call handleEvent:event] )
 			{
 				switch ( event->etype )
 				{

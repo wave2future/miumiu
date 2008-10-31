@@ -17,21 +17,14 @@
 @interface MMIAX : MMProtocol
 {
 @private
-	unsigned numCalls;
-	struct
-	{
-		struct iax_session *session;
-		MMIAXCall *iaxCall;
-	} calls[MM_IAX_MAX_NUM_CALLS];
 	struct iax_session *session;
+	MMIAXCall *call;
 	CFSocketContext socketContext;
 	struct iax_session *callingSession;
 	unsigned callingFormat;
 }
 
--(void) registerIAXCall:(MMIAXCall *)call withSession:(struct iax_session *)callSession;
--(void) unregisterIAXCall:(MMIAXCall *)call withSession:(struct iax_session *)callSession;
-
 -(void) socketCallbackCalled;
+-(void) willDestroySession;
 
 @end
