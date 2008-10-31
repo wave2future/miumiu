@@ -170,10 +170,13 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 
 -(void) reregister
 {
-	struct iax_session *oldSession = session;
-	session = NULL;
-	iax_unregister( oldSession, [hostname UTF8String], [username UTF8String], [password UTF8String], NULL );
-	iax_session_destroy( &oldSession );
+	if ( call == nil )
+	{
+		struct iax_session *oldSession = session;
+		session = NULL;
+		iax_unregister( oldSession, [hostname UTF8String], [username UTF8String], [password UTF8String], NULL );
+		iax_session_destroy( &oldSession );
+	}
 }
 
 @end
