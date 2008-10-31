@@ -256,13 +256,18 @@
 	[phoneView didEndCall];
 }
 
--(void) protocol:(MMProtocol *)protocol isReceivingCallFrom:(NSString *)cidInfo
+-(void) protocol:(MMProtocol *)_protocol isReceivingCallFrom:(NSString *)cidInfo
 {
-	[postClockDataProcessorChain zap];
-	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
-	[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
+	if ( mCall != nil )
+		[protocol ignoreCall];
+	else
+	{
+		[postClockDataProcessorChain zap];
+		[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
+		[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
 
-	[self performSelector:@selector(notifyPhoneViewThatCallIsBeingReceivedFrom:) onThread:[NSThread mainThread] withObject:cidInfo waitUntilDone:NO];
+		[self performSelector:@selector(notifyPhoneViewThatCallIsBeingReceivedFrom:) onThread:[NSThread mainThread] withObject:cidInfo waitUntilDone:NO];
+	}
 }
 
 -(void) notifyPhoneViewThatCallIsBeingReceivedFrom:(NSString *)cidInfo

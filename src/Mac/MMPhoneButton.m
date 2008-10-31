@@ -15,7 +15,7 @@
 	if ( self = [super init] )
 	{
 		button = [[NSButton alloc] init];
-		[button setButtonType:NSMomentaryChangeButton];
+		[button setButtonType:NSMomentaryLightButton];
 		[button setTitle:title];
 		[button setKeyEquivalent:title];
 		[button setTarget:self];
