@@ -97,7 +97,7 @@ static void iaxErrorCallback( const char *data )
 	struct iax_session *newSession = iax_session_new();
 	
 	char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", username, password, hostname, number] UTF8String] );
-	iax_call( newSession, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_ULAW, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
+	iax_call( newSession, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_ULAW | AST_FORMAT_SPEEX );
 	free( ich );
 		
 	[[[MMIAXCall alloc] initWithSession:newSession callDelegate:callDelegate iax:self] autorelease];
