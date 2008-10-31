@@ -15,6 +15,7 @@
 @class MMPhoneView;
 @class MMPhoneButton;
 @class MMPhoneAlert;
+@class MMPhoneLabel;
 
 @protocol MMPhoneViewDelegate <NSObject>
 
@@ -35,6 +36,7 @@
 {
 @private
 	id <MMPhoneViewDelegate> delegate;
+	MMPhoneLabel *statusLabel;
 	MMPhoneTextField *numberTextField;
 	MMPhoneButton *beginCallButton;
 	MMPhoneButton *endCallButton;
@@ -51,6 +53,7 @@
 -(void) didBeginCall;
 -(void) didEndCall;
 -(void) callIsBeingReceivedFrom:(NSString *)cidInfo;
+-(void) setStatusMessage:(NSString *)statusMessage;
 
 @property ( nonatomic, assign ) id <MMPhoneViewDelegate> delegate;
 

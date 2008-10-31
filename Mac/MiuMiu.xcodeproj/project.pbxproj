@@ -107,6 +107,7 @@
 		DBB1EDAC0EB7DE270002A266 /* MMDataPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EDAB0EB7DE270002A266 /* MMDataPipe.m */; };
 		DBB1EDAF0EB7DFEF0002A266 /* MMDataPipeChain.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EDAE0EB7DFEF0002A266 /* MMDataPipeChain.m */; };
 		DBB1EE800EB806CA0002A266 /* MMDataPushToPullAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EE7F0EB806CA0002A266 /* MMDataPushToPullAdapter.m */; };
+		DBD5C6A60EBAA61800FF9991 /* MMPhoneLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD5C6A50EBAA61800FF9991 /* MMPhoneLabel.m */; };
 		DBD868380EB76D3900832097 /* MMMuteInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868370EB76D3900832097 /* MMMuteInjector.m */; };
 		DBD868690EB7722400832097 /* MMUIHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868680EB7722400832097 /* MMUIHelpers.m */; };
 		DBD868930EB7771D00832097 /* MMProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD868920EB7771D00832097 /* MMProtocol.m */; };
@@ -331,6 +332,8 @@
 		DBB1EDB90EB7E5090002A266 /* MMDataPipeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPipeDelegate.h; path = ../src/MMDataPipeDelegate.h; sourceTree = SOURCE_ROOT; };
 		DBB1EE7E0EB806CA0002A266 /* MMDataPushToPullAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPushToPullAdapter.h; path = ../src/MMDataPushToPullAdapter.h; sourceTree = SOURCE_ROOT; };
 		DBB1EE7F0EB806CA0002A266 /* MMDataPushToPullAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDataPushToPullAdapter.m; path = ../src/MMDataPushToPullAdapter.m; sourceTree = SOURCE_ROOT; };
+		DBD5C6A40EBAA61800FF9991 /* MMPhoneLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneLabel.h; path = ../src/Mac/MMPhoneLabel.h; sourceTree = SOURCE_ROOT; };
+		DBD5C6A50EBAA61800FF9991 /* MMPhoneLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneLabel.m; path = ../src/Mac/MMPhoneLabel.m; sourceTree = SOURCE_ROOT; };
 		DBD868360EB76D3900832097 /* MMMuteInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMMuteInjector.h; path = ../src/MMMuteInjector.h; sourceTree = SOURCE_ROOT; };
 		DBD868370EB76D3900832097 /* MMMuteInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMMuteInjector.m; path = ../src/MMMuteInjector.m; sourceTree = SOURCE_ROOT; };
 		DBD868670EB7722400832097 /* MMUIHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMUIHelpers.h; path = ../src/MMUIHelpers.h; sourceTree = SOURCE_ROOT; };
@@ -665,11 +668,13 @@
 				DB8977280EB03C9D004D7182 /* MMPhoneTextField.h */,
 				DB8977290EB03C9D004D7182 /* MMPhoneTextField.m */,
 				DB89770C0EB03805004D7182 /* MMPhoneTextFieldDelegate.h */,
-				DB89770D0EB03805004D7182 /* MMPhoneView.h */,
-				DB89770E0EB03805004D7182 /* MMPhoneView.m */,
 				DB23DB210EBA17FB0000A767 /* MMPhoneAlert.h */,
 				DB23DB220EBA17FB0000A767 /* MMPhoneAlert.m */,
 				DB23DB260EBA18A90000A767 /* MMPhoneAlertDelegate.h */,
+				DBD5C6A40EBAA61800FF9991 /* MMPhoneLabel.h */,
+				DBD5C6A50EBAA61800FF9991 /* MMPhoneLabel.m */,
+				DB89770D0EB03805004D7182 /* MMPhoneView.h */,
+				DB89770E0EB03805004D7182 /* MMPhoneView.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -907,6 +912,7 @@
 				DB23DB230EBA17FB0000A767 /* MMPhoneAlert.m in Sources */,
 				DB23DD400EBA37080000A767 /* MMSettingsHelper.m in Sources */,
 				DB23DE120EBA471B0000A767 /* MMPrefsWindowController.m in Sources */,
+				DBD5C6A60EBAA61800FF9991 /* MMPhoneLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

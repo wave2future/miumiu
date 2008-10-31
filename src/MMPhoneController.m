@@ -51,11 +51,18 @@
 	[postClockDataProcessorChain connectToTarget:audioController];
 	[audioController connectToTarget:muteInjector];
 
+	[self performSelector:@selector(notifyPhoneViewThatPhoneIsReady) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
 		;
 
 	[autoreleasePool release];
+}
+
+-(void) notifyPhoneViewThatPhoneIsReady
+{
+	[phoneView setStatusMessage:@"Ready"];
 }
 
 -(void) dealloc
@@ -136,11 +143,6 @@
 	[self performSelector:@selector(internalEndCall) onThread:self withObject:nil waitUntilDone:NO];
 }
 
--(void) notifyPhoneViewThatCallDidBegin:(MMCall *)call
-{
-	[phoneView didBeginCall];
-}
-
 -(void) callDidBegin:(MMCall *)call
 {
 	mCall = [call retain];
@@ -152,12 +154,25 @@
 	[self performSelector:@selector(notifyPhoneViewThatCallDidBegin:) onThread:[NSThread mainThread] withObject:call waitUntilDone:NO];
 }
 
+-(void) notifyPhoneViewThatCallDidBegin:(MMCall *)call
+{
+	[phoneView setStatusMessage:@"Connecting"];
+	[phoneView didBeginCall];
+}
+
 -(void) callDidBeginRinging:(MMCall *)call
 {
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:ringtoneInjector];
+	
+	[self performSelector:@selector(notifyPhoneViewThatCallDidBeginRinging) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+}
+
+-(void) notifyPhoneViewThatCallDidBeginRinging
+{
+	[phoneView setStatusMessage:@"Ringing"];
 }
 
 -(void) call:(MMCall *)call didAnswerWithEncoder:(MMCodec *)_encoder decoder:(MMCodec *)_decoder
@@ -173,6 +188,13 @@
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
+	
+	[self performSelector:@selector(notifyPhoneViewThatCallDidAnswer) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+}
+
+-(void) notifyPhoneViewThatCallDidAnswer
+{
+	[phoneView setStatusMessage:@"Connected"];
 }
 
 -(void) callDidReturnBusy:(MMCall *)_
@@ -181,6 +203,13 @@
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:busyInjector];
+	
+	[self performSelector:@selector(notifyPhoneViewThatCallDidBusy) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+}
+
+-(void) notifyPhoneViewThatCallDidBusy
+{
+	[phoneView setStatusMessage:@"Busy"];
 }
 
 -(void) callDidFail:(MMCall *)_
@@ -189,6 +218,13 @@
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:fastBusyInjector];
+	
+	[self performSelector:@selector(notifyPhoneViewThatCallDidFail) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+}
+
+-(void) notifyPhoneViewThatCallDidFail
+{
+	[phoneView setStatusMessage:@"Call failed"];
 }
 
 -(void) callDidEnd:(MMCall *)_call
@@ -216,6 +252,7 @@
 
 -(void) notifyPhoneViewThatCallDidEnd
 {
+	[phoneView setStatusMessage:@"Call finished"];
 	[phoneView didEndCall];
 }
 
@@ -230,6 +267,7 @@
 
 -(void) notifyPhoneViewThatCallIsBeingReceivedFrom:(NSString *)cidInfo
 {
+	[phoneView setStatusMessage:[NSString stringWithFormat:@"Incomming call from %@", cidInfo]];
 	[phoneView callIsBeingReceivedFrom:cidInfo];
 }
 

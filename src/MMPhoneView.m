@@ -9,8 +9,9 @@
 #import "MMPhoneView.h"
 #import "MMPhoneButton.h"
 #import "MMPhoneTextField.h"
-#import "MMUIHelpers.h"
+#import "MMPhoneLabel.h"
 #import "MMPhoneAlert.h"
+#import "MMUIHelpers.h"
 #import "MMWindow.h"
 
 static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
@@ -34,7 +35,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 {
 	MMRect bounds = self.bounds;
 	
-	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 60 );
+	statusLabel.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 20 );
+	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(statusLabel.frame), MMRectGetWidth(bounds), 30 );
 
 	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 60 );
 	MMRect controlButtonFrames[2];
@@ -79,6 +81,9 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 {
 	if ( self = [super initWithFrame:frame] )
 	{
+		statusLabel = [[MMPhoneLabel alloc] init];
+		[self addSubview:statusLabel.view];
+		
 		numberTextField = [[MMPhoneTextField alloc] init];
 		numberTextField.delegate = self;
 		numberTextField.text = number;
@@ -124,6 +129,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[beginCallButton release];
 	[clearNumberButton release];
 	[numberTextField release];
+	[statusLabel release];
 	[super dealloc];
 }
 
@@ -241,6 +247,11 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[incommingAlert autorelease];
 	incommingAlert = nil;
 	[delegate viewDidIgnoreCall:self];
+}
+
+-(void) setStatusMessage:(NSString *)statusMessage
+{
+	statusLabel.text = statusMessage;
 }
 
 @synthesize delegate;

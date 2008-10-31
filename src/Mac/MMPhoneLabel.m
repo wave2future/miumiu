@@ -1,25 +1,25 @@
 //
-//  MMPhoneTextField.m
+//  MMPhoneLabel.m
 //  MiuMiu
 //
-//  Created by Peter Zion on 23/10/08.
+//  Created by Peter Zion on 30/10/08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMPhoneTextField.h"
+#import "MMPhoneLabel.h"
 
-@implementation MMPhoneTextField
+
+@implementation MMPhoneLabel
 
 -(id) init
 {
 	if ( self = [super init] )
 	{
 		textField = [[NSTextField alloc] init];
-		textField.delegate = self;
-		[textField setTextColor:[NSColor whiteColor]];
+		[textField setEditable:NO];
+		[textField setTextColor:[NSColor greenColor]];
 		[textField setBackgroundColor:[NSColor blackColor]];
 		[textField setBezeled:NO];
-		[textField setFont:[NSFont systemFontOfSize:17]];
 	}
 	return self;
 }
@@ -28,12 +28,6 @@
 {
 	[textField release];
 	[super dealloc];
-}
-
--(void) textDidChange:(NSNotification *)aNotification
-{
-	if ( [delegate respondsToSelector:@selector(textFieldDidChange:)] )
-		[delegate textFieldDidChange:self];
 }
 
 @dynamic view;
@@ -61,7 +55,5 @@
 {
 	[textField setStringValue:_];
 }
-
-@synthesize delegate;
 
 @end
