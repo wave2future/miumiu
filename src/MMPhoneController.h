@@ -41,7 +41,6 @@
 	MMDTMFInjector *dtmfInjector;
 	MMComfortNoiseInjector *comfortNoiseInjector;
 	MMMuteInjector *muteInjector;
-	MMPreprocessor *decodePostprocessor;
 	MMCodec *encoder, *decoder;
 }
 

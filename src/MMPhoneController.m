@@ -46,7 +46,6 @@
 	postClockDataProcessorChain = [[MMDataPipeChain alloc] init];
 	comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
 	muteInjector = [[MMMuteInjector alloc] init];
-	decodePostprocessor = [[MMPreprocessor alloc] init];
 
 	[pushToPullAdapter connectToTarget:postClockDataProcessorChain];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
@@ -70,7 +69,6 @@
 {
 	[decoder release];
 	[encoder release];
-	[decodePostprocessor release];
 	[muteInjector release];
 	[comfortNoiseInjector release];
 	[postClockDataProcessorChain release];
@@ -186,8 +184,7 @@
 	[muteInjector connectToTarget:encoder];
 	[encoder connectToTarget:call];
 	[call connectToTarget:decoder];
-	[decoder connectToTarget:decodePostprocessor];
-	[decodePostprocessor connectToTarget:pushToPullAdapter];
+	[decoder connectToTarget:pushToPullAdapter];
 	
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
@@ -243,7 +240,6 @@
 	[encoder disconnectFromTarget];
 	[mCall disconnectFromTarget];
 	[decoder disconnectFromTarget];
-	[decodePostprocessor disconnectFromTarget];
 	
 	[decoder release];
 	decoder = nil;
