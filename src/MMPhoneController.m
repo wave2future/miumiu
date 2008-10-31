@@ -301,6 +301,7 @@
 
 -(void) viewDidIgnoreCall:(MMPhoneView *)view
 {
+	[phoneView setStatusMessage:@"Ignored call"];
 	[self performSelector:@selector(internalIgnoreCall) onThread:self withObject:nil waitUntilDone:NO];
 }
 

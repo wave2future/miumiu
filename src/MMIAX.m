@@ -65,12 +65,16 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 		session = iax_session_new();
 		iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 		iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
+		
+		reregistrationTimer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(reregister) userInfo:nil repeats:YES] retain];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
+	[reregistrationTimer invalidate];
+	[reregistrationTimer release];
 	iax_unregister( session, [hostname UTF8String], [username UTF8String], [password UTF8String], NULL );
 	iax_set_will_destroy_session_handler( session, NULL, NULL );
 	iax_session_destroy( &session );
@@ -162,6 +166,14 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 		
 		iax_event_free( event );
 	}
+}
+
+-(void) reregister
+{
+	struct iax_session *oldSession = session;
+	session = NULL;
+	iax_unregister( oldSession, [hostname UTF8String], [username UTF8String], [password UTF8String], NULL );
+	iax_session_destroy( &oldSession );
 }
 
 @end

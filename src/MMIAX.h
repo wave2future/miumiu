@@ -22,6 +22,7 @@
 	CFSocketContext socketContext;
 	struct iax_session *callingSession;
 	unsigned callingFormat;
+	NSTimer *reregistrationTimer;
 }
 
 -(void) socketCallbackCalled;
