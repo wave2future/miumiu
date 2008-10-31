@@ -27,7 +27,7 @@
 	for ( unsigned i=0; i<numSamples; ++i )
 	{
 		lfsr = (lfsr >> 1) ^ (-(short)(lfsr & 1u) & 0xB400u);
-		short injection = (short)lfsr >> 9;
+		short injection = (short)lfsr >> 10;
 		injection -= (injection - lastInjection) >> 1;
 		samples[i] += injection;
 		lastInjection = injection;
