@@ -169,6 +169,7 @@
 		DBCFF40F0E9DAA970006A803 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBCFF40E0E9DAA970006A803 /* AudioToolbox.framework */; };
 		DBD5C7070EBAACFC00FF9991 /* MMPhoneLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD5C7060EBAACFC00FF9991 /* MMPhoneLabel.m */; };
 		DBD5C76B0EBAC87100FF9991 /* MMPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD5C76A0EBAC87100FF9991 /* MMPreprocessor.m */; };
+		DBD5C93F0EBBAB0B00FF9991 /* MMPhoneSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD5C93E0EBBAB0B00FF9991 /* MMPhoneSlider.m */; };
 		DBF3D0AF0EA15AF5009AA8A2 /* MMDTMFInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF3D0AE0EA15AF5009AA8A2 /* MMDTMFInjector.m */; };
 		DBF6CA4E0EB64CB300535275 /* MMMuteInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DBF6CA4D0EB64CB300535275 /* MMMuteInjector.m */; };
 /* End PBXBuildFile section */
@@ -401,6 +402,9 @@
 		DBD5C7060EBAACFC00FF9991 /* MMPhoneLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneLabel.m; path = ../src/iPhone/MMPhoneLabel.m; sourceTree = SOURCE_ROOT; };
 		DBD5C7690EBAC87100FF9991 /* MMPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPreprocessor.h; path = ../src/MMPreprocessor.h; sourceTree = SOURCE_ROOT; };
 		DBD5C76A0EBAC87100FF9991 /* MMPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPreprocessor.m; path = ../src/MMPreprocessor.m; sourceTree = SOURCE_ROOT; };
+		DBD5C93C0EBBAAFD00FF9991 /* MMPhoneSliderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneSliderDelegate.h; path = ../src/MMPhoneSliderDelegate.h; sourceTree = SOURCE_ROOT; };
+		DBD5C93D0EBBAB0B00FF9991 /* MMPhoneSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneSlider.h; path = ../src/iPhone/MMPhoneSlider.h; sourceTree = SOURCE_ROOT; };
+		DBD5C93E0EBBAB0B00FF9991 /* MMPhoneSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneSlider.m; path = ../src/iPhone/MMPhoneSlider.m; sourceTree = SOURCE_ROOT; };
 		DBF3D0AD0EA15AF5009AA8A2 /* MMDTMFInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDTMFInjector.h; path = src/MMDTMFInjector.h; sourceTree = "<group>"; };
 		DBF3D0AE0EA15AF5009AA8A2 /* MMDTMFInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDTMFInjector.m; path = src/MMDTMFInjector.m; sourceTree = "<group>"; };
 		DBF6CA4C0EB64CB300535275 /* MMMuteInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMMuteInjector.h; path = ../src/MMMuteInjector.h; sourceTree = SOURCE_ROOT; };
@@ -696,6 +700,9 @@
 				DB23DBAF0EBA22A60000A767 /* MMPhoneAlert.h */,
 				DB23DBB00EBA22A60000A767 /* MMPhoneAlert.m */,
 				DB23DBB90EBA24360000A767 /* MMPhoneAlertDelegate.h */,
+				DBD5C93D0EBBAB0B00FF9991 /* MMPhoneSlider.h */,
+				DBD5C93E0EBBAB0B00FF9991 /* MMPhoneSlider.m */,
+				DBD5C93C0EBBAAFD00FF9991 /* MMPhoneSliderDelegate.h */,
 				DB937E020EB02A59006DDBAA /* MMPhoneView.h */,
 				DB937E030EB02A59006DDBAA /* MMPhoneView.m */,
 			);
@@ -1008,6 +1015,7 @@
 				DB23DCA50EBA368F0000A767 /* MMSettingsHelper.m in Sources */,
 				DBD5C7070EBAACFC00FF9991 /* MMPhoneLabel.m in Sources */,
 				DBD5C76B0EBAC87100FF9991 /* MMPreprocessor.m in Sources */,
+				DBD5C93F0EBBAB0B00FF9991 /* MMPhoneSlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
