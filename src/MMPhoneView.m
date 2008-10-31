@@ -10,6 +10,7 @@
 #import "MMPhoneButton.h"
 #import "MMPhoneTextField.h"
 #import "MMPhoneLabel.h"
+#import "MMPhoneSlider.h"
 #import "MMPhoneAlert.h"
 #import "MMUIHelpers.h"
 #import "MMWindow.h"
@@ -37,8 +38,9 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	
 	statusLabel.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 20 );
 	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(statusLabel.frame), MMRectGetWidth(bounds), 30 );
+	playbackLevelSlider.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 20 );
 
-	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 60 );
+	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(playbackLevelSlider.frame), MMRectGetWidth(bounds), 40 );
 	MMRect controlButtonFrames[2];
 	MMSubdivideRectEvenly( controlBounds, 1, 2, controlButtonFrames );
 	beginCallButton.frame = controlButtonFrames[0];
@@ -83,6 +85,11 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	{
 		statusLabel = [[MMPhoneLabel alloc] init];
 		[self addSubview:statusLabel.view];
+		
+		playbackLevelSlider = [[MMPhoneSlider alloc] init];
+		playbackLevelSlider.delegate = self;
+		playbackLevelSlider.value = 0.8;
+		[self addSubview:playbackLevelSlider.view];
 		
 		numberTextField = [[MMPhoneTextField alloc] init];
 		numberTextField.delegate = self;
@@ -129,6 +136,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[beginCallButton release];
 	[clearNumberButton release];
 	[numberTextField release];
+	[playbackLevelSlider release];
 	[statusLabel release];
 	[super dealloc];
 }
@@ -252,6 +260,11 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 -(void) setStatusMessage:(NSString *)statusMessage
 {
 	statusLabel.text = statusMessage;
+}
+
+-(void) phoneSlider:(MMPhoneSlider *)phoneSlider didChangeValueTo:(float)value
+{
+	[delegate view:self didSetPlaybackLevelTo:value];
 }
 
 @synthesize delegate;

@@ -51,7 +51,7 @@
 #endif
 }
 
--(void) resetOutputDelay;
+-(void) setPlaybackLevelTo:(float)playbackLevel;
 
 #ifndef SIMULATE_AUDIO
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue

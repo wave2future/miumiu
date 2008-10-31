@@ -304,6 +304,16 @@
 	[self performSelector:@selector(internalIgnoreCall) onThread:self withObject:nil waitUntilDone:NO];
 }
 
+-(void) view:(MMPhoneView *)view didSetPlaybackLevelTo:(float)playbackLevel
+{
+	[self performSelector:@selector(internalSetPlaybackLevelTo:) onThread:self withObject:[NSNumber numberWithFloat:playbackLevel] waitUntilDone:NO];
+}	
+
+-(void) internalSetPlaybackLevelTo:(NSNumber *)playbackLevel
+{
+	[audioController setPlaybackLevelTo:[playbackLevel floatValue]];
+}
+
 @synthesize phoneView;
 
 @end

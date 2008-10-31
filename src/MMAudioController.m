@@ -109,6 +109,8 @@ static void interruptionCallback(
 			);
 		LOG( @"Created output queue" );
 		
+		[self setPlaybackLevelTo:0.8];
+		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
 		{
 			AudioQueueBufferRef buffer;
@@ -118,7 +120,6 @@ static void interruptionCallback(
 			AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
 		}
 			
-		
 		AudioQueueNewInput(
 			&audioFormat,
 			recordingCallback, self,
@@ -213,8 +214,13 @@ static void interruptionCallback(
 }
 #endif
 
--(void) resetOutputDelay
+-(void) setPlaybackLevelTo:(float)playbackLevel
 {
+	AudioQueueSetParameter(
+		outputQueue,
+		kAudioQueueParam_Volume,
+		playbackLevel
+		);
 }
 
 @end

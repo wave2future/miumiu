@@ -7,15 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MMRect.h"
 #import "MMView.h"
 #import "MMPhoneTextFieldDelegate.h"
 #import "MMPhoneAlertDelegate.h"
-#import "MMRect.h"
+#import "MMPhoneSliderDelegate.h"
 
 @class MMPhoneView;
 @class MMPhoneButton;
 @class MMPhoneAlert;
 @class MMPhoneLabel;
+@class MMPhoneSlider;
 
 @protocol MMPhoneViewDelegate <NSObject>
 
@@ -29,14 +31,16 @@
 -(void) viewRequestedEndCall:(MMPhoneView *)view;
 -(void) viewDidAnswerCall:(MMPhoneView *)view;
 -(void) viewDidIgnoreCall:(MMPhoneView *)view;
+-(void) view:(MMPhoneView *)view didSetPlaybackLevelTo:(float)playbackLevel;
 
 @end
 
-@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate, MMPhoneAlertDelegate>
+@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate, MMPhoneAlertDelegate, MMPhoneSliderDelegate>
 {
 @private
 	id <MMPhoneViewDelegate> delegate;
 	MMPhoneLabel *statusLabel;
+	MMPhoneSlider *playbackLevelSlider;
 	MMPhoneTextField *numberTextField;
 	MMPhoneButton *beginCallButton;
 	MMPhoneButton *endCallButton;
