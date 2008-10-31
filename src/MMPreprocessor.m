@@ -25,7 +25,7 @@
 	spx_int32_t disable = 0, enable = 1;
 	speex_preprocess_ctl( state, SPEEX_PREPROCESS_SET_DENOISE, &disable );
 	speex_preprocess_ctl( state, SPEEX_PREPROCESS_SET_AGC, &enable );
-	speex_preprocess_ctl( state, SPEEX_PREPROCESS_SET_VAD, &disable );
+	speex_preprocess_ctl( state, SPEEX_PREPROCESS_SET_VAD, &enable );
 	speex_preprocess_ctl( state, SPEEX_PREPROCESS_SET_DEREVERB, &disable );
 }
 
@@ -37,7 +37,8 @@
 
 -(void) processData:(void *)data ofSize:(unsigned)size
 {
-	speex_preprocess_run( state, data );
+	if ( !speex_preprocess_run( state, data ) )
+		memset( data, 0, size );
 }
 
 @end
