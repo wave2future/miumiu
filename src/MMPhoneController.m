@@ -20,6 +20,7 @@
 #import "MMDataPipeChain.h"
 #import "MMCall.h"
 #import "MMCodec.h"
+#import "MMPreprocessor.h"
 
 //#define MM_PHONE_CONTROLLER_LOOPBACK
 
@@ -45,11 +46,12 @@
 	postClockDataProcessorChain = [[MMDataPipeChain alloc] init];
 	comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
 	muteInjector = [[MMMuteInjector alloc] init];
+	encodePreprocessor = [[MMPreprocessor alloc] init];
+	decodePostprocessor = [[MMPreprocessor alloc] init];
 
 	[pushToPullAdapter connectToTarget:postClockDataProcessorChain];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain connectToTarget:audioController];
-	[audioController connectToTarget:muteInjector];
 
 	[self performSelector:@selector(notifyPhoneViewThatPhoneIsReady) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 
@@ -69,6 +71,8 @@
 {
 	[decoder release];
 	[encoder release];
+	[decodePostprocessor release];
+	[encodePreprocessor release];
 	[muteInjector release];
 	[comfortNoiseInjector release];
 	[postClockDataProcessorChain release];
@@ -180,10 +184,13 @@
 	encoder = [_encoder retain];
 	decoder = [_decoder retain];
 	
+	[audioController connectToTarget:encodePreprocessor];
+	[encodePreprocessor connectToTarget:muteInjector];
 	[muteInjector connectToTarget:encoder];
 	[encoder connectToTarget:call];
 	[call connectToTarget:decoder];
-	[decoder connectToTarget:pushToPullAdapter];
+	[decoder connectToTarget:decodePostprocessor];
+	[decodePostprocessor connectToTarget:pushToPullAdapter];
 	
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
@@ -234,10 +241,13 @@
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 
+	[audioController disconnectFromTarget];
+	[encodePreprocessor disconnectFromTarget];
 	[muteInjector disconnectFromTarget];
 	[encoder disconnectFromTarget];
 	[mCall disconnectFromTarget];
 	[decoder disconnectFromTarget];
+	[decodePostprocessor disconnectFromTarget];
 	
 	[decoder release];
 	decoder = nil;

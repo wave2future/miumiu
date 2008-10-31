@@ -22,6 +22,7 @@
 @class MMMuteInjector;
 @class MMDataPipeChain;
 @class MMAudioController;
+@class MMPreprocessor;
 
 @interface MMPhoneController : NSThread <MMProtocolDelegate, MMCallDelegate, MMPhoneViewDelegate>
 {
@@ -40,6 +41,7 @@
 	MMDTMFInjector *dtmfInjector;
 	MMComfortNoiseInjector *comfortNoiseInjector;
 	MMMuteInjector *muteInjector;
+	MMPreprocessor *encodePreprocessor, *decodePostprocessor;
 	MMCodec *encoder, *decoder;
 }
 
