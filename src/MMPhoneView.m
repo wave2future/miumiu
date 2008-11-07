@@ -12,6 +12,7 @@
 #import "MMPhoneLabel.h"
 #import "MMPhoneSlider.h"
 #import "MMPhoneAlert.h"
+#import "MMPhoneLevel.h"
 #import "MMUIHelpers.h"
 #import "MMWindow.h"
 
@@ -38,9 +39,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	
 	statusLabel.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMinY(bounds), MMRectGetWidth(bounds), 20 );
 	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(statusLabel.frame), MMRectGetWidth(bounds), 30 );
-	playbackLevelSlider.frame = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 20 );
-
-	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(playbackLevelSlider.frame), MMRectGetWidth(bounds), 40 );
+	
+	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(numberTextField.frame), MMRectGetWidth(bounds), 40 );
 	MMRect controlButtonFrames[2];
 	MMSubdivideRectEvenly( controlBounds, 1, 2, controlButtonFrames );
 	beginCallButton.frame = controlButtonFrames[0];
@@ -49,7 +49,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	muteButton.frame = controlButtonFrames[1];
 	unmuteButton.frame = controlButtonFrames[1];
 	
-	MMRect digitBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(controlBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(controlBounds) );
+	MMRect digitBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(controlBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(controlBounds) - 40 );
 	MMRect digitButtonBounds[12];
 	MMSubdivideRectEvenly( digitBounds, 4, 3, digitButtonBounds );
 	for ( unsigned row=0; row<4; ++row )
@@ -62,6 +62,13 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 			digitButton.frame = digitButtonBounds[i];
 		}
 	}
+	
+	MMRect levelBounds = MMRectMake( MMRectGetMinX(bounds), MMRectGetMaxY(digitBounds), MMRectGetWidth(bounds), MMRectGetMaxY(bounds) - MMRectGetMaxY(digitBounds) );
+	MMRect levelFrames[4];
+	MMSubdivideRectEvenly( levelBounds, 2, 2, levelFrames );
+	playbackLevelSlider.frame = levelFrames[0];
+	outputLevelMeter.frame = levelFrames[2];
+	inputLevelMeter.frame = levelFrames[3];
 }
 
 -(void) updateButtonStates
@@ -90,6 +97,12 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		playbackLevelSlider.delegate = self;
 		playbackLevelSlider.value = 0.8;
 		[self addSubview:playbackLevelSlider.view];
+		
+		outputLevelMeter = [[MMPhoneLevel alloc] init];
+		[self addSubview:outputLevelMeter.view];
+		
+		inputLevelMeter = [[MMPhoneLevel alloc] init];
+		[self addSubview:inputLevelMeter.view];
 		
 		numberTextField = [[MMPhoneTextField alloc] init];
 		numberTextField.delegate = self;
@@ -136,6 +149,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[beginCallButton release];
 	[clearNumberButton release];
 	[numberTextField release];
+	[inputLevelMeter release];
+	[outputLevelMeter release];
 	[playbackLevelSlider release];
 	[statusLabel release];
 	[super dealloc];
@@ -265,6 +280,17 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 -(void) phoneSlider:(MMPhoneSlider *)phoneSlider didChangeValueTo:(float)value
 {
 	[delegate view:self didSetPlaybackLevelTo:value];
+}
+
+-(void) inputLevelIs:(float)level
+{
+	inputLevelMeter.value = level;
+}
+
+-(void) outputLevelIs:(float)level
+{
+	outputLevelMeter.value = level;
+	NSLog( @"Output level is %g", level );
 }
 
 @synthesize delegate;

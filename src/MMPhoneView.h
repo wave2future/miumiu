@@ -18,6 +18,7 @@
 @class MMPhoneAlert;
 @class MMPhoneLabel;
 @class MMPhoneSlider;
+@class MMPhoneLevel;
 
 @protocol MMPhoneViewDelegate <NSObject>
 
@@ -41,6 +42,8 @@
 	id <MMPhoneViewDelegate> delegate;
 	MMPhoneLabel *statusLabel;
 	MMPhoneSlider *playbackLevelSlider;
+	MMPhoneLevel *outputLevelMeter;
+	MMPhoneLevel *inputLevelMeter;
 	MMPhoneTextField *numberTextField;
 	MMPhoneButton *beginCallButton;
 	MMPhoneButton *endCallButton;
@@ -58,6 +61,8 @@
 -(void) didEndCall;
 -(void) callIsBeingReceivedFrom:(NSString *)cidInfo;
 -(void) setStatusMessage:(NSString *)statusMessage;
+-(void) inputLevelIs:(float)level;
+-(void) outputLevelIs:(float)level;
 
 @property ( nonatomic, assign ) id <MMPhoneViewDelegate> delegate;
 

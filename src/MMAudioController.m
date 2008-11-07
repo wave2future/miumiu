@@ -7,6 +7,7 @@
 //
 
 #import "MMAudioController.h"
+#import "MMAudioControllerDelegate.h"
 #import "MMToneGenerator.h"
 #import "MMCircularBuffer.h"
 
@@ -109,7 +110,17 @@ static void interruptionCallback(
 			);
 		LOG( @"Created output queue" );
 		
+		UInt32 enableOutputLevelMetering = 1;
+		AudioQueueSetProperty(
+			outputQueue,
+			kAudioQueueProperty_EnableLevelMetering,
+			&enableOutputLevelMetering,
+			sizeof(enableOutputLevelMetering)
+			);
+		
 		[self setPlaybackLevelTo:0.8];
+
+		outputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
 		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
 		{
@@ -128,11 +139,21 @@ static void interruptionCallback(
 			);
 		LOG( @"Created input queue" );
 		
+		UInt32 enableInputLevelMetering = 1;
+		AudioQueueSetProperty(
+			inputQueue,
+			kAudioQueueProperty_EnableLevelMetering,
+			&enableInputLevelMetering,
+			sizeof(enableInputLevelMetering)
+			);
+		
 		AudioQueueSetParameter(
 			inputQueue,
 			kAudioQueueParam_Volume,
 			0.8
 			);
+			
+		inputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
 		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS; ++i )
 		{
@@ -190,6 +211,18 @@ static void interruptionCallback(
 	[self pushData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
 	AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
 	LOG( @"Requeued input buffer" );
+	if ( --inputLevelMeterCountdown == 0 )
+	{
+		AudioQueueLevelMeterState level;
+		UInt32 levelSize = sizeof(level);
+		AudioQueueGetProperty(
+			inputQueue,
+			kAudioQueueProperty_CurrentLevelMeter,
+			&level,
+			&levelSize );
+		[delegate audioController:self inputLevelIs:level.mAveragePower];
+		inputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
+	}
 }
 
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
@@ -197,6 +230,18 @@ static void interruptionCallback(
 {
 	[self pullData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
 	AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
+	if ( --outputLevelMeterCountdown == 0 )
+	{
+		AudioQueueLevelMeterState level;
+		UInt32 levelSize = sizeof(level);
+		AudioQueueGetProperty(
+			outputQueue,
+			kAudioQueueProperty_CurrentLevelMeter,
+			&level,
+			&levelSize );
+		[delegate audioController:self outputLevelIs:level.mAveragePower];
+		outputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
+	}
 }
 #endif
 
@@ -222,5 +267,7 @@ static void interruptionCallback(
 		playbackLevel
 		);
 }
+
+@synthesize delegate;
 
 @end

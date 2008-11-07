@@ -31,6 +31,7 @@
 	NSAutoreleasePool *autoreleasePool = [[NSAutoreleasePool alloc] init];
 	
 	audioController = [[MMAudioController alloc] init];
+	audioController.delegate = self;
 	
 #ifdef MM_PHONE_CONTROLLER_LOOPBACK
 	protocol = [[MMLoopback alloc] initWithProtocolDelegate:self];
@@ -313,6 +314,28 @@
 -(void) internalSetPlaybackLevelTo:(NSNumber *)playbackLevel
 {
 	[audioController setPlaybackLevelTo:[playbackLevel floatValue]];
+}
+
+-(void) audioController:(MMAudioController *)audioController
+	inputLevelIs:(float)level
+{
+	[self performSelector:@selector(notifyPhoneViewThatInputLevelIs:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithFloat:level] waitUntilDone:NO];
+}
+
+-(void) notifyPhoneViewThatInputLevelIs:(NSNumber *)level
+{
+	[phoneView inputLevelIs:[level floatValue]];
+}
+
+-(void) audioController:(MMAudioController *)audioController
+	outputLevelIs:(float)level
+{
+	[self performSelector:@selector(notifyPhoneViewThatOutputLevelIs:) onThread:[NSThread mainThread] withObject:[NSNumber numberWithFloat:level] waitUntilDone:NO];
+}
+
+-(void) notifyPhoneViewThatOutputLevelIs:(NSNumber *)level
+{
+	[phoneView outputLevelIs:[level floatValue]];
 }
 
 @synthesize phoneView;

@@ -33,6 +33,7 @@
 		DB937E040EB02A59006DDBAA /* MMPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937E030EB02A59006DDBAA /* MMPhoneView.m */; };
 		DB937E1F0EB03213006DDBAA /* MMPhoneTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937E1E0EB03213006DDBAA /* MMPhoneTextField.m */; };
 		DB937EC30EB0376D006DDBAA /* MMPhoneButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */; };
+		DBA2EC0A0EC4B01E0039408C /* MMPhoneLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBA2EC090EC4B01E0039408C /* MMPhoneLevel.m */; };
 		DBAE8FF50EAEA4A70076C726 /* MMApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FF40EAEA4A70076C726 /* MMApplication.m */; };
 		DBB1F0A60EB816060002A266 /* MMDataPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1F0A00EB816060002A266 /* MMDataPipe.m */; };
 		DBB1F0A70EB816060002A266 /* MMDataPipeChain.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1F0A20EB816060002A266 /* MMDataPipeChain.m */; };
@@ -244,6 +245,9 @@
 		DB937EC00EB0375C006DDBAA /* MMPhoneTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneTextFieldDelegate.h; path = ../src/MMPhoneTextFieldDelegate.h; sourceTree = SOURCE_ROOT; };
 		DB937EC10EB0376D006DDBAA /* MMPhoneButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneButton.h; path = ../src/iPhone/MMPhoneButton.h; sourceTree = SOURCE_ROOT; };
 		DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneButton.m; path = ../src/iPhone/MMPhoneButton.m; sourceTree = SOURCE_ROOT; };
+		DBA2EC080EC4B01E0039408C /* MMPhoneLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneLevel.h; path = ../src/iPhone/MMPhoneLevel.h; sourceTree = SOURCE_ROOT; };
+		DBA2EC090EC4B01E0039408C /* MMPhoneLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneLevel.m; path = ../src/iPhone/MMPhoneLevel.m; sourceTree = SOURCE_ROOT; };
+		DBA2EC0B0EC4B02C0039408C /* MMAudioControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMAudioControllerDelegate.h; path = ../src/MMAudioControllerDelegate.h; sourceTree = SOURCE_ROOT; };
 		DBAE8FF30EAEA4A70076C726 /* MMApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMApplication.h; path = ../src/iPhone/MMApplication.h; sourceTree = SOURCE_ROOT; };
 		DBAE8FF40EAEA4A70076C726 /* MMApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMApplication.m; path = ../src/iPhone/MMApplication.m; sourceTree = SOURCE_ROOT; };
 		DBB1F09F0EB816060002A266 /* MMDataPipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPipe.h; path = ../src/MMDataPipe.h; sourceTree = SOURCE_ROOT; };
@@ -703,6 +707,8 @@
 				DBD5C93D0EBBAB0B00FF9991 /* MMPhoneSlider.h */,
 				DBD5C93E0EBBAB0B00FF9991 /* MMPhoneSlider.m */,
 				DBD5C93C0EBBAAFD00FF9991 /* MMPhoneSliderDelegate.h */,
+				DBA2EC080EC4B01E0039408C /* MMPhoneLevel.h */,
+				DBA2EC090EC4B01E0039408C /* MMPhoneLevel.m */,
 				DB937E020EB02A59006DDBAA /* MMPhoneView.h */,
 				DB937E030EB02A59006DDBAA /* MMPhoneView.m */,
 			);
@@ -783,6 +789,7 @@
 				DB079F180EA202A300179412 /* MMPhoneController.m */,
 				DBCFF40B0E9DA59B0006A803 /* MMAudioController.h */,
 				DBCFF40C0E9DA59B0006A803 /* MMAudioController.m */,
+				DBA2EC0B0EC4B02C0039408C /* MMAudioControllerDelegate.h */,
 				DB18790B0E9E937F004319C4 /* MMCircularBuffer.h */,
 				DB18790C0E9E937F004319C4 /* MMCircularBuffer.m */,
 				DB44FD020EA1A74C00B927E9 /* MMComfortNoiseInjector.h */,
@@ -1016,6 +1023,7 @@
 				DBD5C7070EBAACFC00FF9991 /* MMPhoneLabel.m in Sources */,
 				DBD5C76B0EBAC87100FF9991 /* MMPreprocessor.m in Sources */,
 				DBD5C93F0EBBAB0B00FF9991 /* MMPhoneSlider.m in Sources */,
+				DBA2EC0A0EC4B01E0039408C /* MMPhoneLevel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

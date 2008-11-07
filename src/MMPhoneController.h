@@ -10,6 +10,7 @@
 #import "MMProtocolDelegate.h"
 #import "MMCallDelegate.h"
 #import "MMPhoneView.h"
+#import "MMAudioControllerDelegate.h"
 
 @class MMProtocol;
 @class MMCodec;
@@ -24,7 +25,7 @@
 @class MMAudioController;
 @class MMPreprocessor;
 
-@interface MMPhoneController : NSThread <MMProtocolDelegate, MMCallDelegate, MMPhoneViewDelegate>
+@interface MMPhoneController : NSThread <MMProtocolDelegate, MMCallDelegate, MMAudioControllerDelegate, MMPhoneViewDelegate>
 {
 @private
 	MMPhoneView *phoneView;

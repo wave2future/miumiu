@@ -107,6 +107,7 @@
 		DBB1EDAC0EB7DE270002A266 /* MMDataPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EDAB0EB7DE270002A266 /* MMDataPipe.m */; };
 		DBB1EDAF0EB7DFEF0002A266 /* MMDataPipeChain.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EDAE0EB7DFEF0002A266 /* MMDataPipeChain.m */; };
 		DBB1EE800EB806CA0002A266 /* MMDataPushToPullAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1EE7F0EB806CA0002A266 /* MMDataPushToPullAdapter.m */; };
+		DBC032060EBEC84D00384B53 /* MMPhoneLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBC032050EBEC84D00384B53 /* MMPhoneLevel.m */; };
 		DBD5C6A60EBAA61800FF9991 /* MMPhoneLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD5C6A50EBAA61800FF9991 /* MMPhoneLabel.m */; };
 		DBD5C7270EBABBE600FF9991 /* MMPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD5C7260EBABBE600FF9991 /* MMPreprocessor.m */; };
 		DBD5C7F80EBAD23400FF9991 /* MMPhoneSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = DBD5C7F70EBAD23400FF9991 /* MMPhoneSlider.m */; };
@@ -334,6 +335,9 @@
 		DBB1EDB90EB7E5090002A266 /* MMDataPipeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPipeDelegate.h; path = ../src/MMDataPipeDelegate.h; sourceTree = SOURCE_ROOT; };
 		DBB1EE7E0EB806CA0002A266 /* MMDataPushToPullAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataPushToPullAdapter.h; path = ../src/MMDataPushToPullAdapter.h; sourceTree = SOURCE_ROOT; };
 		DBB1EE7F0EB806CA0002A266 /* MMDataPushToPullAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDataPushToPullAdapter.m; path = ../src/MMDataPushToPullAdapter.m; sourceTree = SOURCE_ROOT; };
+		DBC032030EBEC5FF00384B53 /* MMAudioControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMAudioControllerDelegate.h; path = ../src/MMAudioControllerDelegate.h; sourceTree = SOURCE_ROOT; };
+		DBC032040EBEC84D00384B53 /* MMPhoneLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneLevel.h; path = ../src/Mac/MMPhoneLevel.h; sourceTree = SOURCE_ROOT; };
+		DBC032050EBEC84D00384B53 /* MMPhoneLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneLevel.m; path = ../src/Mac/MMPhoneLevel.m; sourceTree = SOURCE_ROOT; };
 		DBD5C6A40EBAA61800FF9991 /* MMPhoneLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneLabel.h; path = ../src/Mac/MMPhoneLabel.h; sourceTree = SOURCE_ROOT; };
 		DBD5C6A50EBAA61800FF9991 /* MMPhoneLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneLabel.m; path = ../src/Mac/MMPhoneLabel.m; sourceTree = SOURCE_ROOT; };
 		DBD5C7250EBABBE600FF9991 /* MMPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPreprocessor.h; path = ../src/MMPreprocessor.h; sourceTree = SOURCE_ROOT; };
@@ -466,6 +470,7 @@
 				DBAE8F7C0EAE9B720076C726 /* MMCircularBuffer.m */,
 				DBAE8FCB0EAE9DD80076C726 /* MMAudioController.h */,
 				DBAE8FCC0EAE9DD80076C726 /* MMAudioController.m */,
+				DBC032030EBEC5FF00384B53 /* MMAudioControllerDelegate.h */,
 				DB937DD10EB0230E006DDBAA /* MMPhoneController.h */,
 				DB937DD20EB0230E006DDBAA /* MMPhoneController.m */,
 				DBD5C7250EBABBE600FF9991 /* MMPreprocessor.h */,
@@ -685,6 +690,8 @@
 				DBD5C7F60EBAD23400FF9991 /* MMPhoneSlider.h */,
 				DBD5C7F70EBAD23400FF9991 /* MMPhoneSlider.m */,
 				DBD5C7F90EBAD29800FF9991 /* MMPhoneSliderDelegate.h */,
+				DBC032040EBEC84D00384B53 /* MMPhoneLevel.h */,
+				DBC032050EBEC84D00384B53 /* MMPhoneLevel.m */,
 				DB89770D0EB03805004D7182 /* MMPhoneView.h */,
 				DB89770E0EB03805004D7182 /* MMPhoneView.m */,
 			);
@@ -927,6 +934,7 @@
 				DBD5C6A60EBAA61800FF9991 /* MMPhoneLabel.m in Sources */,
 				DBD5C7270EBABBE600FF9991 /* MMPreprocessor.m in Sources */,
 				DBD5C7F80EBAD23400FF9991 /* MMPhoneSlider.m in Sources */,
+				DBC032060EBEC84D00384B53 /* MMPhoneLevel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
