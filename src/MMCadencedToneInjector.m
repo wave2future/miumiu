@@ -39,17 +39,16 @@
 	[super dealloc];
 }
 
--(void) dataPipe:(MMDataPipe *)_ didConnectToTarget:(MMDataPipe *)newSource
-{
-	timePosition = 0;
-}
-
 -(void) processData:(void *)data ofSize:(unsigned)size
 {
 	unsigned numSamples = size/sizeof(short);
 	if ( timePosition % totalSamples < onSamples )
+	{
 		[toneGenerator injectSamples:data count:numSamples offset:timePosition];
-	timePosition += numSamples;
+		timePosition += numSamples;
+	}
+	else
+		timePosition = 0;
 }
 
 @end

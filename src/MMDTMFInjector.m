@@ -22,7 +22,7 @@
 -(void) pressed;
 -(void) released;
 
--(void) injectSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset;
+-(unsigned) injectSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset;
 
 @end
 
@@ -59,10 +59,11 @@
 	--pressCount;
 }
 
--(void) injectSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset
+-(unsigned) injectSamples:(short *)samples count:(unsigned)count offset:(unsigned)offset
 {
 	if ( pressCount > 0 )
 		[toneGenerator injectSamples:samples count:count offset:offset];
+	return pressCount;
 }
 
 @end
@@ -130,9 +131,13 @@
 -(void) processData:(void *)data ofSize:(unsigned)size
 {
 	unsigned numSamples = size/sizeof(short);
+	unsigned totalPressCount = 0;
 	for ( MMDTMFRowCol *rowCol in rowCols )
-		[rowCol injectSamples:data count:numSamples offset:offset];
-	offset += numSamples;
+		totalPressCount += [rowCol injectSamples:data count:numSamples offset:offset];
+	if ( totalPressCount > 0 )
+		offset += numSamples;
+	else
+		offset = 0;
 }
 
 @end
