@@ -14,20 +14,13 @@
 {
 	if ( self = [super init] )
 	{
-		button = [[NSButton alloc] init];
-		[button setButtonType:NSMomentaryLightButton];
-		[button setTitle:title];
-		[button setKeyEquivalent:title];
-		[button setTarget:self];
-		[button setAction:@selector(action:)];
+		[self setButtonType:NSMomentaryLightButton];
+		[self setTitle:title];
+		[self setKeyEquivalent:title];
+		[self setTarget:self];
+		[self setAction:@selector(action:)];
 	}
 	return self;
-}
-
--(void) dealloc
-{
-	[button release];
-	[super dealloc];
 }
 	
 -(void) setPressTarget:(id)target action:(SEL)action
@@ -42,6 +35,26 @@
 	releaseAction = action;
 }
 
+-(void) mouseDown:(NSEvent *)theEvent
+{
+	NSPoint pointInWindow = [theEvent locationInWindow];
+	NSPoint pointInView = [self convertPoint:pointInWindow fromView:nil];
+	if ( NSPointInRect( pointInView, [self bounds] ) )
+	{
+		pressed = YES;
+		[pressTarget performSelector:pressAction withObject:self];
+	}
+}
+
+-(void) mouseUp:(NSEvent *)theEvent
+{
+	if ( pressed )
+	{
+		pressed = NO;
+		[releaseTarget performSelector:releaseAction withObject:self];
+	}
+}
+
 -(void) action:(id)sender
 {
 	[pressTarget performSelector:pressAction withObject:self];
@@ -51,43 +64,11 @@
 @dynamic view;
 -(MMView *) view
 {
-	return button;
+	return self;
 }
 
 @dynamic enabled;
--(BOOL) enabled
-{
-	return [button isEnabled];
-}
--(void) setEnabled:(BOOL)_
-{
-	[button setEnabled:_];
-}
-
 @dynamic hidden;
--(BOOL) hidden
-{
-	return [button isHidden];
-}
--(void) setHidden:(BOOL)_
-{
-	[button setHidden:_];
-}
-
-@dynamic frame;
--(MMRect) frame
-{
-	return button.frame;
-}
--(void) setFrame:(MMRect)_
-{
-	button.frame = _;
-}
-
 @dynamic title;
--(NSString *) title
-{
-	return [button title];
-}
 
 @end

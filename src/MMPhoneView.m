@@ -290,7 +290,6 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 -(void) outputLevelIs:(float)level
 {
 	outputLevelMeter.value = level;
-	NSLog( @"Output level is %g", level );
 }
 
 @synthesize delegate;
