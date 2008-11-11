@@ -44,21 +44,22 @@
 		pressed = YES;
 		[pressTarget performSelector:pressAction withObject:self];
 	}
+	
+	[super mouseDown:theEvent];
 }
 
--(void) mouseUp:(NSEvent *)theEvent
+-(void) action:(id)sender
 {
 	if ( pressed )
 	{
 		pressed = NO;
 		[releaseTarget performSelector:releaseAction withObject:self];
 	}
-}
-
--(void) action:(id)sender
-{
-	[pressTarget performSelector:pressAction withObject:self];
-	[releaseTarget performSelector:releaseAction withObject:self afterDelay:0.125];
+	else
+	{
+		[pressTarget performSelector:pressAction withObject:self];
+		[releaseTarget performSelector:releaseAction withObject:self afterDelay:0.125];
+	}
 }
 
 @dynamic view;
