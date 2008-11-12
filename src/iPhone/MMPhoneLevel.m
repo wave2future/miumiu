@@ -14,41 +14,47 @@
 {
 	if ( self = [super init] )
 	{
-		levelIndicator = [[MMView alloc] init];
 	}
 	return self;
 }
 
--(void) dealloc
+-(void) drawRect:(CGRect)rect
 {
-	[levelIndicator release];
-	[super dealloc];
+	CGRect boundsRect = self.bounds;
+	
+	UIColor *levelColor;
+	if ( value >= 0.8 )
+		levelColor = [UIColor redColor];
+	else if ( value >= 0.6 )
+		levelColor = [UIColor yellowColor];
+	else
+		levelColor = [UIColor greenColor];
+	CGRect levelRect = CGRectMake( CGRectGetMinX(boundsRect), CGRectGetMinY(boundsRect), value*CGRectGetWidth(boundsRect), CGRectGetHeight(boundsRect) );
+	
+	UIColor *backgroundColor = [UIColor grayColor];
+	CGRect backgroundRect = CGRectMake( CGRectGetMaxX(levelRect), CGRectGetMinY(boundsRect), CGRectGetMaxX(boundsRect) - CGRectGetMaxX(levelRect), CGRectGetHeight(boundsRect) );
+	
+	[levelColor set];
+	UIRectFill( levelRect );
+	[backgroundColor set];
+	UIRectFill( backgroundRect );
 }
 
 @dynamic view;
 -(MMView *) view
 {
-	return levelIndicator;
-}
-
-@dynamic frame;
--(MMRect) frame
-{
-	return levelIndicator.frame;
-}
--(void) setFrame:(MMRect)_
-{
-	levelIndicator.frame = _;
+	return self;
 }
 
 @dynamic value;
 -(float) value
 {
-	return 0;//[levelIndicator floatValue]/10;
+	return value;
 }
 -(void) setValue:(float)_
 {
-	//[levelIndicator setFloatValue:_*10];
+	value = _;
+	[self setNeedsDisplay];
 }
 
 @end

@@ -12,14 +12,13 @@
 
 @protocol MMPhoneSliderDelegate;
 
-@interface MMPhoneLevel : NSObject
+@interface MMPhoneLevel : UIView
 {
 @private
-	MMView *levelIndicator;
+	float value;
 }
 
 @property ( nonatomic, readonly ) MMView *view;
-@property ( nonatomic, assign ) MMRect frame;
 @property ( nonatomic, assign ) float value;
 
 @end
