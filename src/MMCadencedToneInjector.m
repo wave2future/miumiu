@@ -42,13 +42,11 @@
 -(void) processData:(void *)data ofSize:(unsigned)size
 {
 	unsigned numSamples = size/sizeof(short);
-	if ( timePosition % totalSamples < onSamples )
-	{
+	if ( timePosition < onSamples )
 		[toneGenerator injectSamples:data count:numSamples offset:timePosition];
-		timePosition += numSamples;
-	}
-	else
-		timePosition = 0;
+	timePosition += numSamples;
+	while ( timePosition > totalSamples )
+		timePosition -= totalSamples;
 }
 
 @end
