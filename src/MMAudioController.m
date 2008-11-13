@@ -118,7 +118,7 @@ static void interruptionCallback(
 			sizeof(enableOutputLevelMetering)
 			);
 		
-		[self setPlaybackLevelTo:0.8];
+		[self setPlaybackLevelTo:1.0];
 
 		outputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
 		
@@ -147,12 +147,6 @@ static void interruptionCallback(
 			sizeof(enableInputLevelMetering)
 			);
 		
-		AudioQueueSetParameter(
-			inputQueue,
-			kAudioQueueParam_Volume,
-			0.8
-			);
-			
 		inputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
 		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS; ++i )

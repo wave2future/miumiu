@@ -41,7 +41,9 @@
 @private
 	id <MMPhoneViewDelegate> delegate;
 	MMPhoneLabel *statusLabel;
+#ifdef MACOSX
 	MMPhoneSlider *playbackLevelSlider;
+#endif
 	MMPhoneLevel *outputLevelMeter;
 	MMPhoneLevel *inputLevelMeter;
 	MMPhoneTextField *numberTextField;
