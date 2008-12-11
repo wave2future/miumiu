@@ -255,11 +255,13 @@ static void interruptionCallback(
 
 -(void) setPlaybackLevelTo:(float)playbackLevel
 {
+#ifndef SIMULATE_AUDIO
 	AudioQueueSetParameter(
 		outputQueue,
 		kAudioQueueParam_Volume,
 		playbackLevel
 		);
+#endif
 }
 
 @synthesize delegate;
