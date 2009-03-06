@@ -24,6 +24,8 @@
 		DB44FD040EA1A74C00B927E9 /* MMComfortNoiseInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */; };
 		DB47ED7F0F60CC76007A0E19 /* button-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = DB47ED7D0F60CC76007A0E19 /* button-disabled.png */; };
 		DB47ED800F60CC76007A0E19 /* button-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = DB47ED7E0F60CC76007A0E19 /* button-highlighted.png */; };
+		DB47EDC50F60E7AF007A0E19 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB47EDC30F60E7AF007A0E19 /* AddressBook.framework */; };
+		DB47EDC60F60E7AF007A0E19 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB47EDC40F60E7AF007A0E19 /* AddressBookUI.framework */; };
 		DB4C13B20EA11DF1000AAB0A /* MMToneGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */; };
 		DB6D0F5C0EA547B400AED2DA /* MMDataProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6D0F590EA547B400AED2DA /* MMDataProcessor.m */; };
 		DB778B380E9DD9DC00EC2FC3 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778B330E9DD6EC00EC2FC3 /* MMSpeexDecoder.m */; };
@@ -225,6 +227,8 @@
 		DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMComfortNoiseInjector.m; path = src/MMComfortNoiseInjector.m; sourceTree = "<group>"; };
 		DB47ED7D0F60CC76007A0E19 /* button-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-disabled.png"; path = "../Resources/button-disabled.png"; sourceTree = SOURCE_ROOT; };
 		DB47ED7E0F60CC76007A0E19 /* button-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-highlighted.png"; path = "../Resources/button-highlighted.png"; sourceTree = SOURCE_ROOT; };
+		DB47EDC30F60E7AF007A0E19 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		DB47EDC40F60E7AF007A0E19 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		DB4C13B00EA11DF1000AAB0A /* MMToneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMToneGenerator.h; path = src/MMToneGenerator.h; sourceTree = "<group>"; };
 		DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMToneGenerator.m; path = src/MMToneGenerator.m; sourceTree = "<group>"; };
 		DB6D0F580EA547B400AED2DA /* MMDataProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataProcessor.h; path = src/MMDataProcessor.h; sourceTree = "<group>"; };
@@ -428,6 +432,8 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				DBCFF2F50E9D92360006A803 /* CoreGraphics.framework in Frameworks */,
 				DBCFF40F0E9DAA970006A803 /* AudioToolbox.framework in Frameworks */,
+				DB47EDC50F60E7AF007A0E19 /* AddressBook.framework in Frameworks */,
+				DB47EDC60F60E7AF007A0E19 /* AddressBookUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,6 +500,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB47EDC30F60E7AF007A0E19 /* AddressBook.framework */,
+				DB47EDC40F60E7AF007A0E19 /* AddressBookUI.framework */,
 				DBCFF40E0E9DAA970006A803 /* AudioToolbox.framework */,
 				DBCFF2F40E9D92360006A803 /* CoreGraphics.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,

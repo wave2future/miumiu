@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <AddressBookUI/AddressBookUI.h>
 #import "MMRect.h"
 #import "MMView.h"
 #import "MMPhoneTextFieldDelegate.h"
@@ -36,7 +37,7 @@
 
 @end
 
-@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate, MMPhoneAlertDelegate, MMPhoneSliderDelegate>
+@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate, MMPhoneAlertDelegate, MMPhoneSliderDelegate, ABPeoplePickerNavigationControllerDelegate>
 {
 @private
 	id <MMPhoneViewDelegate> delegate;
@@ -50,11 +51,13 @@
 	MMPhoneButton *beginCallButton;
 	MMPhoneButton *endCallButton;
 	MMPhoneButton *clearNumberButton;
+	MMPhoneButton *contactsButton;
 	MMPhoneButton *muteButton;
 	MMPhoneButton *unmuteButton;
 	NSMutableArray *digitButtons;
 	MMPhoneAlert *incommingAlert;
 	BOOL inCall, muted;
+	ABPeoplePickerNavigationController *peoplePickerNavigationController;
 }
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;

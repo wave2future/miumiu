@@ -16,7 +16,7 @@
 #import "MMUIHelpers.h"
 #import "MMWindow.h"
 
-static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
+static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear", *contactsTitle = @"Contacts";
 static NSString *muteTitle = @"Mute", *unmuteTitle = @"Unmute";
 
 #define NUM_DIGITS 12
@@ -53,6 +53,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), 60 );
 	MMRect controlButtonFrames[2];
 	MMSubdivideRectEvenly( controlBounds, 1, 2, controlButtonFrames );
+	contactsButton.frame = controlBounds;
 	beginCallButton.frame = controlButtonFrames[0];
 	endCallButton.frame = controlButtonFrames[0];
 	clearNumberButton.frame = controlButtonFrames[1];
@@ -84,11 +85,11 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 {
 	BOOL haveDigits = [numberTextField.text length] > 0;
 	
-	beginCallButton.enabled = !inCall && haveDigits;
+	beginCallButton.hidden = inCall || !haveDigits;
 	endCallButton.hidden = !inCall;
 
-	clearNumberButton.enabled = haveDigits;
-	clearNumberButton.hidden = inCall;
+	contactsButton.hidden = inCall || haveDigits;
+	clearNumberButton.hidden = inCall || !haveDigits;
 	muteButton.enabled = !muted;
 	muteButton.hidden = muted || !inCall;
 	unmuteButton.enabled = muted;
@@ -137,6 +138,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		[self addSubview:endCallButton.view];
 		clearNumberButton = [[self buttonWithTitle:clearNumberTitle] retain];
 		[self addSubview:clearNumberButton.view];
+		contactsButton = [[self buttonWithTitle:contactsTitle] retain];
+		[self addSubview:contactsButton.view];
 		muteButton = [[self buttonWithTitle:muteTitle] retain];
 		[self addSubview:muteButton.view];
 		unmuteButton = [[self buttonWithTitle:unmuteTitle] retain];
@@ -168,6 +171,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[endCallButton release];
 	[beginCallButton release];
 	[clearNumberButton release];
+	[contactsButton release];
 	[numberTextField release];
 	[inputLevelMeter release];
 	[outputLevelMeter release];
@@ -192,6 +196,8 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	else if ( button == endCallButton )
 		;
 	else if ( button == clearNumberButton )
+		;
+	else if ( button == contactsButton )
 		;
 	else if ( button == muteButton )
 		;
@@ -222,8 +228,15 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	else if ( button == clearNumberButton )
 	{
 		numberTextField.text = @"";
-		beginCallButton.enabled = NO;
 		[self updateButtonStates];
+	}
+	else if ( button == contactsButton )
+	{
+		peoplePickerNavigationController = [[ABPeoplePickerNavigationController alloc] init];
+		peoplePickerNavigationController.peoplePickerDelegate = self;
+		peoplePickerNavigationController.displayedProperties = [NSArray arrayWithObject:[NSNumber numberWithInt:kABPersonPhoneProperty]];
+		peoplePickerNavigationController.view.frame = self.bounds;
+		[self addSubview:peoplePickerNavigationController.view];
 	}
 	else if ( button == muteButton )
 	{
@@ -312,6 +325,35 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 -(void) outputLevelIs:(float)level
 {
 	outputLevelMeter.value = level;
+}
+
+-(BOOL) peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
+	shouldContinueAfterSelectingPerson:(ABRecordRef)person
+{
+	return YES;
+}
+
+-(BOOL) peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
+	shouldContinueAfterSelectingPerson:(ABRecordRef)person
+	property:(ABPropertyID)property
+	identifier:(ABMultiValueIdentifier)identifier
+{
+	ABMultiValueRef multiValueRef = ABRecordCopyValue( person, property );
+	numberTextField.text = (NSString *)ABMultiValueCopyValueAtIndex( multiValueRef, 0 );
+	[self updateButtonStates];
+	
+	[peoplePickerNavigationController.view removeFromSuperview];
+	[peoplePickerNavigationController release];
+	peoplePickerNavigationController = nil;
+	
+	return NO;
+}
+
+-(void) peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker
+{
+	[peoplePickerNavigationController.view removeFromSuperview];
+	[peoplePickerNavigationController release];
+	peoplePickerNavigationController = nil;
 }
 
 @synthesize delegate;
