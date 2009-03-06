@@ -333,13 +333,30 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	return YES;
 }
 
++(NSString *) normalizeNumber:(NSString *)number
+{
+	NSCharacterSet *digitCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"1234567890"];
+	NSMutableString *result = [NSMutableString stringWithCapacity:[number length]];
+	NSRange searchRange = NSMakeRange( 0, [number length] );
+	while ( searchRange.length > 0 )
+	{
+		NSRange nextDigitRange = [number rangeOfCharacterFromSet:digitCharacterSet options:0 range:searchRange];
+		if ( nextDigitRange.location == NSNotFound )
+			break;
+		[result appendString:[number substringWithRange:nextDigitRange]];
+		searchRange.length -= nextDigitRange.location + 1 - searchRange.location;
+		searchRange.location = nextDigitRange.location + 1;
+	}
+	return result;
+}
+
 -(BOOL) peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
 	shouldContinueAfterSelectingPerson:(ABRecordRef)person
 	property:(ABPropertyID)property
 	identifier:(ABMultiValueIdentifier)identifier
 {
 	ABMultiValueRef multiValueRef = ABRecordCopyValue( person, property );
-	numberTextField.text = (NSString *)ABMultiValueCopyValueAtIndex( multiValueRef, 0 );
+	numberTextField.text = [MMPhoneView normalizeNumber:(NSString *)ABMultiValueCopyValueAtIndex( multiValueRef, 0 )];
 	[self updateButtonStates];
 	
 	[peoplePickerNavigationController.view removeFromSuperview];
