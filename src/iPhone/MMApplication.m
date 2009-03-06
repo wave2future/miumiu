@@ -22,6 +22,8 @@
 
 -(void) applicationDidFinishLaunching:(UIApplication *)application
 {
+	application.proximitySensingEnabled = YES;
+	
 	MMSetupDefaultSettings();
 	
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
