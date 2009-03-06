@@ -29,7 +29,6 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	MMPhoneButton *button = [[[MMPhoneButton alloc] initWithTitle:title] autorelease];
 	[button setPressTarget:self action:@selector(buttonPressed:)];
 	[button setReleaseTarget:self action:@selector(buttonReleased:)];
-	[self addSubview:button.view];
 	return button;
 }
 
@@ -39,12 +38,19 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	MMFloat top = MMRectGetMinY(bounds);
 	MMFloat bottom = MMRectGetMaxY(bounds);
 	
-	statusLabel.frame = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), 20 );
+	statusLabel.frame = MMRectMake( MMRectGetMinX(bounds) + 4, top + 3, MMRectGetWidth(bounds) - 8, 20 );
 	top = MMRectGetMaxY( statusLabel.frame );
-	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), 30 );
+	numberTextField.frame = MMRectMake( MMRectGetMinX(bounds) + 4, top + 3, MMRectGetWidth(bounds) - 8, 40 );
 	top = MMRectGetMaxY( numberTextField.frame );
 	
-	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), 40 );
+	MMRect levelBounds = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), 20 );
+	MMRect levelFrames[2];
+	MMSubdivideRectEvenly( levelBounds, 1, 2, levelFrames );
+	inputLevelMeter.frame = MMRectInset( levelFrames[0], 4, 3 );
+	outputLevelMeter.frame = MMRectInset( levelFrames[1], 4, 3 );
+	top = MMRectGetMaxY( levelBounds );
+
+	MMRect controlBounds = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), 60 );
 	MMRect controlButtonFrames[2];
 	MMSubdivideRectEvenly( controlBounds, 1, 2, controlButtonFrames );
 	beginCallButton.frame = controlButtonFrames[0];
@@ -59,14 +65,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	bottom = MMRectGetMinY( playbackLevelSlider.frame );
 #endif
 
-	MMRect levelBounds = MMRectMake( MMRectGetMinX(bounds), bottom-20, MMRectGetWidth(bounds), 20 );
-	MMRect levelFrames[2];
-	MMSubdivideRectEvenly( levelBounds, 1, 2, levelFrames );
-	outputLevelMeter.frame = levelFrames[0];
-	inputLevelMeter.frame = levelFrames[1];
-	bottom = MMRectGetMinY( inputLevelMeter.frame );
-
-	MMRect digitBounds = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), bottom-top );
+	MMRect digitBounds = MMRectMake( MMRectGetMinX(bounds), top, MMRectGetWidth(bounds), bottom-top-4 );
 	MMRect digitButtonBounds[12];
 	MMSubdivideRectEvenly( digitBounds, 4, 3, digitButtonBounds );
 	for ( unsigned row=0; row<4; ++row )
@@ -133,14 +132,23 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 							   object:nil];
 		
 		beginCallButton = [[self buttonWithTitle:beginCallTitle] retain];
+		[self addSubview:beginCallButton.view];
 		endCallButton = [[self buttonWithTitle:endCallTitle] retain];
+		[self addSubview:endCallButton.view];
 		clearNumberButton = [[self buttonWithTitle:clearNumberTitle] retain];
+		[self addSubview:clearNumberButton.view];
 		muteButton = [[self buttonWithTitle:muteTitle] retain];
+		[self addSubview:muteButton.view];
 		unmuteButton = [[self buttonWithTitle:unmuteTitle] retain];
+		[self addSubview:unmuteButton.view];
 	
 		digitButtons = [[NSMutableArray alloc] initWithCapacity:12];
 		for ( int i=0; i<NUM_DIGITS; ++i )
-			[digitButtons addObject:[self buttonWithTitle:digitTitles[i]]];
+		{
+			MMPhoneButton *digitButton = [self buttonWithTitle:digitTitles[i]];
+			[digitButtons addObject:digitButton];
+			[self addSubview:digitButton.view];
+		}
 		
 		[self updateButtonStates];
 		[self layoutSubviews];

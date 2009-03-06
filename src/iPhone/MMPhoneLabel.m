@@ -17,7 +17,8 @@
 	{
 		label = [[UILabel alloc] init];
 		label.textColor = [UIColor greenColor];
-		label.backgroundColor = [UIColor blackColor];
+		label.backgroundColor = [UIColor clearColor];
+		label.textAlignment = UITextAlignmentLeft;
 	}
 	return self;
 }

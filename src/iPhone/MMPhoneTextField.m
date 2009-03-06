@@ -16,14 +16,15 @@
 	{
 		textField = [[UITextField alloc] init];
 		textField.delegate = self;
-		textField.textColor = [UIColor whiteColor];
+		textField.textColor = [UIColor yellowColor];
+		textField.font = [UIFont boldSystemFontOfSize:28.0];
 		textField.returnKeyType = UIReturnKeyDone;
 		textField.enablesReturnKeyAutomatically = NO;
 		textField.keyboardType = UIKeyboardTypeEmailAddress;
 		textField.autocorrectionType = UITextAutocorrectionTypeNo;
 		textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		textField.clearButtonMode = UITextFieldViewModeNever;
-		textField.placeholder = @"Dial number then press Call";
+		textField.placeholder = @"Dial then press Call";
 	}
 	return self;
 }
@@ -44,6 +45,12 @@
 {
 	if ( [delegate respondsToSelector:@selector(textFieldDidChange:)] )
 		[delegate performSelector:@selector(textFieldDidChange:) withObject:self];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+	// [pzion 20090305] editing is annoying.  Turn it off.
+	return NO;
 }
 
 -(BOOL) textField:(UITextField *)textField

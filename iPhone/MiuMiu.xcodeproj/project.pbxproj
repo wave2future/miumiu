@@ -22,6 +22,8 @@
 		DB44FC630EA17DCF00B927E9 /* MMFastBusyInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC5F0EA17DCF00B927E9 /* MMFastBusyInjector.m */; };
 		DB44FC640EA17DCF00B927E9 /* MMRingInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FC610EA17DCF00B927E9 /* MMRingInjector.m */; };
 		DB44FD040EA1A74C00B927E9 /* MMComfortNoiseInjector.m in Sources */ = {isa = PBXBuildFile; fileRef = DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */; };
+		DB47ED7F0F60CC76007A0E19 /* button-disabled.png in Resources */ = {isa = PBXBuildFile; fileRef = DB47ED7D0F60CC76007A0E19 /* button-disabled.png */; };
+		DB47ED800F60CC76007A0E19 /* button-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = DB47ED7E0F60CC76007A0E19 /* button-highlighted.png */; };
 		DB4C13B20EA11DF1000AAB0A /* MMToneGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */; };
 		DB6D0F5C0EA547B400AED2DA /* MMDataProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = DB6D0F590EA547B400AED2DA /* MMDataProcessor.m */; };
 		DB778B380E9DD9DC00EC2FC3 /* MMSpeexDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = DB778B330E9DD6EC00EC2FC3 /* MMSpeexDecoder.m */; };
@@ -221,6 +223,8 @@
 		DB44FC610EA17DCF00B927E9 /* MMRingInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMRingInjector.m; path = src/MMRingInjector.m; sourceTree = "<group>"; };
 		DB44FD020EA1A74C00B927E9 /* MMComfortNoiseInjector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMComfortNoiseInjector.h; path = src/MMComfortNoiseInjector.h; sourceTree = "<group>"; };
 		DB44FD030EA1A74C00B927E9 /* MMComfortNoiseInjector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMComfortNoiseInjector.m; path = src/MMComfortNoiseInjector.m; sourceTree = "<group>"; };
+		DB47ED7D0F60CC76007A0E19 /* button-disabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-disabled.png"; path = "../Resources/button-disabled.png"; sourceTree = SOURCE_ROOT; };
+		DB47ED7E0F60CC76007A0E19 /* button-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "button-highlighted.png"; path = "../Resources/button-highlighted.png"; sourceTree = SOURCE_ROOT; };
 		DB4C13B00EA11DF1000AAB0A /* MMToneGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMToneGenerator.h; path = src/MMToneGenerator.h; sourceTree = "<group>"; };
 		DB4C13B10EA11DF1000AAB0A /* MMToneGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMToneGenerator.m; path = src/MMToneGenerator.m; sourceTree = "<group>"; };
 		DB6D0F580EA547B400AED2DA /* MMDataProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDataProcessor.h; path = src/MMDataProcessor.h; sourceTree = "<group>"; };
@@ -481,6 +485,8 @@
 				DB4308970EACDEE800484B27 /* Info.plist */,
 				DB23DDB80EBA3C3B0000A767 /* Settings.bundle */,
 				DB4308950EACDEDD00484B27 /* button.png */,
+				DB47ED7D0F60CC76007A0E19 /* button-disabled.png */,
+				DB47ED7E0F60CC76007A0E19 /* button-highlighted.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -976,6 +982,8 @@
 				DB4308960EACDEDD00484B27 /* button.png in Resources */,
 				DB4308980EACDEE800484B27 /* Info.plist in Resources */,
 				DB23DDB90EBA3C3B0000A767 /* Settings.bundle in Resources */,
+				DB47ED7F0F60CC76007A0E19 /* button-disabled.png in Resources */,
+				DB47ED800F60CC76007A0E19 /* button-highlighted.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1114,7 +1122,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CODE_SIGN_ENTITLEMENTS = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Peter Zion";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1143,6 +1151,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Peter Zion";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MiuMiu_Prefix.pch;
@@ -1160,7 +1169,7 @@
 					"-lspeex",
 				);
 				PRODUCT_NAME = MiuMiu;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B275E77A-8C3E-462A-8D74-FCD4A40D6358";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9B81D97D-7E5E-4974-839B-7FEBDA73C689";
 			};
 			name = Release;
 		};

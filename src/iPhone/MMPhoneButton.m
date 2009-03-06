@@ -15,14 +15,19 @@
 	if ( self = [super init] )
 	{
 		button = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-		button.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+		button.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
 		button.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-		UIImage *backgroundImage = [[UIImage imageNamed:@"button.png"] stretchableImageWithLeftCapWidth:10 topCapHeight:10];
-		[button setBackgroundImage:backgroundImage forState:0];
+		UIImage *backgroundImage = [[UIImage imageNamed:@"button.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:20];
+		UIImage *backgroundHighlightedImage = [[UIImage imageNamed:@"button-highlighted.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:20];
+		UIImage *backgroundDisabledImage = [[UIImage imageNamed:@"button-disabled.png"] stretchableImageWithLeftCapWidth:20 topCapHeight:20];
+		[button setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+		[button setBackgroundImage:backgroundHighlightedImage forState:UIControlStateHighlighted];
+		[button setBackgroundImage:backgroundDisabledImage forState:UIControlStateDisabled];
 		button.font = [UIFont boldSystemFontOfSize:24.0];
 		[button setTitle:title forState:UIControlStateNormal];
-		[button setTitleColor:[UIColor blackColor] forState:UIControlEventTouchDown];
+		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];	
+		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];	
 		[button setTitleColor:[UIColor blackColor] forState:UIControlStateDisabled];	
 		[button addTarget:self action:@selector(pressed:) forControlEvents:UIControlEventTouchDown];
 		[button addTarget:self action:@selector(released:) forControlEvents:UIControlEventTouchUpInside];

@@ -23,6 +23,7 @@
 	CGRect boundsRect = self.bounds;
 	
 	UIColor *levelColor;
+	value = (float) roundf( 10 * value ) / 10;
 	if ( value >= 0.8 )
 		levelColor = [UIColor redColor];
 	else if ( value >= 0.6 )
@@ -31,7 +32,7 @@
 		levelColor = [UIColor greenColor];
 	CGRect levelRect = CGRectMake( CGRectGetMinX(boundsRect), CGRectGetMinY(boundsRect), value*CGRectGetWidth(boundsRect), CGRectGetHeight(boundsRect) );
 	
-	UIColor *backgroundColor = [UIColor grayColor];
+	UIColor *backgroundColor = [UIColor blackColor];
 	CGRect backgroundRect = CGRectMake( CGRectGetMaxX(levelRect), CGRectGetMinY(boundsRect), CGRectGetMaxX(boundsRect) - CGRectGetMaxX(levelRect), CGRectGetHeight(boundsRect) );
 	
 	[levelColor set];

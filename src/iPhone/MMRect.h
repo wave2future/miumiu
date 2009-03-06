@@ -17,3 +17,4 @@ typedef CGRect MMRect;
 #define MMRectGetMaxY( r ) CGRectGetMaxY( r )
 #define MMRectGetWidth( r ) CGRectGetWidth( r )
 #define MMRectGetHeight( r ) CGRectGetHeight( r )
+#define MMRectInset( r, dx, dy ) CGRectInset( r, dx, dy )
