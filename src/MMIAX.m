@@ -105,7 +105,7 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 
 	session = iax_session_new();
 	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
-	if ( iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 ) != 0 )
+	if ( iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 ) == -1 )
 	{
 		if ( error != NULL )
 			*error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:[NSDictionary dictionaryWithObject:@"Unable to connect" forKey:NSLocalizedDescriptionKey]];
