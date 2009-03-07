@@ -48,25 +48,13 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 {
 	if ( self = [super initWithProtocolDelegate:_delegate] )
 	{
+		delegate = _delegate;
+
 #ifdef DEBUG 
 		iax_enable_debug();
 		iax_set_output( iaxOutputCallback );
 		iax_set_error( iaxErrorCallback );
 #endif
-		
-		iax_init( 0 );
-
-		socketContext.info = self;
-		CFSocketRef socket = CFSocketCreateWithNative( NULL, iax_get_fd(), kCFSocketReadCallBack,
-			socketCallback, &socketContext );
-		CFRunLoopSourceRef runLoopSource = CFSocketCreateRunLoopSource( NULL, socket, 0 );
-		CFRunLoopAddSource( CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes );
-
-		session = iax_session_new();
-		iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
-		iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
-		
-		reregistrationTimer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(reregister) userInfo:nil repeats:YES] retain];
 	}
 	return self;
 }
@@ -90,6 +78,43 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 	session = iax_session_new();
 	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 	iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
+}
+
+-(BOOL) loginWithServer:(NSString *)_server
+	username:(NSString *)_username
+	password:(NSString *)_password
+	cidName:(NSString *)_cidName
+	cidNumber:(NSString *)_cidNumber
+	withResultingError:(NSError **)error
+{
+	if ( ![super loginWithServer:_server
+		username:_username
+		password:_password
+		cidName:_cidName
+		cidNumber:_cidNumber
+		withResultingError:error] )
+		return NO;
+		
+	iax_init( 0 );
+
+	socketContext.info = self;
+	CFSocketRef socket = CFSocketCreateWithNative( NULL, iax_get_fd(), kCFSocketReadCallBack,
+		socketCallback, &socketContext );
+	CFRunLoopSourceRef runLoopSource = CFSocketCreateRunLoopSource( NULL, socket, 0 );
+	CFRunLoopAddSource( CFRunLoopGetCurrent(), runLoopSource, kCFRunLoopCommonModes );
+
+	session = iax_session_new();
+	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
+	if ( iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 ) != 0 )
+	{
+		if ( error != NULL )
+			*error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:[NSDictionary dictionaryWithObject:@"Unable to connect" forKey:NSLocalizedDescriptionKey]];
+		return NO;
+	}
+	
+	reregistrationTimer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(reregister) userInfo:nil repeats:YES] retain];
+	
+	return YES;
 }
 
 -(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate

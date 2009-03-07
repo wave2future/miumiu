@@ -32,12 +32,20 @@
 	
 	audioController = [[MMAudioController alloc] init];
 	audioController.delegate = self;
-	
+
 #ifdef MM_PHONE_CONTROLLER_LOOPBACK
 	protocol = [[MMLoopback alloc] initWithProtocolDelegate:self];
 #else
 	protocol = [[MMIAX alloc] initWithProtocolDelegate:self];
 #endif
+
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	
+	NSString *server = [userDefaults stringForKey:@"server"];
+	NSString *username = [userDefaults stringForKey:@"username"];
+	NSString *password = [userDefaults stringForKey:@"password"];
+	NSString *cidName = [userDefaults stringForKey:@"cidName"];
+	NSString *cidNumber = [userDefaults stringForKey:@"cidNumber"];
 
 	ringtoneInjector = [[MMRingInjector alloc] init];
 	busyInjector = [[MMBusyInjector alloc] init];
@@ -52,7 +60,26 @@
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain connectToTarget:audioController];
 
-	[self performSelector:@selector(notifyPhoneViewThatPhoneIsReady) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+	NSError *error;
+	if ( ![protocol loginWithServer:server
+		username:username
+		password:password
+		cidName:cidName
+		cidNumber:cidNumber
+		withResultingError:&error] )
+	{
+		[self performSelector:@selector(notifyPhoneViewThatLoginFailedBecause:)
+			onThread:[NSThread mainThread]
+			withObject:error
+			waitUntilDone:NO];
+	}
+	else
+	{
+		[self performSelector:@selector(notifyPhoneViewThatPhoneIsReady)
+			onThread:[NSThread mainThread]
+			withObject:nil
+			waitUntilDone:NO];
+	}
 
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
@@ -64,6 +91,11 @@
 -(void) notifyPhoneViewThatPhoneIsReady
 {
 	[phoneView setStatusMessage:@"Ready"];
+}
+
+-(void) notifyPhoneViewThatLoginFailedBecause:(NSError *)error
+{
+	[phoneView setStatusMessage:[NSString stringWithFormat:@"Login failed: %@", [error localizedDescription]]];
 }
 
 -(void) dealloc

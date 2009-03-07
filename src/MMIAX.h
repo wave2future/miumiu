@@ -25,6 +25,8 @@
 	NSTimer *reregistrationTimer;
 }
 
+-(id) initWithProtocolDelegate:(id <MMProtocolDelegate>)_delegate;
+
 -(void) socketCallbackCalled;
 -(void) willDestroySession;
 

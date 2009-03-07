@@ -37,6 +37,8 @@
 		DB937E040EB02A59006DDBAA /* MMPhoneView.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937E030EB02A59006DDBAA /* MMPhoneView.m */; };
 		DB937E1F0EB03213006DDBAA /* MMPhoneTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937E1E0EB03213006DDBAA /* MMPhoneTextField.m */; };
 		DB937EC30EB0376D006DDBAA /* MMPhoneButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */; };
+		DB95B7FE0F631C5800F2E822 /* MMUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DB95B7FD0F631C5800F2E822 /* MMUtils.m */; };
+		DB95B80B0F631ECC00F2E822 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB95B80A0F631ECC00F2E822 /* SystemConfiguration.framework */; };
 		DBA2EC0A0EC4B01E0039408C /* MMPhoneLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = DBA2EC090EC4B01E0039408C /* MMPhoneLevel.m */; };
 		DBAE8FF50EAEA4A70076C726 /* MMApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = DBAE8FF40EAEA4A70076C726 /* MMApplication.m */; };
 		DBB1F0A60EB816060002A266 /* MMDataPipe.m in Sources */ = {isa = PBXBuildFile; fileRef = DBB1F0A00EB816060002A266 /* MMDataPipe.m */; };
@@ -253,6 +255,9 @@
 		DB937EC00EB0375C006DDBAA /* MMPhoneTextFieldDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneTextFieldDelegate.h; path = ../src/MMPhoneTextFieldDelegate.h; sourceTree = SOURCE_ROOT; };
 		DB937EC10EB0376D006DDBAA /* MMPhoneButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneButton.h; path = ../src/iPhone/MMPhoneButton.h; sourceTree = SOURCE_ROOT; };
 		DB937EC20EB0376D006DDBAA /* MMPhoneButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneButton.m; path = ../src/iPhone/MMPhoneButton.m; sourceTree = SOURCE_ROOT; };
+		DB95B7FC0F631C5800F2E822 /* MMUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMUtils.h; path = ../src/MMUtils.h; sourceTree = SOURCE_ROOT; };
+		DB95B7FD0F631C5800F2E822 /* MMUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMUtils.m; path = ../src/MMUtils.m; sourceTree = SOURCE_ROOT; };
+		DB95B80A0F631ECC00F2E822 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DBA2EC080EC4B01E0039408C /* MMPhoneLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMPhoneLevel.h; path = ../src/iPhone/MMPhoneLevel.h; sourceTree = SOURCE_ROOT; };
 		DBA2EC090EC4B01E0039408C /* MMPhoneLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMPhoneLevel.m; path = ../src/iPhone/MMPhoneLevel.m; sourceTree = SOURCE_ROOT; };
 		DBA2EC0B0EC4B02C0039408C /* MMAudioControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMAudioControllerDelegate.h; path = ../src/MMAudioControllerDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -434,6 +439,7 @@
 				DBCFF40F0E9DAA970006A803 /* AudioToolbox.framework in Frameworks */,
 				DB47EDC50F60E7AF007A0E19 /* AddressBook.framework in Frameworks */,
 				DB47EDC60F60E7AF007A0E19 /* AddressBookUI.framework in Frameworks */,
+				DB95B80B0F631ECC00F2E822 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,6 +506,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB95B80A0F631ECC00F2E822 /* SystemConfiguration.framework */,
 				DB47EDC30F60E7AF007A0E19 /* AddressBook.framework */,
 				DB47EDC40F60E7AF007A0E19 /* AddressBookUI.framework */,
 				DBCFF40E0E9DAA970006A803 /* AudioToolbox.framework */,
@@ -812,6 +819,8 @@
 				DBF6CA4D0EB64CB300535275 /* MMMuteInjector.m */,
 				DBD5C7690EBAC87100FF9991 /* MMPreprocessor.h */,
 				DBD5C76A0EBAC87100FF9991 /* MMPreprocessor.m */,
+				DB95B7FC0F631C5800F2E822 /* MMUtils.h */,
+				DB95B7FD0F631C5800F2E822 /* MMUtils.m */,
 				DB6D0F020EA545FF00AED2DA /* Data Processing */,
 				DB6D0F030EA5466F00AED2DA /* Codecs */,
 				DB4C137F0EA11CDF000AAB0A /* Tone Generation */,
@@ -1040,6 +1049,7 @@
 				DBD5C76B0EBAC87100FF9991 /* MMPreprocessor.m in Sources */,
 				DBD5C93F0EBBAB0B00FF9991 /* MMPhoneSlider.m in Sources */,
 				DBA2EC0A0EC4B01E0039408C /* MMPhoneLevel.m in Sources */,
+				DB95B7FE0F631C5800F2E822 /* MMUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1185,7 +1195,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Peter Zion";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1193,7 +1203,7 @@
 				HEADER_SEARCH_PATHS = ThirdParty/speex/include;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = DefaultProfileUuid;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9B81D97D-7E5E-4974-839B-7FEBDA73C689";
 				SDKROOT = iphoneos2.0;
 			};
 			name = Debug;
