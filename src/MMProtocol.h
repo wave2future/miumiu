@@ -22,12 +22,11 @@
 
 -(id) initWithProtocolDelegate:(id <MMProtocolDelegate>)_delegate;
 
--(BOOL) loginWithServer:(NSString *)_server
+-(void) connectWithServer:(NSString *)_server
 	username:(NSString *)_username
 	password:(NSString *)_password
 	cidName:(NSString *)_cidName
-	cidNumber:(NSString *)_cidNumber
-	withResultingError:(NSError **)error;
+	cidNumber:(NSString *)_cidNumber;
 -(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate;
 -(void) answerCallWithCallDelegate:(id <MMCallDelegate>)callDelegate;
 -(void) ignoreCall;

@@ -56,14 +56,16 @@
 	MMPhoneButton *unmuteButton;
 	NSMutableArray *digitButtons;
 	MMPhoneAlert *incommingAlert;
-	BOOL inCall, muted;
+	BOOL connected, inCall, muted;
 	ABPeoplePickerNavigationController *peoplePickerNavigationController;
 }
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
 
+-(void) didConnect;
 -(void) didBeginCall;
 -(void) didEndCall;
+-(void) didDisconnect;
 -(void) callIsBeingReceivedFrom:(NSString *)cidInfo;
 -(void) setStatusMessage:(NSString *)statusMessage;
 -(void) inputLevelIs:(float)level;

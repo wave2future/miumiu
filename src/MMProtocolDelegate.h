@@ -14,6 +14,9 @@
 
 @required
 
+-(void) protocolConnectSucceeded:(MMProtocol *)protocol;
+-(void) protocol:(MMProtocol *)protocol connectFailedWithError:(NSError *)error;
+
 -(void) protocol:(MMProtocol *)protocol isReceivingCallFrom:(NSString *)cidInfo;
 
 @end

@@ -30,33 +30,17 @@
 	[super dealloc];
 }
 
--(BOOL) loginWithServer:(NSString *)_server
+-(void) connectWithServer:(NSString *)_server
 	username:(NSString *)_username
 	password:(NSString *)_password
 	cidName:(NSString *)_cidName
 	cidNumber:(NSString *)_cidNumber
-	withResultingError:(NSError **)error
 {
-	if ( MMIsConnection3G() )
-	{
-		if ( error != NULL )
-			*error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:[NSDictionary dictionaryWithObject:@"Cannot use on 3G network" forKey:NSLocalizedDescriptionKey]];
-		return NO;
-	}
-	
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	
-	hostname = [[userDefaults stringForKey:@"server"] retain];
-	username = [[userDefaults stringForKey:@"username"] retain];
-	if ( [username length] == 0 )
-		username = [@"dfcarney" retain];
-	password = [[userDefaults stringForKey:@"password"] retain];
-	if ( [password length] == 0 )
-		password = [@"scsscs" retain];
-	cidName = [[userDefaults stringForKey:@"cidName"] retain];
-	cidNumber = [[userDefaults stringForKey:@"cidNumber"] retain];
-	
-	return TRUE;
+	hostname = [_server retain];
+	username = [_username retain];
+	password = [_password retain];
+	cidName = [_cidName retain];
+	cidNumber = [_cidNumber retain];
 }
 
 -(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate

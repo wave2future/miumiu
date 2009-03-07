@@ -22,5 +22,6 @@
 @property ( nonatomic, assign ) MMRect frame;
 @property ( nonatomic, assign ) NSString *text;
 @property ( nonatomic, assign ) id <MMPhoneTextFieldDelegate> delegate;
+@property ( nonatomic, assign ) BOOL hidden;
 
 @end

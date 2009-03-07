@@ -39,14 +39,6 @@
 	protocol = [[MMIAX alloc] initWithProtocolDelegate:self];
 #endif
 
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	
-	NSString *server = [userDefaults stringForKey:@"server"];
-	NSString *username = [userDefaults stringForKey:@"username"];
-	NSString *password = [userDefaults stringForKey:@"password"];
-	NSString *cidName = [userDefaults stringForKey:@"cidName"];
-	NSString *cidNumber = [userDefaults stringForKey:@"cidNumber"];
-
 	ringtoneInjector = [[MMRingInjector alloc] init];
 	busyInjector = [[MMBusyInjector alloc] init];
 	fastBusyInjector = [[MMFastBusyInjector alloc] init];
@@ -60,27 +52,20 @@
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain connectToTarget:audioController];
 
-	NSError *error;
-	if ( ![protocol loginWithServer:server
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	
+	NSString *server = [userDefaults stringForKey:@"server"];
+	NSString *username = [userDefaults stringForKey:@"username"];
+	NSString *password = [userDefaults stringForKey:@"password"];
+	NSString *cidName = [userDefaults stringForKey:@"cidName"];
+	NSString *cidNumber = [userDefaults stringForKey:@"cidNumber"];
+
+	[protocol connectWithServer:server
 		username:username
 		password:password
 		cidName:cidName
-		cidNumber:cidNumber
-		withResultingError:&error] )
-	{
-		[self performSelector:@selector(notifyPhoneViewThatLoginFailedBecause:)
-			onThread:[NSThread mainThread]
-			withObject:error
-			waitUntilDone:NO];
-	}
-	else
-	{
-		[self performSelector:@selector(notifyPhoneViewThatPhoneIsReady)
-			onThread:[NSThread mainThread]
-			withObject:nil
-			waitUntilDone:NO];
-	}
-
+		cidNumber:cidNumber];
+		
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
 		;
@@ -88,14 +73,36 @@
 	[autoreleasePool release];
 }
 
--(void) notifyPhoneViewThatPhoneIsReady
+-(void) performSelectorOnPhoneView:(SEL)selector
 {
-	[phoneView setStatusMessage:@"Ready"];
+	[phoneView performSelector:selector
+		onThread:[NSThread mainThread]
+		withObject:nil
+		waitUntilDone:NO];
+}	
+
+-(void) performSelector:(SEL)selector
+	onPhoneViewWithObject:(id)object
+{
+	[phoneView performSelector:selector
+		onThread:[NSThread mainThread]
+		withObject:object
+		waitUntilDone:NO];
+}	
+
+-(void) protocolConnectSucceeded:(MMProtocol *)protocol
+{
+	[self performSelector:@selector(setStatusMessage:)
+		onPhoneViewWithObject:@"Ready"];
+	[self performSelectorOnPhoneView:@selector(didConnect)];
 }
 
--(void) notifyPhoneViewThatLoginFailedBecause:(NSError *)error
+-(void) protocol:(MMProtocol *)protocol
+	connectFailedWithError:(NSError *)error;
 {
-	[phoneView setStatusMessage:[NSString stringWithFormat:@"Login failed: %@", [error localizedDescription]]];
+	NSString *statusMessage = [NSString stringWithFormat:@"Connect failed: %@", [error localizedDescription]];
+	[self performSelector:@selector(setStatusMessage:)
+		onPhoneViewWithObject:statusMessage];
 }
 
 -(void) dealloc

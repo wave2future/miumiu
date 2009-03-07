@@ -85,7 +85,9 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 {
 	BOOL haveDigits = [numberTextField.text length] > 0;
 	
-	beginCallButton.hidden = inCall || !haveDigits;
+	numberTextField.hidden = !connected;
+	
+	beginCallButton.hidden = !connected || inCall || !haveDigits;
 	endCallButton.hidden = !inCall;
 
 	contactsButton.hidden = inCall || haveDigits;
@@ -371,6 +373,18 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[peoplePickerNavigationController.view removeFromSuperview];
 	[peoplePickerNavigationController release];
 	peoplePickerNavigationController = nil;
+}
+
+-(void) didConnect
+{
+	connected = YES;
+	[self updateButtonStates];
+}
+
+-(void) didDisconnect
+{
+	connected = NO;
+	[self updateButtonStates];
 }
 
 @synthesize delegate;

@@ -14,6 +14,7 @@
 #import "MMULawEncoder.h"
 #import "MMULawDecoder.h"
 #import "MMCallDelegate.h"
+#import "MMUtils.h"
 
 static void socketCallback(
 	CFSocketRef s,
@@ -80,20 +81,24 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 	iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
 }
 
--(BOOL) loginWithServer:(NSString *)_server
+-(void) connectWithServer:(NSString *)_server
 	username:(NSString *)_username
 	password:(NSString *)_password
 	cidName:(NSString *)_cidName
 	cidNumber:(NSString *)_cidNumber
-	withResultingError:(NSError **)error
 {
-	if ( ![super loginWithServer:_server
+	if ( MMIsConnection3G() )
+	{
+		NSError *error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:[NSDictionary dictionaryWithObject:@"Cellular network use forbidden" forKey:NSLocalizedDescriptionKey]];
+		[delegate protocol:self connectFailedWithError:error];
+		return;
+	}
+	
+	[super connectWithServer:_server
 		username:_username
 		password:_password
 		cidName:_cidName
-		cidNumber:_cidNumber
-		withResultingError:error] )
-		return NO;
+		cidNumber:_cidNumber];
 		
 	iax_init( 0 );
 
@@ -107,14 +112,14 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 	if ( iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 ) == -1 )
 	{
-		if ( error != NULL )
-			*error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:[NSDictionary dictionaryWithObject:@"Unable to connect" forKey:NSLocalizedDescriptionKey]];
-		return NO;
+		NSError *error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:[NSDictionary dictionaryWithObject:@"Failed to connect" forKey:NSLocalizedDescriptionKey]];
+		[delegate protocol:self connectFailedWithError:error];
+		return;
 	}
 	
 	reregistrationTimer = [[NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(reregister) userInfo:nil repeats:YES] retain];
 	
-	return YES;
+	[delegate protocolConnectSucceeded:self];
 }
 
 -(void) beginCallWithNumber:(NSString *)number callDelegate:(id <MMCallDelegate>)callDelegate

@@ -87,6 +87,16 @@
 	textField.text = _;
 }
 
+@dynamic hidden;
+-(BOOL) hidden
+{
+	return textField.hidden;
+}
+-(void) setHidden:(BOOL)_
+{
+	textField.hidden = _;
+}
+
 @synthesize delegate;
 
 @end
