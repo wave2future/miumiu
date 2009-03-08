@@ -6,12 +6,11 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProcessor.h"
-#import "MMDataPipeDelegate.h"
+#import "MMSimpleSamplePipe.h"
 
 #include <speex/speex_preprocess.h>
 
-@interface MMPreprocessor : MMDataProcessor <MMDataPipeDelegate>
+@interface MMPreprocessor : MMSimpleSamplePipe
 {
 @private
 	SpeexPreprocessState *state;

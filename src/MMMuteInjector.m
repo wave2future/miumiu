@@ -10,11 +10,7 @@
 
 @implementation MMMuteInjector
 
--(void) processData:(void *)data ofSize:(unsigned)size
-{
-	if ( muted )
-		memset( data, 0, size );
-}
+#pragma mark Public
 
 -(void) mute
 {
@@ -24,6 +20,15 @@
 -(void) unmute
 {
 	muted = NO;
+}
+
+#pragma mark MMSampleConsumer
+
+-(void) consumeSamples:(short *)samples count:(unsigned)count
+{
+	if ( muted )
+		memset( samples, 0, count*sizeof(short) );
+	[super consumeSamples:samples count:count];
 }
 
 @end

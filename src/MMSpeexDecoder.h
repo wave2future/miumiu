@@ -6,11 +6,11 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCodec.h"
+#import "MMDecoder.h"
 
 #include <speex/speex.h>
 
-@interface MMSpeexDecoder : MMCodec
+@interface MMSpeexDecoder : NSObject <MMDecoder>
 {
 @private
 	SpeexBits bits; 

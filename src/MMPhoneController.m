@@ -14,21 +14,39 @@
 #import "MMFastBusyInjector.h"
 #import "MMAudioController.h"
 #import "MMDTMFInjector.h"
-#import "MMDataPushToPullAdapter.h"
 #import "MMComfortNoiseInjector.h"
 #import "MMMuteInjector.h"
-#import "MMDataPipeChain.h"
+#import "MMSamplePipeChain.h"
 #import "MMCall.h"
-#import "MMCodec.h"
 #import "MMPreprocessor.h"
+#import <sys/socket.h>
+#import <netinet/in.h>
 
 //#define MM_PHONE_CONTROLLER_LOOPBACK
 
+static void networkReachabilityCallback( SCNetworkReachabilityRef target,
+   SCNetworkReachabilityFlags flags,
+   void *_phoneController )
+{
+	MMPhoneController *phoneController = _phoneController;
+	[phoneController handleNetworkReachabilityCallbackWithFlags:flags];
+}
+   
 @implementation MMPhoneController
 
 -(void) main
 {
 	NSAutoreleasePool *autoreleasePool = [[NSAutoreleasePool alloc] init];
+	
+	struct sockaddr_in sin;
+	bzero(&sin, sizeof(sin));
+	sin.sin_len = sizeof(sin);
+	sin.sin_family = AF_INET;
+	sin.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
+
+	networkReachability = SCNetworkReachabilityCreateWithAddress( NULL, (struct sockaddr *)&sin );
+	SCNetworkReachabilitySetCallback( networkReachability, (SCNetworkReachabilityCallBack)networkReachabilityCallback, (void *)self );
+	SCNetworkReachabilityScheduleWithRunLoop( networkReachability, CFRunLoopGetCurrent(), kCFRunLoopCommonModes );
 	
 	audioController = [[MMAudioController alloc] init];
 	audioController.delegate = self;
@@ -43,14 +61,12 @@
 	busyInjector = [[MMBusyInjector alloc] init];
 	fastBusyInjector = [[MMFastBusyInjector alloc] init];
 	dtmfInjector = [[MMDTMFInjector alloc] initWithSamplingFrequency:8000];
-	pushToPullAdapter = [[MMDataPushToPullAdapter alloc] initWithBufferCapacity:320*4];
-	postClockDataProcessorChain = [[MMDataPipeChain alloc] init];
+	postClockDataProcessorChain = [[MMSamplePipeChain alloc] init];
 	comfortNoiseInjector = [[MMComfortNoiseInjector alloc] init];
 	muteInjector = [[MMMuteInjector alloc] init];
 
-	[pushToPullAdapter connectToTarget:postClockDataProcessorChain];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
-	[postClockDataProcessorChain connectToTarget:audioController];
+	[postClockDataProcessorChain connectToSampleConsumer:audioController];
 
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -90,6 +106,22 @@
 		waitUntilDone:NO];
 }	
 
+-(void) handleNetworkReachabilityCallbackWithFlags:(SCNetworkReachabilityFlags)flags
+{
+	if ( (flags & kSCNetworkReachabilityFlagsReachable) == 0
+		|| (flags & kSCNetworkReachabilityFlagsIsWWAN) != 0 )
+	{
+		[self performSelector:@selector(setStatusMessage:)
+			onPhoneViewWithObject:@"Network unreachable"];
+		[self performSelectorOnPhoneView:@selector(didDisconnect)];
+	}
+	else
+	{
+		[self performSelector:@selector(setStatusMessage:)
+			onPhoneViewWithObject:@"Connecting..."];
+	}		
+}
+
 -(void) protocolConnectSucceeded:(MMProtocol *)protocol
 {
 	[self performSelector:@selector(setStatusMessage:)
@@ -107,17 +139,15 @@
 
 -(void) dealloc
 {
-	[decoder release];
-	[encoder release];
 	[muteInjector release];
 	[comfortNoiseInjector release];
 	[postClockDataProcessorChain release];
-	[pushToPullAdapter release];
 	[dtmfInjector release];
 	[fastBusyInjector release];
 	[busyInjector release];
 	[ringtoneInjector release];
 	[protocol release];
+	CFRelease( networkReachability );
 	[audioController release];
 	[super dealloc];
 }
@@ -183,7 +213,7 @@
 	[self performSelector:@selector(internalEndCall) onThread:self withObject:nil waitUntilDone:NO];
 }
 
--(void) callDidBegin:(MMCall *)call
+-(void) callDidBegin:(id <MMCall>)call
 {
 	mCall = [call retain];
 	
@@ -200,7 +230,7 @@
 	[phoneView didBeginCall];
 }
 
--(void) callDidBeginRinging:(MMCall *)call
+-(void) callDidBeginRinging:(id <MMCall>)call
 {
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
@@ -215,17 +245,12 @@
 	[phoneView setStatusMessage:@"Ringing"];
 }
 
--(void) call:(MMCall *)call didAnswerWithEncoder:(MMCodec *)_encoder decoder:(MMCodec *)_decoder
+-(void) callDidAnswer:(id <MMCall>)call
 {
-	encoder = [_encoder retain];
-	decoder = [_decoder retain];
-	
-	[audioController connectToTarget:muteInjector];
-	[muteInjector connectToTarget:encoder];
-	[encoder connectToTarget:call];
-	[call connectToTarget:decoder];
-	[decoder connectToTarget:pushToPullAdapter];
-	
+	[audioController connectToSampleConsumer:muteInjector];
+	[muteInjector connectToSampleConsumer:call];
+	[call connectToSampleConsumer:postClockDataProcessorChain];
+
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 	[postClockDataProcessorChain pushDataPipeOntoFront:comfortNoiseInjector];
@@ -238,7 +263,7 @@
 	[phoneView setStatusMessage:@"Connected"];
 }
 
--(void) callDidReturnBusy:(MMCall *)_
+-(void) callDidReturnBusy:(id <MMCall>)_
 {
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
@@ -253,7 +278,7 @@
 	[phoneView setStatusMessage:@"Busy"];
 }
 
--(void) callDidFail:(MMCall *)_
+-(void) callDidFail:(id <MMCall>)_
 {
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
@@ -268,23 +293,16 @@
 	[phoneView setStatusMessage:@"Call failed"];
 }
 
--(void) callDidEnd:(MMCall *)_call
+-(void) callDidEnd:(id <MMCall>)_call
 {
-	[audioController disconnectFromTarget];
+	[audioController disconnectFromSampleConsumer];
 	
 	[postClockDataProcessorChain zap];
 	[postClockDataProcessorChain pushDataPipeOntoFront:dtmfInjector];
 
-	[audioController disconnectFromTarget];
-	[muteInjector disconnectFromTarget];
-	[encoder disconnectFromTarget];
-	[mCall disconnectFromTarget];
-	[decoder disconnectFromTarget];
-	
-	[decoder release];
-	decoder = nil;
-	[encoder release];
-	encoder = nil;
+	[audioController disconnectFromSampleConsumer];
+	[muteInjector disconnectFromSampleConsumer];
+	[mCall disconnectFromSampleConsumer];
 	
 	[mCall release];
 	mCall = nil;

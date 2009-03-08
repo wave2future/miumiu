@@ -116,6 +116,8 @@
 	[super dealloc];
 }
 
+#pragma mark Public
+
 -(void) digitPressed:(NSString *)digit
 {
 	[[digitToRow valueForKey:digit] pressed];
@@ -128,16 +130,18 @@
 	[[digitToCol valueForKey:digit] released];
 }
 
--(void) processData:(void *)data ofSize:(unsigned)size
+#pragma mark MMSampleConsumer
+
+-(void) consumeSamples:(short *)data count:(unsigned)count
 {
-	unsigned numSamples = size/sizeof(short);
 	unsigned totalPressCount = 0;
 	for ( MMDTMFRowCol *rowCol in rowCols )
-		totalPressCount += [rowCol injectSamples:data count:numSamples offset:offset];
+		totalPressCount += [rowCol injectSamples:data count:count offset:offset];
 	if ( totalPressCount > 0 )
-		offset += numSamples;
+		offset += count;
 	else
 		offset = 0;
+	[super consumeSamples:data count:count];
 }
 
 @end

@@ -6,9 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCodec.h"
+#import "MMDecoder.h"
 
-@interface MMULawDecoder : MMCodec
+@interface MMULawDecoder : NSObject <MMDecoder>
 {
 @private
 	short uLawToLinear[256];

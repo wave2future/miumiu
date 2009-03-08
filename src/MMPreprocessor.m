@@ -10,16 +10,9 @@
 
 @implementation MMPreprocessor
 
--(id) init
-{
-	if ( self = [super init] )
-	{
-		self.dataPipeDelegate = self;
-	}
-	return self;
-}
+#pragma mark Private
 
--(void) dataPipe:(MMDataPipe *)dataPipe didConnectToTarget:(MMDataPipe *)newTarget
+-(void) start
 {
 	state = speex_preprocess_state_init( 160, 8000 );
 	spx_int32_t disable = 0, enable = 1;
@@ -29,16 +22,41 @@
 	speex_preprocess_ctl( state, SPEEX_PREPROCESS_SET_DEREVERB, &disable );
 }
 
--(void) dataPipe:(MMDataPipe *)dataPipe willDisconnectFromTarget:(MMDataPipe *)oldTarget
+-(void) stop
 {
 	speex_preprocess_state_destroy( state );
 	state = NULL;
 }
 
--(void) processData:(void *)data ofSize:(unsigned)size
+#pragma mark Initialization
+
+-(id) init
 {
-	if ( !speex_preprocess_run( state, data ) )
-		memset( data, 0, size );
+	if ( self = [super init] )
+		[self start];
+	return self;
+}
+
+-(void) dealloc
+{
+	[self stop];
+	[super dealloc];
+}
+
+#pragma mark MMSampleConsumer
+
+-(void) reset
+{
+	[self stop];
+	[self start];
+	[super reset];
+}
+
+-(void) consumeSamples:(short *)samples count:(unsigned)count
+{
+	if ( !speex_preprocess_run( state, samples ) )
+		memset( samples, 0, count*sizeof(short) );
+	[super consumeSamples:samples count:count];
 }
 
 @end

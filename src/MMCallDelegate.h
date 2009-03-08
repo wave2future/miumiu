@@ -8,18 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-@class MMCall;
-@class MMCodec;
+@protocol MMCall;
 
 @protocol MMCallDelegate <NSObject>
 
 @required
 
--(void) callDidBegin:(MMCall *)call;
--(void) callDidBeginRinging:(MMCall *)call;
--(void) call:(MMCall *)call didAnswerWithEncoder:(MMCodec *)encoder decoder:(MMCodec *)decoder;
--(void) callDidFail:(MMCall *)call;
--(void) callDidReturnBusy:(MMCall *)call;
--(void) callDidEnd:(MMCall *)call;
+-(void) callDidBegin:(id <MMCall>)call;
+-(void) callDidBeginRinging:(id <MMCall>)call;
+-(void) callDidAnswer:(id <MMCall>)call;
+-(void) callDidFail:(id <MMCall>)call;
+-(void) callDidReturnBusy:(id <MMCall>)call;
+-(void) callDidEnd:(id <MMCall>)call;
 
 @end

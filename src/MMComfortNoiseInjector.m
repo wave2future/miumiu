@@ -10,21 +10,18 @@
 
 @implementation MMComfortNoiseInjector
 
--(id) init
+#pragma mark MMSampleConsumer
+
+-(void) reset
 {
-	if ( self = [super init] )
-	{
-		lfsr = 0xACE1u;
-		lastInjection = 0;
-	}
-	return self;
+	lfsr = 0xACE1u;
+	lastInjection = 0;
+	[super reset];
 }
 
--(void) processData:(void *)data ofSize:(unsigned)size
+-(void) consumeSamples:(short *)samples count:(unsigned)count
 {
-	unsigned numSamples = size/sizeof(short);
-	short *samples = data;
-	for ( unsigned i=0; i<numSamples; ++i )
+	for ( unsigned i=0; i<count; ++i )
 	{
 		lfsr = (lfsr >> 1) ^ (-(short)(lfsr & 1u) & 0xB400u);
 		short injection = (short)lfsr >> 10;
@@ -32,6 +29,7 @@
 		samples[i] += injection;
 		lastInjection = injection;
 	}
+	[super consumeSamples:samples count:count];
 }
 
 @end

@@ -7,85 +7,111 @@
 //
 
 #import "MMSpeexEncoder.h"
+#import "MMCircularBuffer.h"
+#import "MMEncoderTarget.h"
 
 @implementation MMSpeexEncoder
 
--(id) init
+#pragma mark Private
+
+-(void) start
 {
-	if ( self = [super init] )
-	{
-		speex_bits_init( &bits ); 
+	speex_bits_init( &bits ); 
 
-		enc_state = speex_encoder_init( &speex_nb_mode );
-		
-		spx_int32_t samplingRate = 8000;
-		speex_encoder_ctl( enc_state, SPEEX_SET_SAMPLING_RATE, &samplingRate );
+	enc_state = speex_encoder_init( &speex_nb_mode );
+	
+	spx_int32_t samplingRate = 8000;
+	speex_encoder_ctl( enc_state, SPEEX_SET_SAMPLING_RATE, &samplingRate );
 
-		spx_int32_t vbr = 1;
-		speex_encoder_ctl( enc_state, SPEEX_SET_VBR, &vbr );
+	spx_int32_t vbr = 1;
+	speex_encoder_ctl( enc_state, SPEEX_SET_VBR, &vbr );
 
-		float vbrQuality = 4.0;
-		speex_encoder_ctl( enc_state, SPEEX_SET_VBR_QUALITY, &vbrQuality );
+	float vbrQuality = 4.0;
+	speex_encoder_ctl( enc_state, SPEEX_SET_VBR_QUALITY, &vbrQuality );
 
-		spx_int32_t vad = 1;
-		speex_encoder_ctl( enc_state, SPEEX_SET_VAD, &vad );
+	spx_int32_t vad = 1;
+	speex_encoder_ctl( enc_state, SPEEX_SET_VAD, &vad );
 
-		speex_encoder_ctl( enc_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrame );
-		
-		buffer = [[MMCircularBuffer alloc] initWithCapacity:(2*160*sizeof(short))];
-	}
-	return self;
+	speex_encoder_ctl( enc_state, SPEEX_GET_FRAME_SIZE, &samplesPerFrame );
+	
+	buffer = [[MMCircularBuffer alloc] initWithCapacity:(2*160*sizeof(short))];
 }
 
--(void) dealloc
+-(void) stop
 {
 	[buffer release];
 	
 	speex_bits_destroy(&bits);
 	
 	speex_encoder_destroy(enc_state); 
+}
 
+#pragma mark Initializtion
+
+-(id) init
+{
+	if ( self = [super init] )
+		[self start];
+	return self;
+}
+
+-(void) dealloc
+{
+	[self stop];
 	[super dealloc];
 }
 
--(void) encodeFrame:(short *)frame
-{
-	speex_bits_reset( &bits );
-	
-	speex_encode_int( enc_state, frame, &bits ); 
+#pragma mark MMEncoder
 
-	static const int dataSize = 256;
-	char data[dataSize];
-	int dataUsed = speex_bits_write( &bits, data, dataSize );
-	
-	[self pushData:data ofSize:dataUsed numSamples:samplesPerFrame];
+-(void) reset
+{
+	[self stop];
+	[self start];
 }
 
--(void) respondToPushData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) encodeSamples:(short *)samples
+	count:(unsigned)count
+	toTarget:(id <MMEncoderTarget>)target
 {
-	const char *data = (char *)_data;
-	unsigned frameSize = samplesPerFrame * sizeof(short);
-	
 	if ( buffer.used == 0 )
 	{
-		while ( size >= frameSize )
+		while ( count >= samplesPerFrame )
 		{
-			[self encodeFrame:(short *)data];
-			data += frameSize;
-			size -= frameSize;
+			speex_bits_reset( &bits );
+			
+			speex_encode_int( enc_state, samples, &bits ); 
+
+			static const unsigned maxSize = 256;
+			char data[maxSize];
+			unsigned size = (unsigned)speex_bits_write( &bits, data, maxSize );
+			
+			[target encoder:self didEncodeData:data ofSize:size correspondingToSamples:samples count:samplesPerFrame];
+
+			samples += samplesPerFrame;
+			count -= samplesPerFrame;
 		}
 	}
 	
-	if ( size == 0 )
+	if ( count == 0 )
 		return;
 		
-	[buffer putData:data ofSize:size];
+	[buffer putData:samples ofSize:count*sizeof(short)];
 	
-	if ( buffer.used > frameSize )
+	if ( buffer.used > samplesPerFrame*sizeof(short) )
 	{
-		spx_int16_t *frame = alloca( frameSize );
-		while ( [buffer getData:frame ofSize:frameSize] )
-			[self encodeFrame:frame];
+		spx_int16_t *frameSamples = alloca( samplesPerFrame*sizeof(short) );
+		while ( [buffer getData:frameSamples ofSize:samplesPerFrame*sizeof(short)] )
+		{
+			speex_bits_reset( &bits );
+			
+			speex_encode_int( enc_state, frameSamples, &bits ); 
+
+			static const unsigned maxSize = 256;
+			char data[maxSize];
+			unsigned size = (unsigned)speex_bits_write( &bits, data, maxSize );
+			
+			[target encoder:self didEncodeData:data ofSize:size correspondingToSamples:frameSamples count:samplesPerFrame];
+		}
 	}
 }
 

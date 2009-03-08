@@ -6,9 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCodec.h"
+#import "MMEncoder.h"
 
-@interface MMULawEncoder : MMCodec
+@interface MMULawEncoder : NSObject <MMEncoder>
 {
 @private
 	unsigned char linearToULaw[16384];

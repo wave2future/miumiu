@@ -11,6 +11,8 @@
 
 @implementation MMCadencedToneInjector
 
+#pragma mark Initialization
+
 -(id) initWithSamplingFrequency:(unsigned)_samplingFrequency
 	numTones:(unsigned)numTones
 	amplitudes:(const float *)amplitudes
@@ -20,7 +22,6 @@
 {
 	if ( self = [super init] )
 	{
-		self.dataPipeDelegate = self;
 		samplingFrequency = _samplingFrequency;
 		onSamples = roundf( onSeconds * samplingFrequency );
 		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones
@@ -39,14 +40,21 @@
 	[super dealloc];
 }
 
--(void) processData:(void *)data ofSize:(unsigned)size
+#pragma mark MMSampleConsumer
+
+-(void) reset
 {
-	unsigned numSamples = size/sizeof(short);
+	timePosition = 0;
+}
+
+-(void) consumeSamples:(void *)samples count:(unsigned)count
+{
 	if ( timePosition < onSamples )
-		[toneGenerator injectSamples:data count:numSamples offset:timePosition];
-	timePosition += numSamples;
+		[toneGenerator injectSamples:samples count:count offset:timePosition];
+	timePosition += count;
 	while ( timePosition > totalSamples )
 		timePosition -= totalSamples;
+	[super consumeSamples:samples count:count];
 }
 
 @end

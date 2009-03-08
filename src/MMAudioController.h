@@ -7,10 +7,11 @@
 //
 
 #import <AudioToolbox/AudioToolbox.h>
-#import "MMDataPipe.h"
+#import "MMSimpleSamplePipe.h"
 
 @protocol MMAudioControllerDelegate;
 @class MMToneGenerator;
+@class MMCircularBuffer;
 
 // [pzion 20081010] Audio is broken on the iPhone simulator;
 // work around this by detecting the target architecture and
@@ -32,7 +33,7 @@
 #define MM_AUDIO_CONTROLLER_BUFFER_SIZE (MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))
 #define MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER 10
 
-@interface MMAudioController : MMDataPipe
+@interface MMAudioController : MMSimpleSamplePipe
 {
 @private
 	id <MMAudioControllerDelegate> delegate;
@@ -50,6 +51,8 @@
 
 	AudioQueueRef inputQueue;
 	AudioQueueRef outputQueue;
+	
+	MMCircularBuffer *outputBuffer;
 	
 	unsigned inputLevelMeterCountdown;
 	unsigned outputLevelMeterCountdown;

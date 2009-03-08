@@ -7,8 +7,11 @@
 //
 
 #import "MMULawEncoder.h"
+#import "MMEncoderTarget.h"
 
 @implementation MMULawEncoder
+
+#pragma mark Initialization
 
 -(id) init
 {
@@ -57,14 +60,21 @@
 	return self;
 }
 
--(void) respondToPushData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+#pragma mark MMEncoder
+
+-(void) reset
 {
-	short *samples = (short *)_data;
-	unsigned newSize = numSamples * sizeof(unsigned char);
-	unsigned char *newSamples = alloca( newSize );
-	for ( unsigned i=0; i<numSamples; ++i )
-		newSamples[i] = linearToULaw[((unsigned short)(samples[i]))>>2];
-	[self pushData:newSamples ofSize:numSamples numSamples:numSamples];
+}
+
+-(void) encodeSamples:(short *)samples
+	count:(unsigned)count
+	toTarget:(id <MMEncoderTarget>)target
+{
+	unsigned size = count * sizeof(unsigned char);
+	unsigned char *data = alloca( size );
+	for ( unsigned i=0; i<count; ++i )
+		data[i] = linearToULaw[((unsigned short)(samples[i]))>>2];
+	[target encoder:self didEncodeData:data ofSize:size correspondingToSamples:samples count:count];
 }
 
 @end

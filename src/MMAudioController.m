@@ -130,6 +130,8 @@ static void interruptionCallback(
 			memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );
 			AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
 		}
+		
+		outputBuffer = [[MMCircularBuffer alloc] init];
 			
 		AudioQueueNewInput(
 			&audioFormat,
@@ -170,6 +172,8 @@ static void interruptionCallback(
 	[recordTimer release];
 	recordTimer = nil;
 #else
+	[outputBuffer release];
+
 	AudioQueueDispose( inputQueue, FALSE );
 	
 	AudioQueueDispose( outputQueue, FALSE );
@@ -193,7 +197,7 @@ static void interruptionCallback(
 	memset( samples, 0, sizeof(samples) );
 	[toneGenerator injectSamples:samples count:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER offset:toneGeneratorOffset];
 	toneGeneratorOffset += MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER;
-	[self pushData:samples ofSize:sizeof(samples) numSamples:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
+	[self pushData:samples ofSize:sizeof(samples)];
 }
 #else
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
@@ -202,7 +206,7 @@ static void interruptionCallback(
 		numPackets:(UInt32)numPackets
 		packetDescription:(const AudioStreamPacketDescription *)packetDescription
 {
-	[self pushData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize numSamples:numPackets];
+	[super consumeSamples:(short *)buffer->mAudioData count:buffer->mAudioDataByteSize/sizeof(short)];
 	AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
 	LOG( @"Requeued input buffer" );
 	if ( --inputLevelMeterCountdown == 0 )
@@ -222,7 +226,8 @@ static void interruptionCallback(
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 {
-	[self pullData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
+	if ( ![outputBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize] )
+		memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );
 	AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
 	if ( --outputLevelMeterCountdown == 0 )
 	{
@@ -263,6 +268,21 @@ static void interruptionCallback(
 		);
 #endif
 }
+
+-(void) reset
+{
+	[outputBuffer zap];
+	char *zeroes = alloca( MM_AUDIO_CONTROLLER_BUFFER_SIZE );
+	memset( zeroes, 0, MM_AUDIO_CONTROLLER_BUFFER_SIZE );
+	for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
+		[outputBuffer putData:zeroes ofSize:MM_AUDIO_CONTROLLER_BUFFER_SIZE];
+}
+
+-(void) consumeSamples:(short *)data count:(unsigned)count
+{
+	[outputBuffer putData:data ofSize:count*sizeof(short)];
+}
+
 
 @synthesize delegate;
 

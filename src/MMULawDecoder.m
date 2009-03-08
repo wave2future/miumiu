@@ -7,8 +7,11 @@
 //
 
 #import "MMULawDecoder.h"
+#import "MMDecoderTarget.h"
 
 @implementation MMULawDecoder
+
+#pragma mark Initialization
 
 -(id) init
 {
@@ -34,16 +37,22 @@
 	return self;
 }
 
--(void) respondToPushData:(void *)_data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+#pragma mark MMDecoder
+
+-(void) reset
 {
-	if ( numSamples == MM_DATA_NUM_SAMPLES_UNKNOWN )
-		numSamples = size;
-	const unsigned char *samples = _data;
-	unsigned newSize = numSamples * sizeof(short);
-	short *newSamples = alloca( newSize );
-	for ( unsigned i=0; i<numSamples; ++i )
-		newSamples[i] = uLawToLinear[samples[i]];
-	[self pushData:newSamples ofSize:newSize numSamples:numSamples];
+}
+
+-(void) decodeData:(void *)_data
+	ofSize:(unsigned)size
+	toTarget:(id <MMDecoderTarget>)target
+{
+	char *data = (char *)_data;
+	unsigned count = size;
+	short *samples = alloca( count * sizeof(short) );
+	for ( unsigned i=0; i<count; ++i )
+		samples[i] = uLawToLinear[data[i]];
+	[target decoder:self didDecodeSamples:samples count:count fromData:data ofSize:size];
 }
 
 @end

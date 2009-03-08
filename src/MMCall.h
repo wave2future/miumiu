@@ -6,23 +6,11 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "MMDataPipe.h"
+#import "MMSamplePipe.h"
 
-@protocol MMCallDelegate;
-@class MMCodec;
-
-@interface MMCall : MMDataPipe
-{
-@protected
-	id <MMCallDelegate> delegate;
-}
-
--(id) initWithCallDelegate:(id <MMCallDelegate>)_delegate;
+@protocol MMCall <MMSamplePipe>
 
 -(void) sendDTMF:(NSString *)dtmf;
 -(void) end;
-
-@property ( nonatomic, assign ) id <MMCallDelegate> delegate;
 
 @end

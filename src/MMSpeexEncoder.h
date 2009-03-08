@@ -6,12 +6,13 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMCodec.h"
-#import "MMCircularBuffer.h"
+#import "MMEncoder.h"
 
 #include <speex/speex.h>
 
-@interface MMSpeexEncoder : MMCodec
+@class MMCircularBuffer;
+
+@interface MMSpeexEncoder : NSObject <MMEncoder>
 {
 @private
 	SpeexBits bits; 

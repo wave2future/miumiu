@@ -6,9 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "MMDataProcessor.h"
+#import "MMSimpleSamplePipe.h"
 
-@interface MMMuteInjector : MMDataProcessor
+@interface MMMuteInjector : MMSimpleSamplePipe
 {
 @private
 	BOOL muted;

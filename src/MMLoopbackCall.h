@@ -7,10 +7,18 @@
 //
 
 #import "MMCall.h"
+#import "MMSimpleSamplePipe.h"
 
-@interface MMLoopbackCall : MMCall
+@protocol MMCallDelegate;
+
+@interface MMLoopbackCall : MMSimpleSamplePipe <MMCall>
 {
 @private
+	id <MMCallDelegate> delegate;
 }
+
+#pragma mark Initialization
+
+-(id) initWithCallDelegate:(id <MMCallDelegate>)_delegate;
 
 @end

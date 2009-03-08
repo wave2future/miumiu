@@ -18,8 +18,10 @@
 
 -(id) initWithSession:(struct iax_session *)_session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
 {
-	if ( self = [super initWithCallDelegate:_delegate] )
+	if ( self = [super init] )
 	{
+		delegate = [_delegate retain];
+	
 		iax = [_iax retain];
 		
 		session = _session;
@@ -35,41 +37,32 @@
 	{
 		format = _format;
 
-		MMCodec *encoder, *decoder;
 		if ( format == AST_FORMAT_SPEEX )
 		{
-			encoder = [MMSpeexEncoder codec];
-			decoder = [MMSpeexDecoder codec];
+			encoder = [[MMSpeexEncoder alloc] init];
+			decoder = [[MMSpeexDecoder alloc] init];
 		}
 		else
 		{
-			encoder = [MMULawEncoder codec];
-			decoder = [MMULawDecoder codec];
+			encoder = [[MMULawEncoder alloc] init];
+			decoder = [[MMULawDecoder alloc] init];
 		}
 		
-		[delegate call:self didAnswerWithEncoder:encoder decoder:decoder];
+		[delegate callDidAnswer:self];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
+	[encoder release];
+	[decoder release];
 	[iax release];
-	
+	[delegate release];
 	[super dealloc];
 }
 
--(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
-{
-	if ( session != NULL )
-		iax_send_voice( session, format, data, size, numSamples );
-}
-
--(void) sendDTMF:(NSString *)dtmf
-{
-	if ( session != NULL )
-		iax_send_dtmf( session, *[dtmf UTF8String] );
-}
+#pragma mark Public
 
 -(BOOL) handleEvent:(struct iax_event *)event
 {
@@ -83,22 +76,21 @@
 			break;
 		case IAX_EVENT_ANSWER:
 		{
-			MMCodec *encoder, *decoder;
 			if ( format == AST_FORMAT_SPEEX )
 			{
-				encoder = [MMSpeexEncoder codec];
-				decoder = [MMSpeexDecoder codec];
+				encoder = [[MMSpeexEncoder alloc] init];
+				decoder = [[MMSpeexDecoder alloc] init];
 			}
 			else
 			{
-				encoder = [MMULawEncoder codec];
-				decoder = [MMULawDecoder codec];
+				encoder = [[MMULawEncoder alloc] init];
+				decoder = [[MMULawDecoder alloc] init];
 			}
-			[delegate call:self didAnswerWithEncoder:encoder decoder:decoder];
+			[delegate callDidAnswer:self];
 		}
 		break;
 		case IAX_EVENT_VOICE:
-			[self pushData:event->data ofSize:event->datalen numSamples:MM_DATA_NUM_SAMPLES_UNKNOWN];
+			[decoder decodeData:event->data ofSize:event->datalen toTarget:self];
 			break;
 		case IAX_EVENT_REJECT:
 			[delegate callDidFail:self];
@@ -113,6 +105,57 @@
 			return NO;
 	}
 	return YES;
+}
+
+#pragma mark MMSampleProducer
+
+-(void) connectToSampleConsumer:(id <MMSampleConsumer>)consumer
+{
+	[decoder reset];
+	[super connectToSampleConsumer:consumer];
+}
+
+#pragma mark MMSampleConsumer
+
+-(void) reset
+{
+	[encoder reset];
+}
+
+-(void) consumeSamples:(short *)samples count:(unsigned)count
+{
+	if ( session != NULL )
+		[encoder encodeSamples:samples count:count toTarget:self];
+}
+
+#pragma mark MMEncoderTarget
+		
+-(void) encoder:(id <MMEncoder>)encoder
+	didEncodeData:(void *)data
+	ofSize:(unsigned)size
+	correspondingToSamples:(const short *)samples
+	count:(unsigned)count
+{
+	iax_send_voice( session, format, data, size, count );
+}
+
+#pragma mark MMDecoderTarget
+
+-(void) decoder:(id <MMDecoder>)decoder
+	didDecodeSamples:(short *)samples
+	count:(unsigned)count
+	fromData:(const void *)data
+	ofSize:(unsigned)size
+{
+	[super consumeSamples:samples count:count];
+}
+
+#pragma mark MMCall
+
+-(void) sendDTMF:(NSString *)dtmf
+{
+	if ( session != NULL )
+		iax_send_dtmf( session, *[dtmf UTF8String] );
 }
 
 -(void) end

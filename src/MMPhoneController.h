@@ -7,21 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <SystemConfiguration/SystemConfiguration.h>
 #import "MMProtocolDelegate.h"
 #import "MMCallDelegate.h"
 #import "MMPhoneView.h"
 #import "MMAudioControllerDelegate.h"
 
 @class MMProtocol;
-@class MMCodec;
+@protocol MMCall;
 @class MMRingInjector;
 @class MMBusyInjector;
 @class MMFastBusyInjector;
 @class MMDTMFInjector;
-@class MMDataPushToPullAdapter;
 @class MMComfortNoiseInjector;
 @class MMMuteInjector;
-@class MMDataPipeChain;
+@class MMSamplePipeChain;
 @class MMAudioController;
 @class MMPreprocessor;
 
@@ -30,21 +30,24 @@
 @private
 	MMPhoneView *phoneView;
 
+	SCNetworkReachabilityRef networkReachability;
 	MMProtocol *protocol;
 
 	MMAudioController *audioController;
-	MMCall *mCall;
-	MMDataPushToPullAdapter *pushToPullAdapter;
-	MMDataPipeChain *postClockDataProcessorChain;
+	id <MMCall> mCall;
+	MMSamplePipeChain *postClockDataProcessorChain;
 	MMRingInjector *ringtoneInjector;
 	MMBusyInjector *busyInjector;
 	MMFastBusyInjector *fastBusyInjector;
 	MMDTMFInjector *dtmfInjector;
 	MMComfortNoiseInjector *comfortNoiseInjector;
 	MMMuteInjector *muteInjector;
-	MMCodec *encoder, *decoder;
 }
 
 @property ( nonatomic, assign ) MMPhoneView *phoneView;
+
+#pragma mark Private methods
+
+-(void) handleNetworkReachabilityCallbackWithFlags:(SCNetworkReachabilityFlags)flags;
 
 @end

@@ -16,9 +16,11 @@
 
 @implementation MMLoopbackCall
 
+#pragma mark Private
+
 -(void) answerCall
 {
-	[delegate call:self didAnswerWithEncoder:[MMSpeexEncoder codec] decoder:[MMSpeexDecoder codec]];
+	[delegate callDidAnswer:self];
 }
 
 -(void) startRinging
@@ -27,20 +29,38 @@
 	[self performSelector:@selector(answerCall) withObject:nil afterDelay:1.0];
 }
 
+#pragma mark Initialization
+
 -(id) initWithCallDelegate:(id <MMCallDelegate>)_delegate
 {
-	if ( self = [super initWithCallDelegate:_delegate] )
+	if ( self = [super init] )
 	{
+		delegate = [_delegate retain];
 		[delegate callDidBegin:self];
 		[self performSelector:@selector(startRinging) withObject:nil afterDelay:0.5];
 	}
 	return self;
 }
 
--(void) respondToPushData:(void *)data ofSize:(unsigned)size numSamples:(unsigned)numSamples
+-(void) dealloc
 {
-	[self pushData:data ofSize:size numSamples:numSamples];
+	[delegate release];
+	[super dealloc];
 }
+
+#pragma mark MMSampleConsumer
+
+-(void) reset
+{
+	// [pzion 20090308] Don't loop back resets, just data
+}
+
+-(void) consumeSamples:(short *)samples count:(unsigned)count
+{
+	[super consumeSamples:samples count:count];
+}
+
+#pragma mark MMCall
 
 -(void) sendDTMF:(NSString *)dtmf
 {
