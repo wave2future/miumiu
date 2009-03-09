@@ -24,6 +24,7 @@
 @class MMSamplePipeChain;
 @class MMAudioController;
 @class MMPreprocessor;
+@class MMOnHookSamplePipe;
 
 @interface MMPhoneController : NSThread <MMProtocolDelegate, MMCallDelegate, MMAudioControllerDelegate, MMPhoneViewDelegate>
 {
@@ -35,7 +36,9 @@
 
 	MMAudioController *audioController;
 	id <MMCall> mCall;
-	MMSamplePipeChain *postClockDataProcessorChain;
+	MMOnHookSamplePipe *onHookSamplePipe;
+	MMSamplePipeChain *callToAudioChain;
+	MMSamplePipeChain *audioToCallChain;
 	MMRingInjector *ringtoneInjector;
 	MMBusyInjector *busyInjector;
 	MMFastBusyInjector *fastBusyInjector;
