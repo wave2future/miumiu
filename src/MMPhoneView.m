@@ -87,15 +87,25 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	
 	numberTextField.hidden = !connected;
 	
-	beginCallButton.hidden = !connected || inCall || !haveDigits;
-	endCallButton.hidden = !inCall;
+	beginCallButton.hidden = inCall || !haveDigits;
+	beginCallButton.enabled = !beginCallButton.hidden && connected;
 
 	contactsButton.hidden = inCall || haveDigits;
+	contactsButton.enabled = !contactsButton.hidden && connected;
+	
 	clearNumberButton.hidden = inCall || !haveDigits;
+	clearNumberButton.enabled = !clearNumberButton.hidden && connected;
+	
+	for ( MMPhoneButton *digitButton in digitButtons )
+		digitButton.enabled = connected;
+	
 	muteButton.enabled = !muted;
 	muteButton.hidden = muted || !inCall;
+	
 	unmuteButton.enabled = muted;
 	unmuteButton.hidden = !muted || !inCall;
+
+	endCallButton.hidden = !inCall;
 }
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;

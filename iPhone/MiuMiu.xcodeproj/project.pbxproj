@@ -165,6 +165,7 @@
 		DBA1EAC40F6494350089AF25 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBA1EA940F6494190089AF25 /* SystemConfiguration.framework */; };
 		DBA1EAC70F64944D0089AF25 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBA1EAC60F64944D0089AF25 /* AudioToolbox.framework */; };
 		DBA1EB630F649F200089AF25 /* MMOnHookSamplePipe.m in Sources */ = {isa = PBXBuildFile; fileRef = DBA1EB620F649F200089AF25 /* MMOnHookSamplePipe.m */; };
+		DBA4D33A0F680B5A001DC2A2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DBA4D3390F680B5A001DC2A2 /* Default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -172,14 +173,14 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DBA1E94A0F6490DA0089AF25 /* libspeex */;
+			remoteGlobalIDString = DBA1E94A0F6490DA0089AF25;
 			remoteInfo = libspeex;
 		};
 		DBA1EA290F6492680089AF25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DBA1EA250F64925B0089AF25 /* libiax2 */;
+			remoteGlobalIDString = DBA1EA250F64925B0089AF25;
 			remoteInfo = libiax2;
 		};
 /* End PBXContainerItemProxy section */
@@ -403,6 +404,7 @@
 		DBA1EAC60F64944D0089AF25 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DBA1EB610F649F200089AF25 /* MMOnHookSamplePipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMOnHookSamplePipe.h; path = ../src/MMOnHookSamplePipe.h; sourceTree = SOURCE_ROOT; };
 		DBA1EB620F649F200089AF25 /* MMOnHookSamplePipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMOnHookSamplePipe.m; path = ../src/MMOnHookSamplePipe.m; sourceTree = SOURCE_ROOT; };
+		DBA4D3390F680B5A001DC2A2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Resources/iPhone/Default.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -560,6 +562,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DBA4D3390F680B5A001DC2A2 /* Default.png */,
 				DBA1E9440F6490BC0089AF25 /* Icon.png */,
 				DBA1E93E0F6490AE0089AF25 /* button-disabled.png */,
 				DBA1E93F0F6490AE0089AF25 /* button-highlighted.png */,
@@ -878,6 +881,7 @@
 				DBA1E9420F6490AE0089AF25 /* button-highlighted.png in Resources */,
 				DBA1E9430F6490AE0089AF25 /* button.png in Resources */,
 				DBA1E9450F6490BC0089AF25 /* Icon.png in Resources */,
+				DBA4D33A0F680B5A001DC2A2 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1026,8 +1030,8 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				OTHER_LDFLAGS = (
-					"-lspeex",
-					"-liax2",
+					"-llibspeex",
+					"-llibiax2",
 				);
 				PRODUCT_NAME = MiuMiu;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9B81D97D-7E5E-4974-839B-7FEBDA73C689";
@@ -1049,8 +1053,8 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				OTHER_LDFLAGS = (
-					"-lspeex",
-					"-liax2",
+					"-llibspeex",
+					"-llibiax2",
 				);
 				PRODUCT_NAME = MiuMiu;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9B81D97D-7E5E-4974-839B-7FEBDA73C689";

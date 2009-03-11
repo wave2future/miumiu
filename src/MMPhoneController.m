@@ -39,16 +39,6 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 {
 	NSAutoreleasePool *autoreleasePool = [[NSAutoreleasePool alloc] init];
 	
-	struct sockaddr_in sin;
-	bzero(&sin, sizeof(sin));
-	sin.sin_len = sizeof(sin);
-	sin.sin_family = AF_INET;
-	sin.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
-
-	networkReachability = SCNetworkReachabilityCreateWithAddress( NULL, (struct sockaddr *)&sin );
-	SCNetworkReachabilitySetCallback( networkReachability, (SCNetworkReachabilityCallBack)networkReachabilityCallback, (void *)self );
-	SCNetworkReachabilityScheduleWithRunLoop( networkReachability, CFRunLoopGetCurrent(), kCFRunLoopCommonModes );
-	
 	audioController = [[MMAudioController alloc] init];
 	audioController.delegate = self;
 
@@ -75,21 +65,22 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[audioController connectToSampleConsumer:audioToCallChain];
 	[audioToCallChain pushDataPipeOntoFront:muteInjector];
 	[audioToCallChain connectToSampleConsumer:onHookSamplePipe];
-
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
-	NSString *server = [userDefaults stringForKey:@"server"];
-	NSString *username = [userDefaults stringForKey:@"username"];
-	NSString *password = [userDefaults stringForKey:@"password"];
-	NSString *cidName = [userDefaults stringForKey:@"cidName"];
-	NSString *cidNumber = [userDefaults stringForKey:@"cidNumber"];
+	struct sockaddr_in sin;
+	bzero(&sin, sizeof(sin));
+	sin.sin_len = sizeof(sin);
+	sin.sin_family = AF_INET;
+	sin.sin_addr.s_addr = htonl(IN_LINKLOCALNETNUM);
 
-	[protocol connectWithServer:server
-		username:username
-		password:password
-		cidName:cidName
-		cidNumber:cidNumber];
-		
+	networkReachability = SCNetworkReachabilityCreateWithAddress( NULL, (struct sockaddr *)&sin );
+	
+	SCNetworkReachabilityFlags flags;
+	SCNetworkReachabilityGetFlags( networkReachability, &flags );
+	[self handleNetworkReachabilityCallbackWithFlags:flags];
+
+	SCNetworkReachabilitySetCallback( networkReachability, (SCNetworkReachabilityCallBack)networkReachabilityCallback, (void *)self );
+	SCNetworkReachabilityScheduleWithRunLoop( networkReachability, CFRunLoopGetCurrent(), kCFRunLoopCommonModes );
+
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
 		;
@@ -121,12 +112,25 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	{
 		[self performSelector:@selector(setStatusMessage:)
 			onPhoneViewWithObject:@"Network unreachable"];
-		[self performSelectorOnPhoneView:@selector(didDisconnect)];
 	}
 	else
 	{
 		[self performSelector:@selector(setStatusMessage:)
 			onPhoneViewWithObject:@"Connecting..."];
+			
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		
+		NSString *server = [userDefaults stringForKey:@"server"];
+		NSString *username = [userDefaults stringForKey:@"username"];
+		NSString *password = [userDefaults stringForKey:@"password"];
+		NSString *cidName = [userDefaults stringForKey:@"cidName"];
+		NSString *cidNumber = [userDefaults stringForKey:@"cidNumber"];
+
+		[protocol connectWithServer:server
+			username:username
+			password:password
+			cidName:cidName
+			cidNumber:cidNumber];
 	}		
 }
 
