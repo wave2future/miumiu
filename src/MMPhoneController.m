@@ -67,6 +67,9 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[audioToCallChain pushDataPipeOntoFront:muteInjector];
 	[audioToCallChain connectToSampleConsumer:onHookSamplePipe];
 	
+	[audioToCallChain reset];
+	[callToAudioChain reset];
+	
 	struct sockaddr_in sin;
 	bzero(&sin, sizeof(sin));
 	sin.sin_len = sizeof(sin);
@@ -81,7 +84,7 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 
 	instance = self;
 	SCNetworkReachabilitySetCallback( networkReachability, (SCNetworkReachabilityCallBack)networkReachabilityCallback, NULL );
-	SCNetworkReachabilityScheduleWithRunLoop( networkReachability, CFRunLoopGetCurrent(), kCFRunLoopCommonModes );
+	SCNetworkReachabilityScheduleWithRunLoop( networkReachability, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode );
 
 	while ( ![self isCancelled]
 		&& [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]] )
@@ -250,6 +253,7 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[callToAudioChain zap];
 	[callToAudioChain pushDataPipeOntoFront:dtmfInjector];
 	[callToAudioChain pushDataPipeOntoFront:comfortNoiseInjector];
+	[callToAudioChain reset];
 
 	[self performSelector:@selector(notifyPhoneViewThatCallDidBegin:) onThread:[NSThread mainThread] withObject:call waitUntilDone:NO];
 }
@@ -266,6 +270,7 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[callToAudioChain pushDataPipeOntoFront:dtmfInjector];
 	[callToAudioChain pushDataPipeOntoFront:comfortNoiseInjector];
 	[callToAudioChain pushDataPipeOntoFront:ringtoneInjector];
+	[callToAudioChain reset];
 	
 	[self performSelector:@selector(notifyPhoneViewThatCallDidBeginRinging) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
@@ -279,6 +284,7 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 {
 	[audioToCallChain disconnectFromSampleConsumer];
 	[audioToCallChain connectToSampleConsumer:call];
+	[audioToCallChain reset];
 	
 	[onHookSamplePipe disconnectFromSampleConsumer];
 	[call connectToSampleConsumer:callToAudioChain];
@@ -286,6 +292,7 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[callToAudioChain zap];
 	[callToAudioChain pushDataPipeOntoFront:dtmfInjector];
 	[callToAudioChain pushDataPipeOntoFront:comfortNoiseInjector];
+	[callToAudioChain reset];
 	
 	[self performSelector:@selector(notifyPhoneViewThatCallDidAnswer) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
@@ -301,6 +308,7 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[callToAudioChain pushDataPipeOntoFront:dtmfInjector];
 	[callToAudioChain pushDataPipeOntoFront:comfortNoiseInjector];
 	[callToAudioChain pushDataPipeOntoFront:busyInjector];
+	[callToAudioChain reset];
 	
 	[self performSelector:@selector(notifyPhoneViewThatCallDidBusy) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
@@ -314,12 +322,14 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 {
 	[audioToCallChain disconnectFromSampleConsumer];
 	[audioToCallChain connectToSampleConsumer:onHookSamplePipe];
+	[audioToCallChain reset];
 	
 	[mCall disconnectFromSampleConsumer];
 	[onHookSamplePipe connectToSampleConsumer:callToAudioChain];
 	
 	[callToAudioChain zap];
 	[callToAudioChain pushDataPipeOntoFront:dtmfInjector];
+	[callToAudioChain reset];
 	
 	[mCall release];
 	mCall = nil;

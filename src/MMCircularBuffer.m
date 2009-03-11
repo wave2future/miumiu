@@ -30,8 +30,22 @@
 
 -(BOOL) putData:(const void *)_data ofSize:(unsigned)size
 {
-	if ( used + size > capacity )
+	if ( size > capacity )
 		return NO;
+		
+	while ( used + size > capacity )
+	{
+		unsigned chunk = used + size - capacity;
+		if ( head + chunk >= capacity )
+			chunk = capacity - head;
+		
+		size -= chunk;
+		
+		head += chunk;
+		if ( head == capacity )
+			head = 0;
+		used -= chunk;
+	}
 
 	const char *data = _data;
 	while ( size > 0 )

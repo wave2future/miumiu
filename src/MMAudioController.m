@@ -11,19 +11,8 @@
 #import "MMToneGenerator.h"
 #import "MMCircularBuffer.h"
 
-#ifdef MM_AUDIO_CONTROLLER_LOG
+#undef MM_AUDIO_CONTROLLER_STATUS
 
-#define LOG( format, ... ) \
-	[self logWithFormatAndArgs:format, ## __VA_ARGS__]
-
-#else
-
-#define LOG( format, ... )
-
-#endif
-
-
-#ifndef SIMULATE_AUDIO
 void playbackCallback(
     void *userdata,
     AudioQueueRef queue,
@@ -57,27 +46,29 @@ static void interruptionCallback(
    )
 {
 }
-#endif
 
 @implementation MMAudioController
+
+#pragma mark Private
+
+#ifdef MM_AUDIO_CONTROLLER_STATUS
+-(void) addStatus:(NSString *)ch
+{
+	[status appendString:ch];
+	if ( [status length] > 100 )
+	{
+		NSLog( @"status: %@", status );
+		[status setString:@""];
+	}
+}
+#endif
+
+#pragma mark Lifecycle
 
 -(id) init
 {
 	if ( self = [super init] )
 	{
-#ifdef MM_AUDIO_CONTROLLER_LOG
-		logStream = [[NSOutputStream outputStreamToFileAtPath:@"/tmp/MiuMiu.log" append:NO] retain];
-		[logStream open];
-#endif
-
-#ifdef SIMULATE_AUDIO
-		unsigned numTones = 1;
-		float amplitudes[] = { 2048 };
-		float frequencies[] = { 440 };
-		toneGenerator = [[MMToneGenerator alloc] initWithNumTones:numTones amplitudes:amplitudes frequencies:frequencies samplingFrequency:8000];
-		toneGeneratorOffset = 0;
-		recordTimer = [[NSTimer scheduledTimerWithTimeInterval:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER/8000.00 target:self selector:@selector(recordTimerCallback:) userInfo:nil repeats:YES] retain];
-#else
 #ifdef IPHONE
 		AudioSessionInitialize( NULL, NULL, interruptionCallback, self );
 
@@ -105,10 +96,9 @@ static void interruptionCallback(
 		AudioQueueNewOutput(
 			&audioFormat,
 			playbackCallback, self,
-			CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0,
+			CFRunLoopGetCurrent(), kCFRunLoopDefaultMode, 0,
 			&outputQueue
 			);
-		LOG( @"Created output queue" );
 		
 		UInt32 enableOutputLevelMetering = 1;
 		AudioQueueSetProperty(
@@ -122,24 +112,14 @@ static void interruptionCallback(
 
 		outputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
 		
-		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
-		{
-			AudioQueueBufferRef buffer;
-			AudioQueueAllocateBuffer( outputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
-			buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
-			memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );
-			AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
-		}
-		
-		outputBuffer = [[MMCircularBuffer alloc] initWithCapacity:2*MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS*MM_AUDIO_CONTROLLER_BUFFER_SIZE];
+		outputBuffer = [[MMCircularBuffer alloc] initWithCapacity:MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS*MM_AUDIO_CONTROLLER_BUFFER_SIZE];
 			
 		AudioQueueNewInput(
 			&audioFormat,
 			recordingCallback, self,
-			CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0,
+			CFRunLoopGetCurrent(), kCFRunLoopDefaultMode, 0,
 			&inputQueue
 			);
-		LOG( @"Created input queue" );
 		
 		UInt32 enableInputLevelMetering = 1;
 		AudioQueueSetProperty(
@@ -149,29 +129,25 @@ static void interruptionCallback(
 			sizeof(enableInputLevelMetering)
 			);
 		
-		inputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
-		
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS; ++i )
 		{
 			AudioQueueBufferRef buffer;
 			AudioQueueAllocateBuffer( inputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
 			AudioQueueEnqueueBuffer( inputQueue, buffer, 0, NULL );
 		}
+		inputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
 		
-		AudioQueueStart( outputQueue, NULL );
 		AudioQueueStart( inputQueue, NULL );
-#endif
+		
+		status = [[NSMutableString alloc] init];
 	}
 	return self;
 }
 
 -(void) dealloc
 {
-#ifdef SIMULATE_AUDIO
-	[recordTimer invalidate];
-	[recordTimer release];
-	recordTimer = nil;
-#else
+	[status release];
+
 	[outputBuffer release];
 
 	AudioQueueDispose( inputQueue, FALSE );
@@ -181,34 +157,36 @@ static void interruptionCallback(
 #ifdef IPHONE	
 	AudioSessionSetActive( FALSE );
 #endif
-#endif
-	
-#ifdef MM_AUDIO_CONTROLLER_LOG
-	[logStream release];
-#endif
 	
 	[super dealloc];
 }
 
-#ifdef SIMULATE_AUDIO
--(void) recordTimerCallback:(id)_
-{
-	short samples[MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER];
-	memset( samples, 0, sizeof(samples) );
-	[toneGenerator injectSamples:samples count:MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER offset:toneGeneratorOffset];
-	toneGeneratorOffset += MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER;
-	[self pushData:samples ofSize:sizeof(samples)];
-}
-#else
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 		startTime:(const AudioTimeStamp *)startTime
 		numPackets:(UInt32)numPackets
 		packetDescription:(const AudioStreamPacketDescription *)packetDescription
 {
+#ifdef MM_AUDIO_CONTROLLER_STATUS
+	[self addStatus:@"R"];
+#endif
 	[super consumeSamples:(short *)buffer->mAudioData count:buffer->mAudioDataByteSize/sizeof(short)];
+	if ( !outputStarted )
+	{
+		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
+		{
+			AudioQueueBufferRef buffer;
+			AudioQueueAllocateBuffer( outputQueue, MM_AUDIO_CONTROLLER_BUFFER_SIZE, &buffer );
+			buffer->mAudioDataByteSize = buffer->mAudioDataBytesCapacity;
+			[outputBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
+			AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
+		}
+				
+		AudioQueueStart( outputQueue, NULL );
+		
+		outputStarted = YES;
+	}
 	AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
-	LOG( @"Requeued input buffer" );
 	if ( --inputLevelMeterCountdown == 0 )
 	{
 		AudioQueueLevelMeterState level;
@@ -226,8 +204,20 @@ static void interruptionCallback(
 -(void) playbackCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 {
+#ifdef MM_AUDIO_CONTROLLER_STATUS
+	[self addStatus:@"P"];
+#endif
 	if ( ![outputBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize] )
-		memset( buffer->mAudioData, 0, buffer->mAudioDataByteSize );
+	{
+#ifdef MM_AUDIO_CONTROLLER_STATUS
+		[self addStatus:@"O"];
+#endif
+		char *zeroes = alloca( MM_AUDIO_CONTROLLER_BUFFER_SIZE );
+		memset( zeroes, 0, MM_AUDIO_CONTROLLER_BUFFER_SIZE );
+		for ( int i=0; i<2; ++i )
+			[outputBuffer putData:zeroes ofSize:MM_AUDIO_CONTROLLER_BUFFER_SIZE];
+		[outputBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
+	}
 	AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
 	if ( --outputLevelMeterCountdown == 0 )
 	{
@@ -242,45 +232,24 @@ static void interruptionCallback(
 		outputLevelMeterCountdown = MM_AUDIO_CONTROLLER_BUFFERS_PER_LEVEL_METER;
 	}
 }
-#endif
-
-#ifdef MM_AUDIO_CONTROLLER_LOG
--(void) logWithFormatAndArgs:format, ...
-{
-	va_list argList;
-	va_start( argList, format );
-	NSString *formattedString = [[[NSString alloc] initWithFormat:format arguments:argList] autorelease];
-	va_end( argList );
-	
-	const void *utf8FormattedString = [formattedString UTF8String];
-	[logStream write:utf8FormattedString maxLength:strlen(utf8FormattedString)];
-	[logStream write:(const void *)"\n" maxLength:1];
-}
-#endif
 
 -(void) setPlaybackLevelTo:(float)playbackLevel
 {
-#ifndef SIMULATE_AUDIO
 	AudioQueueSetParameter(
 		outputQueue,
 		kAudioQueueParam_Volume,
 		playbackLevel
 		);
-#endif
 }
 
 -(void) reset
 {
 	[outputBuffer zap];
-	char *zeroes = alloca( MM_AUDIO_CONTROLLER_BUFFER_SIZE );
-	memset( zeroes, 0, MM_AUDIO_CONTROLLER_BUFFER_SIZE );
-	for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
-		[outputBuffer putData:zeroes ofSize:MM_AUDIO_CONTROLLER_BUFFER_SIZE];
 }
 
--(void) consumeSamples:(short *)data count:(unsigned)count
+-(void) consumeSamples:(short *)samples count:(unsigned)count
 {
-	[outputBuffer putData:data ofSize:count*sizeof(short)];
+	[outputBuffer putData:samples ofSize:count*sizeof(short)];
 }
 
 

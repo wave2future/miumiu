@@ -47,7 +47,7 @@
 	ofSize:(unsigned)size
 	toTarget:(id <MMDecoderTarget>)target
 {
-	char *data = (char *)_data;
+	const unsigned char *data = (const unsigned char *)_data;
 	unsigned count = size;
 	short *samples = alloca( count * sizeof(short) );
 	for ( unsigned i=0; i<count; ++i )
