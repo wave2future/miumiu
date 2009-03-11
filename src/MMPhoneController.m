@@ -121,9 +121,6 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	}
 	else
 	{
-		[self performSelector:@selector(setStatusMessage:)
-			onPhoneViewWithObject:@"Connecting..."];
-			
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 		
 		NSString *server = [userDefaults stringForKey:@"server"];
@@ -132,11 +129,24 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 		NSString *cidName = [userDefaults stringForKey:@"cidName"];
 		NSString *cidNumber = [userDefaults stringForKey:@"cidNumber"];
 
-		[protocol connectWithServer:server
-			username:username
-			password:password
-			cidName:cidName
-			cidNumber:cidNumber];
+		if ( [server length] > 0
+			&& [username length] > 0
+			&& [password length] > 0 )
+		{
+			[self performSelector:@selector(setStatusMessage:)
+				onPhoneViewWithObject:@"Connecting..."];
+				
+			[protocol connectWithServer:server
+				username:username
+				password:password
+				cidName:cidName
+				cidNumber:cidNumber];
+		}
+		else
+		{
+			[self performSelector:@selector(setStatusMessage:)
+				onPhoneViewWithObject:@"Configuration required"];
+		}
 	}		
 }
 
