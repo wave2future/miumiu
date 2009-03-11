@@ -140,7 +140,8 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 	session = iax_session_new();
 	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 	char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", username, password, hostname, number] UTF8String] );
-	int callResult = iax_call( session, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_ULAW, /*AST_FORMAT_ULAW |*/ AST_FORMAT_ULAW );
+	//int callResult = iax_call( session, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, AST_FORMAT_SPEEX );
+	int callResult = iax_call( session, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_ULAW, AST_FORMAT_ULAW );
 	free( ich );
 	
 	if ( callResult == -1 )
