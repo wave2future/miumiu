@@ -25,12 +25,13 @@
 
 //#define MM_PHONE_CONTROLLER_LOOPBACK
 
+static MMPhoneController *instance;
+
 static void networkReachabilityCallback( SCNetworkReachabilityRef target,
    SCNetworkReachabilityFlags flags,
    void *_phoneController )
 {
-	MMPhoneController *phoneController = _phoneController;
-	[phoneController handleNetworkReachabilityCallbackWithFlags:flags];
+	[instance handleNetworkReachabilityCallbackWithFlags:flags];
 }
    
 @implementation MMPhoneController
@@ -78,7 +79,8 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	SCNetworkReachabilityGetFlags( networkReachability, &flags );
 	[self handleNetworkReachabilityCallbackWithFlags:flags];
 
-	SCNetworkReachabilitySetCallback( networkReachability, (SCNetworkReachabilityCallBack)networkReachabilityCallback, (void *)self );
+	instance = self;
+	SCNetworkReachabilitySetCallback( networkReachability, (SCNetworkReachabilityCallBack)networkReachabilityCallback, NULL );
 	SCNetworkReachabilityScheduleWithRunLoop( networkReachability, CFRunLoopGetCurrent(), kCFRunLoopCommonModes );
 
 	while ( ![self isCancelled]
