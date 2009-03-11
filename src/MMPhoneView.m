@@ -113,6 +113,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	if ( self = [super initWithFrame:frame] )
 	{
 		statusLabel = [[MMPhoneLabel alloc] init];
+		statusLabel.text = @"Connecting...";
 		[self addSubview:statusLabel.view];
 		
 #ifdef MACOSX

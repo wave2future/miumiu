@@ -166,6 +166,7 @@
 		DBA1EAC70F64944D0089AF25 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBA1EAC60F64944D0089AF25 /* AudioToolbox.framework */; };
 		DBA1EB630F649F200089AF25 /* MMOnHookSamplePipe.m in Sources */ = {isa = PBXBuildFile; fileRef = DBA1EB620F649F200089AF25 /* MMOnHookSamplePipe.m */; };
 		DBA4D33A0F680B5A001DC2A2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DBA4D3390F680B5A001DC2A2 /* Default.png */; };
+		DBA4D3D70F68203B001DC2A2 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DBA4D3D60F68203B001DC2A2 /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -405,6 +406,7 @@
 		DBA1EB610F649F200089AF25 /* MMOnHookSamplePipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMOnHookSamplePipe.h; path = ../src/MMOnHookSamplePipe.h; sourceTree = SOURCE_ROOT; };
 		DBA1EB620F649F200089AF25 /* MMOnHookSamplePipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMOnHookSamplePipe.m; path = ../src/MMOnHookSamplePipe.m; sourceTree = SOURCE_ROOT; };
 		DBA4D3390F680B5A001DC2A2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Resources/iPhone/Default.png; sourceTree = SOURCE_ROOT; };
+		DBA4D3D60F68203B001DC2A2 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Resources/Settings.bundle; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -568,6 +570,7 @@
 				DBA1E93F0F6490AE0089AF25 /* button-highlighted.png */,
 				DBA1E9400F6490AE0089AF25 /* button.png */,
 				8D1107310486CEB800E47090 /* Info.plist */,
+				DBA4D3D60F68203B001DC2A2 /* Settings.bundle */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -882,6 +885,7 @@
 				DBA1E9430F6490AE0089AF25 /* button.png in Resources */,
 				DBA1E9450F6490BC0089AF25 /* Icon.png in Resources */,
 				DBA4D33A0F680B5A001DC2A2 /* Default.png in Resources */,
+				DBA4D3D70F68203B001DC2A2 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1024,6 +1028,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MiuMiu_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = IPHONE;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					ThirdParty/iax2/src,
 					ThirdParty/speex/include,
@@ -1047,6 +1052,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MiuMiu_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = IPHONE;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = (
 					ThirdParty/iax2/src,
 					ThirdParty/speex/include,

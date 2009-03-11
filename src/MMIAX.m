@@ -81,6 +81,14 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 	iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 );
 }
 
+-(NSError *) lastIAXError
+{
+	NSString *errorString = [NSString stringWithCString:iax_errstr];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
+	NSError *error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:userInfo];
+	return error;
+}
+
 -(void) connectWithServer:(NSString *)_server
 	username:(NSString *)_username
 	password:(NSString *)_password
@@ -112,8 +120,7 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 	if ( iax_register( session, [hostname UTF8String], [username UTF8String], [password UTF8String], 1 ) == -1 )
 	{
-		NSError *error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:[NSDictionary dictionaryWithObject:@"Failed to connect" forKey:NSLocalizedDescriptionKey]];
-		[delegate protocol:self connectFailedWithError:error];
+		[delegate protocol:self connectFailedWithError:[self lastIAXError]];
 		return;
 	}
 	
@@ -133,8 +140,14 @@ void willDestroySessionCallback( struct iax_session *session, void *userdata )
 	session = iax_session_new();
 	iax_set_will_destroy_session_handler( session, willDestroySessionCallback, self );
 	char *ich = strdup( [[NSString stringWithFormat:@"%@:%@@%@/%@", username, password, hostname, number] UTF8String] );
-	iax_call( session, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, /*AST_FORMAT_ULAW |*/ AST_FORMAT_SPEEX );
+	int callResult = iax_call( session, [cidNumber UTF8String], [cidName UTF8String], ich, NULL, 0, AST_FORMAT_SPEEX, /*AST_FORMAT_ULAW |*/ AST_FORMAT_SPEEX );
 	free( ich );
+	
+	if ( callResult == -1 )
+	{
+		[delegate protocol:self beginCallDidFailWithError:[self lastIAXError]];
+		return;
+	}
 		
 	call = [[MMIAXCall alloc] initWithSession:session callDelegate:callDelegate iax:self];
 }

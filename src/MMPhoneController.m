@@ -109,11 +109,15 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 
 -(void) handleNetworkReachabilityCallbackWithFlags:(SCNetworkReachabilityFlags)flags
 {
-	if ( (flags & kSCNetworkReachabilityFlagsReachable) == 0
-		|| (flags & kSCNetworkReachabilityFlagsIsWWAN) != 0 )
+	if ( (flags & kSCNetworkReachabilityFlagsReachable) == 0 )
 	{
 		[self performSelector:@selector(setStatusMessage:)
 			onPhoneViewWithObject:@"Network unreachable"];
+	}
+	else if ( (flags & kSCNetworkReachabilityFlagsIsWWAN) != 0 )
+	{
+		[self performSelector:@selector(setStatusMessage:)
+			onPhoneViewWithObject:@"VoIP is forbidden on 3G network"];
 	}
 	else
 	{
@@ -296,19 +300,23 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[phoneView setStatusMessage:@"Busy"];
 }
 
--(void) callDidFail:(id <MMCall>)_
+-(void) call:(id <MMCall>)_ didFailWithError:(NSError *)error
 {
+	[audioToCallChain disconnectFromSampleConsumer];
+	[audioToCallChain connectToSampleConsumer:onHookSamplePipe];
+	
+	[mCall disconnectFromSampleConsumer];
+	[onHookSamplePipe connectToSampleConsumer:callToAudioChain];
+	
 	[callToAudioChain zap];
 	[callToAudioChain pushDataPipeOntoFront:dtmfInjector];
-	[callToAudioChain pushDataPipeOntoFront:comfortNoiseInjector];
-	[callToAudioChain pushDataPipeOntoFront:fastBusyInjector];
 	
-	[self performSelector:@selector(notifyPhoneViewThatCallDidFail) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-}
-
--(void) notifyPhoneViewThatCallDidFail
-{
-	[phoneView setStatusMessage:@"Call failed"];
+	[mCall release];
+	mCall = nil;
+	
+	NSString *statusMessage = [NSString stringWithFormat:@"Call failed: %@", [error localizedDescription]];
+	[self performSelector:@selector(setStatusMessage:) onPhoneViewWithObject:statusMessage];
+	[self performSelectorOnPhoneView:@selector(didEndCall)];
 }
 
 -(void) callDidEnd:(id <MMCall>)_call
@@ -325,13 +333,8 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 	[mCall release];
 	mCall = nil;
 	
-	[self performSelector:@selector(notifyPhoneViewThatCallDidEnd) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-}
-
--(void) notifyPhoneViewThatCallDidEnd
-{
-	[phoneView setStatusMessage:@"Call finished"];
-	[phoneView didEndCall];
+	[self performSelector:@selector(setStatusMessage:) onPhoneViewWithObject:@"Call finished"];
+	[self performSelectorOnPhoneView:@selector(didEndCall)];
 }
 
 -(void) protocol:(MMProtocol *)_protocol isReceivingCallFrom:(NSString *)cidInfo
@@ -411,6 +414,13 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 -(void) notifyPhoneViewThatOutputLevelIs:(NSNumber *)level
 {
 	[phoneView outputLevelIs:[level floatValue]];
+}
+
+-(void) protocol:(MMProtocol *)protocol beginCallDidFailWithError:(NSError *)error
+{
+	NSString *statusMessage = [NSString stringWithFormat:@"Call failed: %@", [error localizedDescription]];
+	[self performSelector:@selector(setStatusMessage:)
+		onPhoneViewWithObject:statusMessage];	
 }
 
 @synthesize phoneView;

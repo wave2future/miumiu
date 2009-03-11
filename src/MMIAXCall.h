@@ -24,6 +24,7 @@
 	id <MMCallDelegate> delegate;
 	MMIAX *iax;
 	struct iax_session *session;
+	BOOL wasAccepted;
 	unsigned format;
 	id <MMEncoder> encoder;
 	id <MMDecoder> decoder;

@@ -16,6 +16,22 @@
 
 @implementation MMIAXCall
 
+#pragma mark Private
+
+-(NSError *) lastIAXError
+{
+	NSString *errorString;
+	if ( *iax_errstr != '\0' )
+		errorString = [NSString stringWithCString:iax_errstr];
+	else
+		errorString = @"Unknown error (bad username or password?)";
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:errorString forKey:NSLocalizedDescriptionKey];
+	NSError *error = [NSError errorWithDomain:@"MiuMiu" code:1 userInfo:userInfo];
+	return error;
+}
+
+#pragma mark Lifecycle
+
 -(id) initWithSession:(struct iax_session *)_session callDelegate:(id <MMCallDelegate>)_delegate iax:(MMIAX *)_iax
 {
 	if ( self = [super init] )
@@ -69,6 +85,7 @@
 	switch ( event->etype )
 	{
 		case IAX_EVENT_ACCEPT:
+			wasAccepted = YES;
 			format = event->ies.format;
 			break;
 		case IAX_EVENT_RINGA:
@@ -91,9 +108,6 @@
 		break;
 		case IAX_EVENT_VOICE:
 			[decoder decodeData:event->data ofSize:event->datalen toTarget:self];
-			break;
-		case IAX_EVENT_REJECT:
-			[delegate callDidFail:self];
 			break;
 		case IAX_EVENT_BUSY:
 			[delegate callDidReturnBusy:self];
@@ -166,7 +180,10 @@
 		session = NULL;
 		iax_hangup( oldSession, NULL );
 	}
-	[delegate callDidEnd:self];
+	if ( wasAccepted )
+		[delegate callDidEnd:self];
+	else
+		[delegate call:self didFailWithError:[self lastIAXError]];
 }
 
 @end
