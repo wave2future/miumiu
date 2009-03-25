@@ -1039,7 +1039,6 @@
 					"-llibiax2",
 				);
 				PRODUCT_NAME = MiuMiu;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9B81D97D-7E5E-4974-839B-7FEBDA73C689";
 			};
 			name = Debug;
 		};
@@ -1063,7 +1062,6 @@
 					"-llibiax2",
 				);
 				PRODUCT_NAME = MiuMiu;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "9B81D97D-7E5E-4974-839B-7FEBDA73C689";
 			};
 			name = Release;
 		};
@@ -1071,13 +1069,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Peter Zion";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos2.2.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7AD5C370-8A9B-4EAF-BC45-2FC5604A56CE";
+				SDKROOT = iphoneos2.0;
 			};
 			name = Debug;
 		};
@@ -1085,12 +1084,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Peter Zion";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = iphoneos2.2.1;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "7AD5C370-8A9B-4EAF-BC45-2FC5604A56CE";
+				SDKROOT = iphoneos2.0;
 			};
 			name = Release;
 		};
