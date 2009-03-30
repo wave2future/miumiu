@@ -3,7 +3,7 @@
 //  MiuMiu
 //
 //  Created by Peter Zion on 08/10/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Copyright 2008 Peter Zion. All rights reserved.
 //
 
 #import <AudioToolbox/AudioToolbox.h>
@@ -13,12 +13,12 @@
 @class MMToneGenerator;
 @class MMCircularBuffer;
 
-#ifdef MACOSX
-#define MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS 2
-#define MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS 2
-#else
+#ifdef IPHONE
 #define MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS 8
 #define MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS 8
+#else
+#define MM_AUDIO_CONTROLLER_NUM_INPUT_BUFFERS 3
+#define MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS 3
 #endif
 #define MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER 160
 #define MM_AUDIO_CONTROLLER_BUFFER_SIZE (MM_AUDIO_CONTROLLER_SAMPLES_PER_BUFFER*sizeof(short))

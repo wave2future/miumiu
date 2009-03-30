@@ -3,11 +3,13 @@
 //  MiuMiu
 //
 //  Created by Peter Zion on 08/10/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Copyright 2008 Peter Zion. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import <AddressBookUI/AddressBookUI.h>
+#ifdef IPHONE
+# import <AddressBookUI/AddressBookUI.h>
+#endif
 #import "MMRect.h"
 #import "MMView.h"
 #import "MMPhoneTextFieldDelegate.h"
@@ -37,7 +39,14 @@
 
 @end
 
-@interface MMPhoneView : MMView <MMPhoneTextFieldDelegate, MMPhoneAlertDelegate, MMPhoneSliderDelegate, ABPeoplePickerNavigationControllerDelegate>
+@interface MMPhoneView : MMView
+	<MMPhoneTextFieldDelegate
+		,MMPhoneAlertDelegate
+		,MMPhoneSliderDelegate
+#ifdef IPHONE
+		,ABPeoplePickerNavigationControllerDelegate
+#endif		
+		>
 {
 @private
 	id <MMPhoneViewDelegate> delegate;
@@ -57,7 +66,9 @@
 	NSMutableArray *digitButtons;
 	MMPhoneAlert *incommingAlert;
 	BOOL connected, inCall, muted;
+#ifdef IPHONE	
 	ABPeoplePickerNavigationController *peoplePickerNavigationController;
+#endif
 }
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;

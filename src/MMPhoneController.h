@@ -3,7 +3,7 @@
 //  MiuMiu
 //
 //  Created by Peter Zion on 12/10/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Copyright 2008 Peter Zion. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -12,6 +12,14 @@
 #import "MMCallDelegate.h"
 #import "MMPhoneView.h"
 #import "MMAudioControllerDelegate.h"
+
+#ifdef IPHONE
+typedef SCNetworkReachabilityFlags NetworkReachabilityFlags;
+static const int kNetworkReachabilityFlagsReachable = kSCNetworkReachabilityFlagsReachable;
+#else
+typedef SCNetworkConnectionFlags NetworkReachabilityFlags;
+static const int kNetworkReachabilityFlagsReachable = kSCNetworkFlagsReachable;
+#endif
 
 @class MMProtocol;
 @protocol MMCall;
@@ -51,6 +59,6 @@
 
 #pragma mark Private methods
 
--(void) handleNetworkReachabilityCallbackWithFlags:(SCNetworkReachabilityFlags)flags;
+-(void) handleNetworkReachabilityCallbackWithFlags:(NetworkReachabilityFlags)flags;
 
 @end

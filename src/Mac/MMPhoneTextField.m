@@ -3,7 +3,7 @@
 //  MiuMiu
 //
 //  Created by Peter Zion on 23/10/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Copyright 2008 Peter Zion. All rights reserved.
 //
 
 #import "MMPhoneTextField.h"
@@ -60,6 +60,16 @@
 -(void) setText:(NSString *)_
 {
 	[textField setStringValue:_];
+}
+
+@dynamic hidden;
+-(BOOL) hidden
+{
+	return [textField isHidden];
+}
+-(void) setHidden:(BOOL)_
+{
+	[textField setHidden:_];
 }
 
 @synthesize delegate;

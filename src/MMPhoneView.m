@@ -3,7 +3,7 @@
 //  MiuMiu
 //
 //  Created by Peter Zion on 08/10/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Copyright 2008 Peter Zion. All rights reserved.
 //
 
 #import "MMPhoneView.h"
@@ -16,7 +16,10 @@
 #import "MMUIHelpers.h"
 #import "MMWindow.h"
 
-static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear", *contactsTitle = @"Contacts";
+static NSString *beginCallTitle = @"Call", *endCallTitle = @"End", *clearNumberTitle = @"Clear";
+#ifdef IPHONE
+static NSString *contactsTitle = @"Contacts";
+#endif
 static NSString *muteTitle = @"Mute", *unmuteTitle = @"Unmute";
 
 #define NUM_DIGITS 12
@@ -151,8 +154,10 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		[self addSubview:endCallButton.view];
 		clearNumberButton = [[self buttonWithTitle:clearNumberTitle] retain];
 		[self addSubview:clearNumberButton.view];
+#ifdef IPHONE
 		contactsButton = [[self buttonWithTitle:contactsTitle] retain];
 		[self addSubview:contactsButton.view];
+#endif
 		muteButton = [[self buttonWithTitle:muteTitle] retain];
 		[self addSubview:muteButton.view];
 		unmuteButton = [[self buttonWithTitle:unmuteTitle] retain];
@@ -243,6 +248,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		numberTextField.text = @"";
 		[self updateButtonStates];
 	}
+#ifdef IPHONE
 	else if ( button == contactsButton )
 	{
 		peoplePickerNavigationController = [[ABPeoplePickerNavigationController alloc] init];
@@ -251,6 +257,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 		peoplePickerNavigationController.view.frame = self.bounds;
 		[self addSubview:peoplePickerNavigationController.view];
 	}
+#endif
 	else if ( button == muteButton )
 	{
 		[delegate viewMuted:self];
@@ -340,6 +347,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	outputLevelMeter.value = level;
 }
 
+#ifdef IPHONE
 -(BOOL) peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker
 	shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
@@ -385,6 +393,7 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	[peoplePickerNavigationController release];
 	peoplePickerNavigationController = nil;
 }
+#endif
 
 -(void) didConnect
 {

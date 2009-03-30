@@ -3,7 +3,7 @@
 //  MiuMiu
 //
 //  Created by Peter Zion on 07/03/09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009 Peter Zion. All rights reserved.
 //
 
 #import "MMUtils.h"
@@ -13,6 +13,7 @@
 
 BOOL MMIsConnection3G()
 {
+#ifdef IPHONE
 	struct sockaddr_in sin;
 	bzero(&sin, sizeof(sin));
 	sin.sin_len = sizeof(sin);
@@ -25,5 +26,8 @@ BOOL MMIsConnection3G()
 	CFRelease( addressReachability );
 	
 	return (addressReachabilityFlags & kSCNetworkReachabilityFlagsIsWWAN) != 0;
+#else
+	return FALSE;
+#endif
 }
 

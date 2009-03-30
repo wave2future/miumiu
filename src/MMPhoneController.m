@@ -3,7 +3,7 @@
 //  MiuMiu
 //
 //  Created by Peter Zion on 12/10/08.
-//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//  Copyright 2008 Peter Zion. All rights reserved.
 //
 
 #import "MMPhoneController.h"
@@ -27,9 +27,11 @@
 
 static MMPhoneController *instance;
 
-static void networkReachabilityCallback( SCNetworkReachabilityRef target,
-   SCNetworkReachabilityFlags flags,
-   void *_phoneController )
+static void networkReachabilityCallback(
+	SCNetworkReachabilityRef target,
+	NetworkReachabilityFlags flags,
+    void *_phoneController
+	)
 {
 	[instance handleNetworkReachabilityCallbackWithFlags:flags];
 }
@@ -78,7 +80,7 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 
 	networkReachability = SCNetworkReachabilityCreateWithAddress( NULL, (struct sockaddr *)&sin );
 	
-	SCNetworkReachabilityFlags flags;
+	NetworkReachabilityFlags flags;
 	SCNetworkReachabilityGetFlags( networkReachability, &flags );
 	[self handleNetworkReachabilityCallbackWithFlags:flags];
 
@@ -110,18 +112,20 @@ static void networkReachabilityCallback( SCNetworkReachabilityRef target,
 		waitUntilDone:NO];
 }	
 
--(void) handleNetworkReachabilityCallbackWithFlags:(SCNetworkReachabilityFlags)flags
+-(void) handleNetworkReachabilityCallbackWithFlags:(NetworkReachabilityFlags)flags
 {
-	if ( (flags & kSCNetworkReachabilityFlagsReachable) == 0 )
+	if ( (flags & kNetworkReachabilityFlagsReachable) == 0 )
 	{
 		[self performSelector:@selector(setStatusMessage:)
 			onPhoneViewWithObject:@"Network unreachable"];
 	}
+#ifdef IPHONE
 	else if ( (flags & kSCNetworkReachabilityFlagsIsWWAN) != 0 )
 	{
 		[self performSelector:@selector(setStatusMessage:)
 			onPhoneViewWithObject:@"VoIP is forbidden on 3G network"];
 	}
+#endif
 	else
 	{
 		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
