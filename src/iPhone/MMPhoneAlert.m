@@ -15,8 +15,8 @@
 {
 	if ( self = [super init] )
 	{
-		alertView = [[UIAlertView alloc] initWithTitle:@"Incomming Call"
-			message:[NSString stringWithFormat:@"Incomming call from %@", _cidInfo]
+		alertView = [[UIAlertView alloc] initWithTitle:@"Incoming Call"
+			message:[NSString stringWithFormat:@"Incoming call from %@", _cidInfo]
 			delegate:self
 			cancelButtonTitle:@"Ignore"
 			otherButtonTitles:@"Accept", nil];

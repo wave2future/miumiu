@@ -377,7 +377,7 @@ static void networkReachabilityCallback(
 
 -(void) notifyPhoneViewThatCallIsBeingReceivedFrom:(NSString *)cidInfo
 {
-	[phoneView setStatusMessage:[NSString stringWithFormat:@"Incomming call from %@", cidInfo]];
+	[phoneView setStatusMessage:[NSString stringWithFormat:@"Incoming call from %@", cidInfo]];
 	[phoneView callIsBeingReceivedFrom:cidInfo];
 }
 
