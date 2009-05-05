@@ -90,15 +90,23 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 	
 	numberTextField.hidden = !connected;
 	
-	beginCallButton.hidden = inCall || !haveDigits;
+	beginCallButton.hidden = (inCall || !haveDigits);
 	beginCallButton.enabled = !beginCallButton.hidden && connected;
 
-	contactsButton.hidden = inCall || haveDigits;
-	contactsButton.enabled = !contactsButton.hidden && connected;
-	
-	clearNumberButton.hidden = inCall || !haveDigits;
+	clearNumberButton.hidden = (inCall || !haveDigits);
 	clearNumberButton.enabled = !clearNumberButton.hidden && connected;
 	
+    if ( contactsButton != nil )
+    {
+        contactsButton.hidden = inCall || haveDigits;
+        contactsButton.enabled = !contactsButton.hidden && connected;
+    }
+    else
+    {
+        beginCallButton.hidden = NO;
+        clearNumberButton.hidden = NO;
+    }
+    
 	for ( MMPhoneButton *digitButton in digitButtons )
 		digitButton.enabled = connected;
 	
@@ -110,6 +118,14 @@ static NSString *digitTitles[NUM_DIGITS] = { @"1", @"2", @"3", @"4", @"5", @"6",
 
 	endCallButton.hidden = !inCall;
 }
+
+#ifdef MACOSX
+-(void) drawRect:(MMRect)rect
+{
+    [[NSColor blackColor] set];
+    NSRectFill( rect );
+}
+#endif
 
 -(id) initWithFrame:(MMRect)frame number:(NSString *)number inProgress:(BOOL)inProgress;
 {
