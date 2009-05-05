@@ -11,7 +11,7 @@
 #import "MMToneGenerator.h"
 #import "MMCircularBuffer.h"
 
-#undef MM_AUDIO_CONTROLLER_STATUS
+#define MM_AUDIO_CONTROLLER_STATUS
 
 void playbackCallback(
     void *userdata,
@@ -161,6 +161,14 @@ static void interruptionCallback(
 	[super dealloc];
 }
 
+-(void) fillOutputBuffer
+{
+    char zeroes[MM_AUDIO_CONTROLLER_BUFFER_SIZE];
+    memset( zeroes, 0, MM_AUDIO_CONTROLLER_BUFFER_SIZE );
+    while ( [outputBuffer used] < [outputBuffer capacity] )
+        [outputBuffer putData:zeroes ofSize:MM_AUDIO_CONTROLLER_BUFFER_SIZE];
+}
+
 -(void) recordingCallbackCalledWithQueue:(AudioQueueRef)queue
 		buffer:(AudioQueueBufferRef)buffer
 		startTime:(const AudioTimeStamp *)startTime
@@ -173,6 +181,8 @@ static void interruptionCallback(
 	[super consumeSamples:(short *)buffer->mAudioData count:buffer->mAudioDataByteSize/sizeof(short)];
 	if ( !outputStarted )
 	{
+        [self fillOutputBuffer];
+        
 		for ( int i=0; i<MM_AUDIO_CONTROLLER_NUM_OUTPUT_BUFFERS; ++i )
 		{
 			AudioQueueBufferRef buffer;
@@ -186,6 +196,7 @@ static void interruptionCallback(
 		
 		outputStarted = YES;
 	}
+      
 	AudioQueueEnqueueBuffer( queue, buffer, 0, NULL );
 	if ( --inputLevelMeterCountdown == 0 )
 	{
@@ -210,13 +221,10 @@ static void interruptionCallback(
 	if ( ![outputBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize] )
 	{
 #ifdef MM_AUDIO_CONTROLLER_STATUS
-		[self addStatus:@"O"];
+		[self addStatus:@"!"];
 #endif
-		char *zeroes = alloca( MM_AUDIO_CONTROLLER_BUFFER_SIZE );
-		memset( zeroes, 0, MM_AUDIO_CONTROLLER_BUFFER_SIZE );
-		for ( int i=0; i<2; ++i )
-			[outputBuffer putData:zeroes ofSize:MM_AUDIO_CONTROLLER_BUFFER_SIZE];
-		[outputBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
+        [self fillOutputBuffer];
+        [outputBuffer getData:buffer->mAudioData ofSize:buffer->mAudioDataByteSize];
 	}
 	AudioQueueEnqueueBuffer( outputQueue, buffer, 0, NULL );
 	if ( --outputLevelMeterCountdown == 0 )

@@ -32,14 +32,13 @@
 {
 	if ( size > capacity )
 		return NO;
-		
+    
+    // Make enough room to accept size new bytes
 	while ( used + size > capacity )
 	{
 		unsigned chunk = used + size - capacity;
 		if ( head + chunk >= capacity )
 			chunk = capacity - head;
-		
-		size -= chunk;
 		
 		head += chunk;
 		if ( head == capacity )
